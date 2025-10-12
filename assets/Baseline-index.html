@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>SWAP-BASE — Heaven's Basement × SWAP</title>
-<meta name="description" content="Underground hub for music, tech, fashion & community">
+<meta name="description" content="Underground">
 <meta name="theme-color" content="#0a0a0f">
 
 <!-- OPTIONAL: Uncomment for custom font (removable for offline use) -->
@@ -561,60 +561,139 @@ main {
 /* =============================================================================
    PERSISTENT MUSIC PLAYER - Compact glassy bar at bottom
    ============================================================================= */
+/* =============================================================================
+   PERSISTENT MUSIC PLAYER - iOS 18 Glassmorphic Style
+   ============================================================================= */
 .player {
   position: fixed;
   bottom: 16px;
   left: 16px;
   right: 16px;
   height: var(--player-height);
-  background: rgba(14, 14, 22, 0.85);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
+  
+  /* iOS-style glass effect */
+  background: rgba(20, 20, 28, 0.72);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  
+  /* Subtle border with gradient */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  
+  /* Inner glow + outer shadow */
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 80px rgba(212, 165, 116, 0.15);
+  
   padding: 0 16px;
   display: flex;
   align-items: center;
   gap: 14px;
   z-index: 1000;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9),
-              0 0 48px rgba(212, 165, 116, 0.15);
+  
+  /* Smooth transitions */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover state - subtle lift */
+.player:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 24px 72px rgba(0, 0, 0, 0.7),
+    0 0 100px rgba(212, 165, 116, 0.25);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Add a subtle inner shine effect */
+.player::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 100%
+  );
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
 }
 
 .player-controls {
   display: flex;
   gap: 6px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .player-btn {
-  background: transparent;
-  border: none;
-  color: var(--chrome-dim);
-  font-size: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: var(--chrome-bright);
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
-  padding: 6px;
-  transition: var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.2);
 }
+
 .player-btn:hover {
-  color: var(--accent-warm);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.08);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(212, 165, 116, 0.3);
 }
+
 .player-btn:active {
   transform: scale(0.95);
 }
+
 .player-btn.play {
-  color: var(--accent-warm);
-  font-size: 26px;
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #000;
+  font-size: 24px;
+  width: 46px;
+  height: 46px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 16px rgba(212, 165, 116, 0.4),
+    0 0 30px rgba(212, 165, 116, 0.2);
+}
+
+.player-btn.play:hover {
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 6px 20px rgba(212, 165, 116, 0.6),
+    0 0 40px rgba(212, 165, 116, 0.4);
 }
 
 .track-info {
   flex: 1;
   min-width: 90px;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
+
 .track-title {
   font-size: 13px;
   font-weight: 700;
@@ -622,22 +701,79 @@ main {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--chrome-bright);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
+
 .track-artist {
   font-size: 11px;
   color: var(--chrome-dim);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+/* Waveform container with glass effect */
 .waveform-canvas {
   width: 140px;
   height: 36px;
-  border-radius: var(--radius-sm);
-  background: rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 1;
 }
 
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .player {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 0 12px;
+    border-radius: 18px;
+  }
+  
+  .player-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+  
+  .player-btn.play {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+  
+  .waveform-canvas {
+    width: 100%;
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .player {
+    gap: 10px;
+  }
+  
+  .player-controls {
+    gap: 4px;
+  }
+  
+  .track-title {
+    font-size: 12px;
+  }
+  
+  .track-artist {
+    font-size: 10px;
+  }
+}
 /* =============================================================================
    LIGHTNING FLASH TRANSITION
    ============================================================================= */
@@ -766,8 +902,8 @@ main {
   <!-- COUNTDOWN SECTION -->
   <section id="countdown" class="section">
     <div class="countdown-wrapper">
-      <h2 class="countdown-title">SWAPTOBER 2025</h2>
-      <p class="countdown-subtitle">Live drop & event</p>
+      <h2 class="countdown-title">SWAPTOBER:5</h2>
+      <p class="countdown-subtitle">LIVE COUNTDOWN</p>
       <div class="countdown-grid" id="fullCountdown"></div>
     </div>
   </section>
@@ -790,7 +926,7 @@ main {
           <p>Get Tickets</p>
         </a>
         <a href="https://www.mrmidwest.com/" target="_blank" rel="noopener" class="link-card">
-          <h3>👕 Merch</h3>
+          <h3>👕 Merch+</h3>
           <p>Shop Now</p>
         </a>
         <a href="https://youtube.com/@chrisswap57" target="_blank" rel="noopener" class="link-card">
@@ -799,7 +935,7 @@ main {
         </a>
         <a href="https://msha.ke/fieldschristopher" target="_blank" rel="noopener" class="link-card">
           <h3>📧 Contact</h3>
-          <p>DM Chris</p>
+          <p>Digital Card</p>
         </a>
       </div>
     </div>
@@ -815,7 +951,7 @@ main {
       </a>
       <div class="game-card" style="cursor: default;">
         <h3>More Coming Soon</h3>
-        <p>Additional interactive experiences in development</p>
+        <p>Additional interactive experiences in development by ChrisSWAP</p>
       </div>
     </div>
   </section>
@@ -837,429 +973,731 @@ main {
 
 <script>
 /* =============================================================================
-   CUSTOMIZATION MAP - JavaScript Configuration
-   Edit these values to customize behavior
+   SWAP-BASE JAVASCRIPT - Complete Rewrite
+   Optimized for performance, iOS compatibility, and glassmorphic UI
    ============================================================================= */
 
-// Countdown target date (America/Chicago timezone)
-const COUNTDOWN_TARGET = new Date('2025-10-24T20:00:00-05:00');
-
-// Audio tracks (placeholder paths - replace with your actual MP3 files)
-const AUDIO_TRACKS = [
-  { title: 'Chris2 — SWAPTOBER Mix', artist: 'ChrisSWAP', file: 'assets/music/chris2.mp3' },
-  { title: 'Chris7 — Deep Cut', artist: 'ChrisSWAP', file: 'assets/music/chris7.mp3' }
-];
-
-// Performance settings
-const PARTICLE_COUNT = 24; // Reduce to 12-16 for low-end devices
-const SPIRAL_SEGMENTS = 80; // Fibonacci spiral detail
+'use strict';
 
 /* =============================================================================
-   CORE FUNCTIONS
+   CONFIGURATION - Edit these values to customize
    ============================================================================= */
 
-let currentTrackIndex = 0;
-let audioElement = null;
-let audioContext = null;
-let analyser = null;
-let dataArray = null;
-let isPlaying = false;
-let audioInitialized = false;
-
-// Countdown timer
-function updateCountdown() {
-  const now = new Date();
-  const diff = Math.max(0, (COUNTDOWN_TARGET - now) / 1000);
+const CONFIG = {
+  // Countdown configuration
+  countdown: {
+    targetDate: new Date('2025-10-24T20:00:00-05:00'), // America/Chicago
+    updateInterval: 1000 // Update every second
+  },
   
-  const days = Math.floor(diff / 86400);
-  const hours = Math.floor((diff % 86400) / 3600);
-  const minutes = Math.floor((diff % 3600) / 60);
-  const seconds = Math.floor(diff % 60);
+  // Audio tracks configuration
+  audio: {
+    tracks: [
+      { 
+        title: 'Chris2 — SWAP Mix', 
+        artist: 'ChrisSWAP', 
+        file: 'assets/music/chris2.mp3' 
+      },
+      { 
+        title: 'Chris7 — SWAP Mix', 
+        artist: 'ChrisSWAP', 
+        file: 'assets/music/chris 7.mp3' 
+      }
+    ],
+    crossOrigin: 'anonymous',
+    preload: 'metadata'
+  },
   
-  const pad = (n) => String(Math.floor(n)).padStart(2, '0');
+  // Visual effects configuration
+  effects: {
+    particleCount: 24,        // Fibonacci spiral particles
+    spiralSegments: 80,       // Spiral curve detail
+    particleOpacity: 0.15,    // Particle visibility
+    spiralSpeed: 0.004,       // Rotation speed
+    flashDuration: 100,       // Lightning flash duration (ms)
+    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    isLowPower: /Mobi|Android/i.test(navigator.userAgent) && window.innerWidth < 900
+  },
   
-  // Update mini countdown
-  const mini = document.getElementById('miniCountdown');
-  if (mini) {
-    mini.innerHTML = `<div class="cell"><div class="num">${pad(days)}</div><div class="label">Days</div></div>
-      <div class="cell"><div class="num">${pad(hours)}</div><div class="label">Hrs</div></div>
-      <div class="cell"><div class="num">${pad(minutes)}</div><div class="label">Min</div></div>
-      <div class="cell"><div class="num">${pad(seconds)}</div><div class="label">Sec</div></div>
-    `;
+  // Waveform visualizer configuration
+  waveform: {
+    barCount: 20,
+    idleHeight: 0.2,          // 20% of canvas height when idle
+    minBarHeight: 0.12,       // Minimum bar height when playing
+    glowIntensity: 6,         // Base glow amount
+    pulseSpeed: 0.001         // Idle pulse animation speed
   }
-  
-  // Update full countdown
-  const full = document.getElementById('fullCountdown');
-  if (full) {
-    full.innerHTML = `
-      <div class="countdown-cell">
-        <div class="countdown-number">${pad(days)}</div>
-        <div class="countdown-label">Days</div>
-      </div>
-      <div class="countdown-cell">
-        <div class="countdown-number">${pad(hours)}</div>
-        <div class="countdown-label">Hours</div>
-      </div>
-      <div class="countdown-cell">
-        <div class="countdown-number">${pad(minutes)}</div>
-        <div class="countdown-label">Minutes</div>
-      </div>
-      <div class="countdown-cell">
-        <div class="countdown-number">${pad(seconds)}</div>
-        <div class="countdown-label">Seconds</div>
-      </div>
-    `;
-  }
-}
-
-// Initialize countdown
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// Scroll functions with lightning effect
-function scrollToSection(id) {
-  showFlash();
-  setTimeout(() => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, 100);
-}
-
-function scrollToTop() {
-  showFlash();
-  setTimeout(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, 100);
-}
-
-function showFlash() {
-  const flash = document.getElementById('flash');
-  flash.style.opacity = '1';
-  setTimeout(() => { flash.style.opacity = '0'; }, 100);
-}
-
-function showLoader() {
-  document.getElementById('loader').classList.add('active');
-}
-
-function hideLoader() {
-  document.getElementById('loader').classList.remove('active');
-}
-
-// Navigation active state
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', function(e) {
-    e.preventDefault();
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    this.classList.add('active');
-    const id = this.getAttribute('href').substring(1);
-    scrollToSection(id);
-  });
-});
-
-// Link card hover effect (mouse position tracking)
-document.querySelectorAll('.link-card').forEach(card => {
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty('--mouse-x', `${x}%`);
-    card.style.setProperty('--mouse-y', `${y}%`);
-  });
-});
+};
 
 /* =============================================================================
-   AUDIO PLAYER - iOS-compatible with Web Audio API
+   STATE MANAGEMENT - Application state
    ============================================================================= */
 
-// Initialize audio on first user gesture (iOS requirement)
-function initAudio() {
-  if (audioInitialized) return;
+const STATE = {
+  audio: {
+    element: null,
+    context: null,
+    analyser: null,
+    dataArray: null,
+    currentTrackIndex: 0,
+    isPlaying: false,
+    isInitialized: false
+  },
   
-  try {
-    audioElement = new Audio();
-    audioElement.crossOrigin = 'anonymous';
-    audioElement.preload = 'metadata';
-    
-    // Create Web Audio Context
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new AudioContext();
-    
-    const source = audioContext.createMediaElementSource(audioElement);
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 64;
-    
-    source.connect(analyser);
-    analyser.connect(audioContext.destination);
-    
-    const bufferLength = analyser.frequencyBinCount;
-    dataArray = new Uint8Array(bufferLength);
-    
-    // Load first track
-    loadTrack(currentTrackIndex);
-    
-    // Handle track end
-    audioElement.addEventListener('ended', () => {
-      nextTrack();
-    });
-    
-    audioInitialized = true;
-    console.log('✅ Audio initialized successfully');
-  } catch (err) {
-    console.warn('⚠️ Audio initialization failed:', err);
-    audioInitialized = false;
+  canvas: {
+    background: null,
+    backgroundCtx: null,
+    waveform: null,
+    waveformCtx: null,
+    spiralAngle: 0,
+    animationFrameId: null
+  },
+  
+  ui: {
+    loader: null,
+    flash: null,
+    playBtn: null,
+    trackTitle: null,
+    trackArtist: null,
+    player: null
   }
-}
+};
 
-function loadTrack(index) {
-  if (!audioElement || !AUDIO_TRACKS[index]) return;
+/* =============================================================================
+   DOM UTILITIES
+   ============================================================================= */
+
+const DOM = {
+  get: (selector) => document.querySelector(selector),
+  getAll: (selector) => document.querySelectorAll(selector),
   
-  const track = AUDIO_TRACKS[index];
-  audioElement.src = track.file;
-  document.getElementById('trackTitle').textContent = track.title;
-  document.getElementById('trackArtist').textContent = track.artist;
-  currentTrackIndex = index;
-}
-
-function togglePlay() {
-  if (!audioInitialized) {
-    initAudio();
+  ready: (callback) => {
+    if (document.readyState !== 'loading') {
+      callback();
+    } else {
+      document.addEventListener('DOMContentLoaded', callback);
+    }
   }
+};
+
+/* =============================================================================
+   UI EFFECTS
+   ============================================================================= */
+
+const Effects = {
+  // Show lightning flash transition
+  flash: () => {
+    if (!STATE.ui.flash) return;
+    STATE.ui.flash.style.opacity = '1';
+    setTimeout(() => {
+      STATE.ui.flash.style.opacity = '0';
+    }, CONFIG.effects.flashDuration);
+  },
   
-  if (!audioElement) return;
+  // Show loading spinner
+  showLoader: () => {
+    if (STATE.ui.loader) {
+      STATE.ui.loader.classList.add('active');
+    }
+  },
   
-  const playBtn = document.getElementById('playBtn');
+  // Hide loading spinner
+  hideLoader: () => {
+    if (STATE.ui.loader) {
+      STATE.ui.loader.classList.remove('active');
+    }
+  },
   
-  if (!isPlaying) {
-    // Resume AudioContext if suspended (iOS requirement)
-    if (audioContext && audioContext.state === 'suspended') {
-      audioContext.resume();
+  // Smooth scroll to section
+  scrollTo: (elementId) => {
+    Effects.flash();
+    setTimeout(() => {
+      const element = DOM.get(`#${elementId}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+  },
+  
+  // Scroll to top
+  scrollToTop: () => {
+    Effects.flash();
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  }
+};
+
+// Make scroll functions globally available
+window.scrollToSection = Effects.scrollTo;
+window.scrollToTop = Effects.scrollToTop;
+
+/* =============================================================================
+   COUNTDOWN TIMER
+   ============================================================================= */
+
+const Countdown = {
+  // Format number with leading zero
+  pad: (num) => String(Math.floor(num)).padStart(2, '0'),
+  
+  // Calculate time difference
+  calculate: () => {
+    const now = new Date();
+    const diff = Math.max(0, (CONFIG.countdown.targetDate - now) / 1000);
+    
+    return {
+      days: Math.floor(diff / 86400),
+      hours: Math.floor((diff % 86400) / 3600),
+      minutes: Math.floor((diff % 3600) / 60),
+      seconds: Math.floor(diff % 60)
+    };
+  },
+  
+  // Render countdown HTML
+  renderCell: (value, label) => `
+    <div class="countdown-cell">
+      <div class="countdown-number">${Countdown.pad(value)}</div>
+      <div class="countdown-label">${label}</div>
+    </div>
+  `,
+  
+  renderMiniCell: (value, label) => `
+    <div class="cell">
+      <div class="num">${Countdown.pad(value)}</div>
+      <div class="label">${label}</div>
+    </div>
+  `,
+  
+  // Update countdown displays
+  update: () => {
+    const time = Countdown.calculate();
+    
+    // Update mini countdown on hero
+    const miniCountdown = DOM.get('#miniCountdown');
+    if (miniCountdown) {
+      miniCountdown.innerHTML = 
+        Countdown.renderMiniCell(time.days, 'Days') +
+        Countdown.renderMiniCell(time.hours, 'Hrs') +
+        Countdown.renderMiniCell(time.minutes, 'Min') +
+        Countdown.renderMiniCell(time.seconds, 'Sec');
     }
     
-    audioElement.play()
-      .then(() => {
-        isPlaying = true;
-        playBtn.textContent = '⏸';
-      })
-      .catch(err => {
-        console.warn('⚠️ Playback failed:', err);
-        alert('Audio playback failed. Please check that the audio files exist in assets/music/');
-      });
-  } else {
-    audioElement.pause();
-    isPlaying = false;
-    playBtn.textContent = '▶';
-  }
-}
-
-function prevTrack() {
-  currentTrackIndex = (currentTrackIndex - 1 + AUDIO_TRACKS.length) % AUDIO_TRACKS.length;
-  loadTrack(currentTrackIndex);
-  if (isPlaying && audioElement) {
-    audioElement.play();
-  }
-}
-
-function nextTrack() {
-  currentTrackIndex = (currentTrackIndex + 1) % AUDIO_TRACKS.length;
-  loadTrack(currentTrackIndex);
-  if (isPlaying && audioElement) {
-    audioElement.play();
-  }
-}
-
-// Keyboard controls
-document.addEventListener('keydown', (e) => {
-  if (e.code === 'Space' && e.target === document.body) {
-    e.preventDefault();
-    togglePlay();
-  }
-});
-
-// Initialize audio on first user interaction
-['click', 'touchstart'].forEach(eventType => {
-  document.addEventListener(eventType, () => {
-    if (!audioInitialized) {
-      initAudio();
+    // Update full countdown
+    const fullCountdown = DOM.get('#fullCountdown');
+    if (fullCountdown) {
+      fullCountdown.innerHTML = 
+        Countdown.renderCell(time.days, 'Days') +
+        Countdown.renderCell(time.hours, 'Hours') +
+        Countdown.renderCell(time.minutes, 'Minutes') +
+        Countdown.renderCell(time.seconds, 'Seconds');
     }
-  }, { once: true, passive: true });
-});
+  },
+  
+  // Initialize countdown
+  init: () => {
+    Countdown.update();
+    setInterval(Countdown.update, CONFIG.countdown.updateInterval);
+    console.log('✅ Countdown initialized');
+  }
+};
+
+/* =============================================================================
+   AUDIO PLAYER
+   ============================================================================= */
+
+const AudioPlayer = {
+  // Initialize Web Audio API (iOS-compatible)
+  init: () => {
+    if (STATE.audio.isInitialized) return;
+    
+    try {
+      // Create audio element
+      STATE.audio.element = new Audio();
+      STATE.audio.element.crossOrigin = CONFIG.audio.crossOrigin;
+      STATE.audio.element.preload = CONFIG.audio.preload;
+      
+      // Create Web Audio Context
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      STATE.audio.context = new AudioContext();
+      
+      // Create analyser node
+      const source = STATE.audio.context.createMediaElementSource(STATE.audio.element);
+      STATE.audio.analyser = STATE.audio.context.createAnalyser();
+      STATE.audio.analyser.fftSize = 64;
+      
+      // Connect nodes
+      source.connect(STATE.audio.analyser);
+      STATE.audio.analyser.connect(STATE.audio.context.destination);
+      
+      // Create data array for frequency data
+      const bufferLength = STATE.audio.analyser.frequencyBinCount;
+      STATE.audio.dataArray = new Uint8Array(bufferLength);
+      
+      // Load first track
+      AudioPlayer.loadTrack(0);
+      
+      // Handle track end
+      STATE.audio.element.addEventListener('ended', AudioPlayer.next);
+      
+      STATE.audio.isInitialized = true;
+      console.log('✅ Audio system initialized');
+      console.log(`🎵 Loaded ${CONFIG.audio.tracks.length} tracks`);
+    } catch (err) {
+      console.error('❌ Audio initialization failed:', err);
+      STATE.audio.isInitialized = false;
+    }
+  },
+  
+  // Load a specific track
+  loadTrack: (index) => {
+    if (!STATE.audio.element) return;
+    
+    const track = CONFIG.audio.tracks[index];
+    if (!track) {
+      console.warn(`⚠️ Track ${index} not found`);
+      return;
+    }
+    
+    STATE.audio.element.src = track.file;
+    STATE.audio.currentTrackIndex = index;
+    
+    // Update UI
+    if (STATE.ui.trackTitle) {
+      STATE.ui.trackTitle.textContent = track.title;
+    }
+    if (STATE.ui.trackArtist) {
+      STATE.ui.trackArtist.textContent = track.artist;
+    }
+    
+    console.log(`🎵 Loaded: ${track.title}`);
+  },
+  
+  // Toggle play/pause
+  togglePlay: () => {
+    // Initialize audio on first interaction
+    if (!STATE.audio.isInitialized) {
+      AudioPlayer.init();
+    }
+    
+    if (!STATE.audio.element || !STATE.ui.playBtn) return;
+    
+    if (!STATE.audio.isPlaying) {
+      // Resume AudioContext if suspended (iOS requirement)
+      if (STATE.audio.context && STATE.audio.context.state === 'suspended') {
+        STATE.audio.context.resume();
+      }
+      
+      STATE.audio.element.play()
+        .then(() => {
+          STATE.audio.isPlaying = true;
+          STATE.ui.playBtn.textContent = '⏸';
+          if (STATE.ui.player) {
+            STATE.ui.player.classList.add('playing');
+          }
+          console.log('▶️ Playing');
+        })
+        .catch(err => {
+          console.error('❌ Playback failed:', err);
+          alert('Audio playback failed. Please check that audio files exist in assets/music/');
+        });
+    } else {
+      STATE.audio.element.pause();
+      STATE.audio.isPlaying = false;
+      STATE.ui.playBtn.textContent = '▶';
+      if (STATE.ui.player) {
+        STATE.ui.player.classList.remove('playing');
+      }
+      console.log('⏸ Paused');
+    }
+  },
+  
+  // Previous track
+  prev: () => {
+    const trackCount = CONFIG.audio.tracks.length;
+    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex - 1 + trackCount) % trackCount;
+    AudioPlayer.loadTrack(STATE.audio.currentTrackIndex);
+    
+    if (STATE.audio.isPlaying && STATE.audio.element) {
+      STATE.audio.element.play();
+    }
+  },
+  
+  // Next track
+  next: () => {
+    const trackCount = CONFIG.audio.tracks.length;
+    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex + 1) % trackCount;
+    AudioPlayer.loadTrack(STATE.audio.currentTrackIndex);
+    
+    if (STATE.audio.isPlaying && STATE.audio.element) {
+      STATE.audio.element.play();
+    }
+  }
+};
+
+// Make audio functions globally available
+window.togglePlay = AudioPlayer.togglePlay;
+window.prevTrack = AudioPlayer.prev;
+window.nextTrack = AudioPlayer.next;
 
 /* =============================================================================
    WAVEFORM VISUALIZER
    ============================================================================= */
 
-const waveCanvas = document.getElementById('waveCanvas');
-const waveCtx = waveCanvas.getContext('2d');
-
-function drawWaveform() {
-  requestAnimationFrame(drawWaveform);
+const Waveform = {
+  // Initialize waveform canvas
+  init: () => {
+    STATE.canvas.waveform = DOM.get('#waveCanvas');
+    if (!STATE.canvas.waveform) return;
+    
+    STATE.canvas.waveformCtx = STATE.canvas.waveform.getContext('2d');
+    Waveform.animate();
+    console.log('✅ Waveform visualizer initialized');
+  },
   
-  waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+  // Draw waveform animation
+  animate: () => {
+    requestAnimationFrame(Waveform.animate);
+    
+    const ctx = STATE.canvas.waveformCtx;
+    const canvas = STATE.canvas.waveform;
+    
+    if (!ctx || !canvas) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Check if audio is playing
+    if (!STATE.audio.analyser || !STATE.audio.isPlaying) {
+      Waveform.drawIdle(ctx, canvas);
+    } else {
+      Waveform.drawActive(ctx, canvas);
+    }
+  },
   
-  if (!analyser || !isPlaying) {
-    // Draw idle state
-    const barCount = 20;
-    const barWidth = waveCanvas.width / barCount;
-    const idleHeight = waveCanvas.height * 0.15;
+  // Draw idle state with breathing animation
+  drawIdle: (ctx, canvas) => {
+    const barCount = CONFIG.waveform.barCount;
+    const barWidth = canvas.width / barCount;
+    const baseHeight = canvas.height * CONFIG.waveform.idleHeight;
+    const time = Date.now() * CONFIG.waveform.pulseSpeed;
     
     for (let i = 0; i < barCount; i++) {
-      const gradient = waveCtx.createLinearGradient(0, 0, 0, waveCanvas.height);
-      gradient.addColorStop(0, '#d4a574');
-      gradient.addColorStop(1, '#ff7326');
+      // Subtle wave motion
+      const pulseOffset = Math.sin(time + i * 0.3) * 0.15;
+      const height = baseHeight * (1 + pulseOffset);
       
-      waveCtx.fillStyle = gradient;
-      waveCtx.fillRect(
-        i * barWidth,
-        waveCanvas.height - idleHeight,
+      // Create gradient
+      const gradient = ctx.createLinearGradient(
+        0, 
+        canvas.height - height, 
+        0, 
+        canvas.height
+      );
+      gradient.addColorStop(0, 'rgba(212, 165, 116, 0.25)');
+      gradient.addColorStop(0.5, 'rgba(255, 115, 38, 0.35)');
+      gradient.addColorStop(1, 'rgba(255, 140, 66, 0.45)');
+      
+      // Add subtle glow
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(212, 165, 116, 0.3)';
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(
+        i * barWidth + 1,
+        canvas.height - height,
         barWidth - 2,
-        idleHeight
+        height
       );
     }
-    return;
-  }
-  
-  // Draw live waveform
-  analyser.getByteFrequencyData(dataArray);
-  
-  const barCount = dataArray.length;
-  const barWidth = waveCanvas.width / barCount;
-  
-  for (let i = 0; i < barCount; i++) {
-    const value = dataArray[i] / 255;
-    const barHeight = value * waveCanvas.height;
     
-    const gradient = waveCtx.createLinearGradient(0, 0, 0, waveCanvas.height);
-    gradient.addColorStop(0, '#d4a574');
-    gradient.addColorStop(1, '#ff7326');
+    ctx.shadowBlur = 0;
+  },
+  
+  // Draw active state with audio analysis
+  drawActive: (ctx, canvas) => {
+    STATE.audio.analyser.getByteFrequencyData(STATE.audio.dataArray);
     
-    waveCtx.fillStyle = gradient;
-    waveCtx.fillRect(
-      i * barWidth,
-      waveCanvas.height - barHeight,
-      barWidth - 2,
-      barHeight
-    );
+    const barCount = STATE.audio.dataArray.length;
+    const barWidth = canvas.width / barCount;
+    const minHeight = canvas.height * CONFIG.waveform.minBarHeight;
+    
+    for (let i = 0; i < barCount; i++) {
+      const value = STATE.audio.dataArray[i] / 255;
+      const barHeight = Math.max(value * canvas.height, minHeight);
+      
+      // Create vibrant gradient
+      const gradient = ctx.createLinearGradient(
+        0, 
+        canvas.height - barHeight, 
+        0, 
+        canvas.height
+      );
+      gradient.addColorStop(0, '#d4a574');    // Gold
+      gradient.addColorStop(0.4, '#ff7326');  // Orange
+      gradient.addColorStop(1, '#ff8c42');    // Bright orange
+      
+      // Dynamic glow based on volume
+      const glowIntensity = CONFIG.waveform.glowIntensity + (value * 6);
+      ctx.shadowBlur = glowIntensity;
+      ctx.shadowColor = `rgba(212, 165, 116, ${0.4 + value * 0.4})`;
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(
+        i * barWidth + 1,
+        canvas.height - barHeight,
+        barWidth - 2,
+        barHeight
+      );
+    }
+    
+    ctx.shadowBlur = 0;
   }
-}
-
-drawWaveform();
+};
 
 /* =============================================================================
-   FIBONACCI SPIRAL BACKGROUND (Canvas Geometric Animation)
+   FIBONACCI SPIRAL BACKGROUND
    ============================================================================= */
 
-const bgCanvas = document.getElementById('bgCanvas');
-const bgCtx = bgCanvas.getContext('2d');
-
-let animationFrameId;
-let spiralAngle = 0;
-
-// Check if reduced motion is preferred or device is low-power
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const isLowPowerDevice = /Mobi|Android/i.test(navigator.userAgent) && window.innerWidth < 900;
-
-function resizeCanvas() {
-  bgCanvas.width = window.innerWidth;
-  bgCanvas.height = window.innerHeight;
-}
-
-function drawFibonacciSpiral() {
-  if (prefersReducedMotion) return; // Skip animation if reduced motion preferred
-  
-  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-  
-  const centerX = bgCanvas.width / 2;
-  const centerY = bgCanvas.height / 2;
-  
-  // Draw Fibonacci spiral
-  bgCtx.strokeStyle = `rgba(212, 165, 116, ${isLowPowerDevice ? 0.08 : 0.12})`;
-  bgCtx.lineWidth = 2;
-  bgCtx.shadowBlur = 15;
-  bgCtx.shadowColor = 'rgba(212, 165, 116, 0.3)';
-  
-  bgCtx.beginPath();
-  
-  let angle = spiralAngle;
-  let radius = 1;
-  const goldenRatio = 1.618034;
-  
-  for (let i = 0; i < SPIRAL_SEGMENTS; i++) {
-    const x = centerX + Math.cos(angle) * radius;
-    const y = centerY + Math.sin(angle) * radius;
+const Background = {
+  // Initialize background canvas
+  init: () => {
+    STATE.canvas.background = DOM.get('#bgCanvas');
+    if (!STATE.canvas.background) return;
     
-    if (i === 0) {
-      bgCtx.moveTo(x, y);
+    STATE.canvas.backgroundCtx = STATE.canvas.background.getContext('2d');
+    Background.resize();
+    
+    window.addEventListener('resize', Background.resize);
+    
+    // Only animate if motion is allowed
+    if (!CONFIG.effects.reducedMotion && !CONFIG.effects.isLowPower) {
+      Background.animate();
+      console.log('✅ Fibonacci spiral background initialized');
     } else {
-      bgCtx.lineTo(x, y);
+      console.log('ℹ️ Background animation disabled (reduced motion or low power)');
+    }
+  },
+  
+  // Resize canvas to window size
+  resize: () => {
+    if (!STATE.canvas.background) return;
+    STATE.canvas.background.width = window.innerWidth;
+    STATE.canvas.background.height = window.innerHeight;
+  },
+  
+  // Animate Fibonacci spiral
+  animate: () => {
+    if (CONFIG.effects.reducedMotion) return;
+    
+    const ctx = STATE.canvas.backgroundCtx;
+    const canvas = STATE.canvas.background;
+    
+    if (!ctx || !canvas) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    // Draw Fibonacci spiral
+    const opacity = CONFIG.effects.isLowPower ? 0.08 : 0.12;
+    ctx.strokeStyle = `rgba(212, 165, 116, ${opacity})`;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = 'rgba(212, 165, 116, 0.3)';
+    
+    ctx.beginPath();
+    
+    let angle = STATE.canvas.spiralAngle;
+    let radius = 1;
+    
+    for (let i = 0; i < CONFIG.effects.spiralSegments; i++) {
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+      
+      angle += 0.15;
+      radius += 1.8;
     }
     
-    angle += 0.15;
-    radius += 1.8;
-  }
-  
-  bgCtx.stroke();
-  
-  // Draw floating particles
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const particleAngle = (spiralAngle + i * 0.3) % (Math.PI * 2);
-    const particleRadius = 80 + (i * 15);
-    const px = centerX + Math.cos(particleAngle) * particleRadius;
-    const py = centerY + Math.sin(particleAngle) * particleRadius;
+    ctx.stroke();
     
-    const gradient = bgCtx.createRadialGradient(px, py, 0, px, py, 8);
-    gradient.addColorStop(0, `rgba(212, 165, 116, ${isLowPowerDevice ? 0.1 : 0.15})`);
-    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    
-    bgCtx.fillStyle = gradient;
-    bgCtx.beginPath();
-    bgCtx.arc(px, py, 8, 0, Math.PI * 2);
-    bgCtx.fill();
-  }
-  
-  spiralAngle += 0.004; // Slow rotation
-  
-  animationFrameId = requestAnimationFrame(drawFibonacciSpiral);
-}
-
-// Initialize background
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-if (!prefersReducedMotion && !isLowPowerDevice) {
-  drawFibonacciSpiral();
-}
-
-/* =============================================================================
-   OPTIONAL: Load config from external JSON
-   ============================================================================= */
-
-async function loadConfig() {
-  try {
-    const response = await fetch('assets/config.json');
-    if (response.ok) {
-      const config = await response.json();
-      console.log('✅ Config loaded:', config);
-      // Apply config overrides here if needed
-      // Example: update AUDIO_TRACKS, links, etc.
+    // Draw floating particles
+    for (let i = 0; i < CONFIG.effects.particleCount; i++) {
+      const particleAngle = (STATE.canvas.spiralAngle + i * 0.3) % (Math.PI * 2);
+      const particleRadius = 80 + (i * 15);
+      const px = centerX + Math.cos(particleAngle) * particleRadius;
+      const py = centerY + Math.sin(particleAngle) * particleRadius;
+      
+      const gradient = ctx.createRadialGradient(px, py, 0, px, py, 8);
+      gradient.addColorStop(0, `rgba(212, 165, 116, ${CONFIG.effects.particleOpacity})`);
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(px, py, 8, 0, Math.PI * 2);
+      ctx.fill();
     }
-  } catch (err) {
-    console.log('ℹ️ No config.json found, using defaults');
+    
+    // Update spiral angle
+    STATE.canvas.spiralAngle += CONFIG.effects.spiralSpeed;
+    
+    STATE.canvas.animationFrameId = requestAnimationFrame(Background.animate);
   }
-}
-
-loadConfig();
+};
 
 /* =============================================================================
-   INITIALIZATION
+   NAVIGATION
    ============================================================================= */
 
-console.log('🔥 SWAP-BASE initialized');
-console.log('📱 Device:', isLowPowerDevice ? 'Mobile (optimized)' : 'Desktop');
-console.log('🎨 Reduced motion:', prefersReducedMotion ? 'Yes' : 'No');
-console.log('🎵 Audio tracks:', AUDIO_TRACKS.length);
+const Navigation = {
+  // Initialize navigation event listeners
+  init: () => {
+    // Nav link click handlers
+    DOM.getAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Update active state
+        DOM.getAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        
+        // Scroll to section
+        const sectionId = link.getAttribute('href').substring(1);
+        Effects.scrollTo(sectionId);
+      });
+    });
+    
+    // Link card hover effect (mouse position tracking)
+    DOM.getAll('.link-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    });
+    
+    console.log('✅ Navigation initialized');
+  }
+};
+
+/* =============================================================================
+   KEYBOARD CONTROLS
+   ============================================================================= */
+
+const Keyboard = {
+  // Initialize keyboard shortcuts
+  init: () => {
+    document.addEventListener('keydown', (e) => {
+      // Space bar - toggle play/pause
+      if (e.code === 'Space' && e.target === document.body) {
+        e.preventDefault();
+        AudioPlayer.togglePlay();
+      }
+      
+      // Arrow keys - track navigation
+      if (e.code === 'ArrowLeft' && e.target === document.body) {
+        e.preventDefault();
+        AudioPlayer.prev();
+      }
+      
+      if (e.code === 'ArrowRight' && e.target === document.body) {
+        e.preventDefault();
+        AudioPlayer.next();
+      }
+    });
+    
+    console.log('✅ Keyboard controls initialized (Space: play/pause, ← →: tracks)');
+  }
+};
+
+/* =============================================================================
+   CONFIG LOADER (Optional external JSON)
+   ============================================================================= */
+
+const ConfigLoader = {
+  // Load external config.json if available
+  load: async () => {
+    try {
+      const response = await fetch('assets/config.json');
+      if (response.ok) {
+        const config = await response.json();
+        console.log('✅ External config loaded:', config);
+        // Apply config overrides here if needed
+        // Example: Object.assign(CONFIG.audio.tracks, config.tracks);
+      }
+    } catch (err) {
+      console.log('ℹ️ No config.json found, using defaults');
+    }
+  }
+};
+
+/* =============================================================================
+   APPLICATION INITIALIZATION
+   ============================================================================= */
+
+const App = {
+  // Cache DOM elements
+  cacheElements: () => {
+    STATE.ui.loader = DOM.get('#loader');
+    STATE.ui.flash = DOM.get('#flash');
+    STATE.ui.playBtn = DOM.get('#playBtn');
+    STATE.ui.trackTitle = DOM.get('#trackTitle');
+    STATE.ui.trackArtist = DOM.get('#trackArtist');
+    STATE.ui.player = DOM.get('.player');
+  },
+  
+  // Initialize audio on first user gesture (iOS requirement)
+  setupAudioGesture: () => {
+    ['click', 'touchstart'].forEach(eventType => {
+      document.addEventListener(eventType, () => {
+        if (!STATE.audio.isInitialized) {
+          AudioPlayer.init();
+        }
+      }, { once: true, passive: true });
+    });
+  },
+  
+  // Initialize all modules
+  init: () => {
+    console.log('🔥 SWAP-BASE Initializing...');
+    console.log('📱 Device:', CONFIG.effects.isLowPower ? 'Mobile (optimized)' : 'Desktop');
+    console.log('🎨 Reduced motion:', CONFIG.effects.reducedMotion ? 'Yes' : 'No');
+    
+    // Cache DOM elements
+    App.cacheElements();
+    
+    // Initialize modules
+    Countdown.init();
+    Waveform.init();
+    Background.init();
+    Navigation.init();
+    Keyboard.init();
+    
+    // Setup audio gesture
+    App.setupAudioGesture();
+    
+    // Load external config
+    ConfigLoader.load();
+    
+    console.log('✅ SWAP-BASE Ready');
+    console.log('🎵 Tracks loaded:', CONFIG.audio.tracks.length);
+    console.log('⌨️ Keyboard shortcuts: Space (play/pause), ← → (tracks)');
+  }
+};
+
+/* =============================================================================
+   START APPLICATION
+   ============================================================================= */
+
+// Initialize when DOM is ready
+DOM.ready(App.init);
 
 </script>
 </body>
