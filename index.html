@@ -2,234 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>SWAP-BASE — Heaven's Basement × SWAP</title>
-<meta name="description" content="SWAP-BASE — underground hub for music, tech, fashion & community.">
+<meta name="description" content="Underground hub for music, tech, fashion & community">
+<meta name="theme-color" content="#0a0a0f">
+
+<!-- OPTIONAL: Uncomment for custom font (removable for offline use) -->
+<!-- <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> -->
+
 <style>
+/* =============================================================================
+   CUSTOMIZATION MAP — Edit these CSS variables to change the entire vibe
+   ============================================================================= */
 :root {
-  --bg: #0a0a0f;
-  --bg2: #12121a;
-  --accent: #e8b960;
-  --accent2: #ff7326;
-  --chrome: #e0e5ea;
-  --muted: #b0b5ba;
-  --glass: rgba(255,255,255,0.05);
+  /* Colors */
+  --bg-dark: #0a0a0f;
+  --bg-medium: #14141c;
+  --accent-warm: #d4a574;      /* Warm metallic gold */
+  --accent-hot: #ff7326;        /* Orange highlight */
+  --chrome-bright: #e8ecf0;     /* Bright chrome text */
+  --chrome-dim: #9ba3aa;        /* Dimmed chrome */
+  --glass-bg: rgba(20, 20, 28, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Typography */
+  --font-mono: 'Courier New', 'Share Tech Mono', monospace;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  
+  /* Spacing & Sizing */
+  --header-height: 72px;
+  --player-height: 64px;
+  --max-width: 1100px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  
+  /* Animation */
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.4s ease;
+  
+  /* Performance */
+  --particle-count: 24;
+  --particle-opacity: 0.12;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* THEME B: Warm Underground Glow (uncomment to activate)
+:root {
+  --bg-dark: #0f0a08;
+  --bg-medium: #1c1410;
+  --accent-warm: #e8b960;
+  --accent-hot: #ff8c42;
+  --chrome-bright: #f0e8dc;
+}
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  font-family: 'Courier New', monospace;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-  color: var(--chrome);
+  font-family: var(--font-ui);
+  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+  color: var(--chrome-bright);
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Loading Spinner */
+/* =============================================================================
+   LOADING SPINNER
+   ============================================================================= */
 .loader {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0, 0, 0, 0.96);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  backdrop-filter: blur(8px);
 }
 .loader.active { display: flex; }
 .spinner {
-  width: 60px;
-  height: 60px;
-  border: 3px solid rgba(232,185,96,0.2);
-  border-top-color: var(--accent);
+  width: 52px;
+  height: 52px;
+  border: 3px solid rgba(212, 165, 116, 0.2);
+  border-top-color: var(--accent-warm);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.7s linear infinite;
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Header */
+/* =============================================================================
+   HEADER - Fixed navigation bar
+   ============================================================================= */
 header {
   position: fixed;
   top: 0;
-  width: 100%;
-  padding: 16px 24px;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  padding: 0 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  background: rgba(10,10,15,0.85);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
   z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.logo-wrap {
+
+.logo {
   display: flex;
-  gap: 12px;
   align-items: center;
+  gap: 12px;
   cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 16px;
   letter-spacing: 2px;
+  font-weight: bold;
+  transition: var(--transition-fast);
+}
+.logo:hover {
+  transform: scale(1.02);
 }
 .logo-badge {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   color: #000;
+  font-weight: 900;
 }
+
 nav {
   margin-left: auto;
   display: flex;
-  gap: 8px;
+  gap: 4px;
   flex-wrap: wrap;
 }
 nav a {
-  padding: 8px 16px;
-  color: var(--muted);
+  padding: 8px 14px;
+  color: var(--chrome-dim);
   text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.3s;
-  font-size: 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
   letter-spacing: 1px;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  cursor: pointer;
 }
 nav a:hover, nav a.active {
-  background: var(--glass);
-  color: var(--accent);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent-warm);
 }
 
-/* Back Button */
+/* =============================================================================
+   BACK TO TOP BUTTON
+   ============================================================================= */
 .back-btn {
   position: fixed;
-  bottom: 100px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  bottom: calc(var(--player-height) + 20px);
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
   border: none;
   border-radius: 50%;
   color: #000;
   font-size: 24px;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(232,185,96,0.4);
+  box-shadow: 0 8px 32px rgba(212, 165, 116, 0.4);
   z-index: 999;
-  transition: all 0.3s;
-  animation: glow 2s ease-in-out infinite;
+  transition: var(--transition-medium);
+  animation: pulse-glow 2.5s ease-in-out infinite;
 }
 .back-btn:hover {
-  transform: scale(1.1);
+  transform: scale(1.08) translateY(-2px);
 }
-@keyframes glow {
-  0%, 100% { box-shadow: 0 8px 32px rgba(232,185,96,0.4); }
-  50% { box-shadow: 0 8px 48px rgba(232,185,96,0.7); }
+.back-btn:active {
+  transform: scale(0.96);
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(212, 165, 116, 0.4); }
+  50% { box-shadow: 0 8px 48px rgba(212, 165, 116, 0.7), 0 0 60px rgba(255, 115, 38, 0.3); }
 }
 
-/* Main */
+/* =============================================================================
+   MAIN CONTENT WRAPPER
+   ============================================================================= */
 main {
-  padding-top: 80px;
-  padding-bottom: 100px;
+  padding-top: var(--header-height);
+  padding-bottom: calc(var(--player-height) + 20px);
+  position: relative;
 }
 
-/* Section */
 .section {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
+  padding: 40px 20px;
   position: relative;
-}
-
-/* Animated Background */
-.bg-animation {
-  position: absolute;
-  inset: 0;
   overflow: hidden;
-  z-index: 0;
-  opacity: 0.15;
-}
-.rotating-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 600px;
-  height: 600px;
-  margin: -300px 0 0 -300px;
-  background: radial-gradient(circle, rgba(232,185,96,0.3), transparent 70%);
-  animation: rotate 20s linear infinite;
-  filter: blur(40px);
-}
-@keyframes rotate {
-  to { transform: rotate(360deg); }
 }
 
-/* Hero CRT */
-.crt-container {
-  max-width: 1100px;
+/* =============================================================================
+   FIBONACCI SPIRAL BACKGROUND (Canvas-based geometric animation)
+   ============================================================================= */
+#bgCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  aspect-ratio: 16/9;
-  background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.1));
-  border-radius: 16px;
-  border: 2px solid rgba(255,255,255,0.08);
-  box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+  height: 100%;
+  opacity: var(--particle-opacity);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* =============================================================================
+   HERO SECTION - CRT Frame with rotating glow
+   ============================================================================= */
+.hero-crt {
+  max-width: var(--max-width);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.3));
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.9);
   position: relative;
   overflow: hidden;
 }
+
 .crt-screen {
   position: absolute;
-  inset: 12px;
+  inset: 14px;
   background: #000;
-  border-radius: 12px;
+  border-radius: calc(var(--radius-lg) - 4px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
-.crt-content {
-  text-align: center;
-  z-index: 10;
+
+/* Rotating misty glow behind title */
+.rotating-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 700px;
+  height: 700px;
+  margin: -350px 0 0 -350px;
+  background: radial-gradient(circle, rgba(212, 165, 116, 0.28), rgba(255, 115, 38, 0.14) 40%, transparent 70%);
+  animation: rotate-slow 22s linear infinite;
+  filter: blur(60px);
+  opacity: 0.6;
+}
+@keyframes rotate-slow {
+  to { transform: rotate(360deg); }
+}
+
+.hero-content {
   position: relative;
-  max-width: 800px;
+  z-index: 10;
+  text-align: center;
+  max-width: 85%;
   padding: 24px;
 }
+
 .hero-title {
-  font-size: clamp(32px, 8vw, 64px);
+  font-family: var(--font-mono);
+  font-size: clamp(28px, 7vw, 58px);
   letter-spacing: 4px;
-  margin-bottom: 20px;
-  color: var(--chrome);
-  text-shadow: 0 0 40px rgba(232,185,96,0.6);
-  animation: textGlow 3s ease-in-out infinite;
+  margin-bottom: 18px;
+  color: var(--chrome-bright);
+  text-shadow: 0 0 40px rgba(212, 165, 116, 0.7),
+               0 0 80px rgba(255, 115, 38, 0.4);
+  animation: title-glow 3.5s ease-in-out infinite;
 }
-@keyframes textGlow {
-  0%, 100% { text-shadow: 0 0 40px rgba(232,185,96,0.6); }
-  50% { text-shadow: 0 0 60px rgba(232,185,96,0.9), 0 0 80px rgba(255,115,38,0.5); }
+@keyframes title-glow {
+  0%, 100% {
+    text-shadow: 0 0 40px rgba(212, 165, 116, 0.7),
+                 0 0 80px rgba(255, 115, 38, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 60px rgba(212, 165, 116, 1),
+                 0 0 100px rgba(255, 115, 38, 0.6),
+                 0 0 140px rgba(255, 115, 38, 0.3);
+  }
 }
+
 .hero-subtitle {
-  font-size: clamp(13px, 2.5vw, 16px);
-  color: var(--muted);
-  margin-bottom: 32px;
-  line-height: 1.6;
+  font-size: clamp(13px, 2.2vw, 15px);
+  color: var(--chrome-dim);
+  line-height: 1.7;
+  margin-bottom: 28px;
 }
 .hero-subtitle strong {
-  color: var(--accent);
+  color: var(--accent-warm);
+  font-weight: 800;
 }
+
 .press-btn {
-  padding: 14px 32px;
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 13px 32px;
+  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   color: #000;
-  font-weight: bold;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 900;
   letter-spacing: 2px;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 8px 24px rgba(232,185,96,0.3);
+  transition: var(--transition-medium);
+  box-shadow: 0 8px 24px rgba(212, 165, 116, 0.35);
 }
 .press-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(232,185,96,0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(212, 165, 116, 0.55);
 }
+.press-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Mini countdown preview on hero */
+.mini-countdown {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.mini-countdown .cell {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 54px;
+  text-align: center;
+}
+.mini-countdown .num {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent-warm);
+}
+.mini-countdown .label {
+  font-size: 9px;
+  color: var(--chrome-dim);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* CRT scanlines */
 .scanlines {
   position: absolute;
   inset: 0;
@@ -237,123 +372,126 @@ main {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.1) 2px,
-    rgba(0,0,0,0.1) 4px
+    rgba(0, 0, 0, 0.12) 2px,
+    rgba(0, 0, 0, 0.12) 4px
   );
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.55;
+  animation: scanline-flicker 8s linear infinite;
+}
+@keyframes scanline-flicker {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.45; }
 }
 
-/* Mini Countdown Preview */
-.mini-countdown {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.mini-countdown .cell {
-  background: rgba(0,0,0,0.6);
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.1);
-  min-width: 60px;
-  text-align: center;
-}
-.mini-countdown .num {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--accent);
-}
-.mini-countdown .label {
-  font-size: 10px;
-  color: var(--muted);
-  text-transform: uppercase;
-}
-
-/* Full Countdown */
-.countdown-container {
-  text-align: center;
+/* =============================================================================
+   FULL COUNTDOWN SECTION
+   ============================================================================= */
+.countdown-wrapper {
   max-width: 900px;
   width: 100%;
-  z-index: 10;
+  text-align: center;
   position: relative;
+  z-index: 10;
 }
+
 .countdown-title {
-  font-size: clamp(28px, 6vw, 48px);
-  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 5.5vw, 44px);
   letter-spacing: 3px;
-  color: var(--chrome);
+  margin-bottom: 12px;
+  color: var(--chrome-bright);
 }
+
 .countdown-subtitle {
-  color: var(--muted);
-  margin-bottom: 40px;
-  font-size: 16px;
+  font-size: 15px;
+  color: var(--chrome-dim);
+  margin-bottom: 36px;
 }
+
 .countdown-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 14px;
   max-width: 600px;
   margin: 0 auto;
 }
+
 .countdown-cell {
-  background: var(--glass);
-  padding: 24px 16px;
-  border-radius: 12px;
-  border: 2px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  padding: 20px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--glass-border);
+  transition: var(--transition-medium);
 }
-.countdown-number {
-  font-size: clamp(36px, 8vw, 56px);
-  font-weight: bold;
-  color: var(--accent2);
-  text-shadow: 0 0 30px rgba(255,115,38,0.6);
-}
-.countdown-label {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+.countdown-cell:hover {
+  border-color: var(--accent-warm);
+  transform: translateY(-2px);
 }
 
-/* Links Grid */
-.links-container {
-  max-width: 1100px;
+.countdown-number {
+  font-size: clamp(34px, 7vw, 52px);
+  font-weight: 900;
+  color: var(--accent-hot);
+  text-shadow: 0 0 28px rgba(255, 115, 38, 0.6);
+}
+
+.countdown-label {
+  font-size: 11px;
+  color: var(--chrome-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+/* =============================================================================
+   LINKS HUB SECTION
+   ============================================================================= */
+.links-wrapper {
+  max-width: var(--max-width);
   width: 100%;
-  z-index: 10;
   position: relative;
+  z-index: 10;
 }
+
 .section-title {
+  font-family: var(--font-mono);
   font-size: clamp(24px, 5vw, 36px);
-  margin-bottom: 32px;
-  text-align: center;
   letter-spacing: 2px;
-  color: var(--chrome);
+  text-align: center;
+  margin-bottom: 32px;
+  color: var(--chrome-bright);
 }
+
 .links-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
 }
+
 .link-card {
-  background: var(--glass);
-  border: 2px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 24px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 22px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.4s;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  transition: var(--transition-medium);
+  cursor: pointer;
 }
 .link-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232,185,96,0.15), transparent 60%);
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(212, 165, 116, 0.16),
+    transparent 60%
+  );
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -361,168 +499,263 @@ main {
   opacity: 1;
 }
 .link-card:hover {
-  border-color: var(--accent);
+  border-color: var(--accent-warm);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(232,185,96,0.2);
+  box-shadow: 0 12px 40px rgba(212, 165, 116, 0.25);
 }
+
 .link-card h3 {
-  font-size: 20px;
-  margin-bottom: 12px;
+  font-size: 19px;
+  margin-bottom: 10px;
   position: relative;
   z-index: 1;
+  color: var(--chrome-bright);
 }
 .link-card p {
-  color: var(--accent);
   font-size: 14px;
+  color: var(--accent-warm);
   position: relative;
   z-index: 1;
 }
 
-/* Games */
-.games-container {
+/* =============================================================================
+   GAMES SECTION
+   ============================================================================= */
+.games-wrapper {
   max-width: 800px;
   width: 100%;
   text-align: center;
-  z-index: 10;
   position: relative;
+  z-index: 10;
 }
+
 .game-card {
-  background: var(--glass);
-  border: 2px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 32px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s;
-  cursor: pointer;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  margin-bottom: 18px;
   text-decoration: none;
   color: inherit;
   display: block;
+  transition: var(--transition-medium);
+  cursor: pointer;
 }
 .game-card:hover {
-  border-color: var(--accent);
+  border-color: var(--accent-warm);
   transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(212, 165, 116, 0.25);
 }
 .game-card h3 {
-  font-size: 22px;
-  margin-bottom: 16px;
+  font-size: 20px;
+  margin-bottom: 14px;
+  color: var(--chrome-bright);
 }
 .game-card p {
-  color: var(--muted);
+  font-size: 14px;
+  color: var(--chrome-dim);
   line-height: 1.6;
 }
 
-/* Music Player */
+/* =============================================================================
+   PERSISTENT MUSIC PLAYER - Compact glassy bar at bottom
+   ============================================================================= */
 .player {
   position: fixed;
   bottom: 16px;
   left: 16px;
   right: 16px;
-  background: rgba(10,10,15,0.95);
+  height: var(--player-height);
+  background: rgba(14, 14, 22, 0.85);
   backdrop-filter: blur(20px);
-  border: 2px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   z-index: 1000;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9),
+              0 0 48px rgba(212, 165, 116, 0.15);
 }
+
 .player-controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  align-items: center;
 }
+
 .player-btn {
   background: transparent;
   border: none;
-  color: var(--muted);
-  font-size: 24px;
+  color: var(--chrome-dim);
+  font-size: 22px;
   cursor: pointer;
-  transition: color 0.3s;
-  padding: 8px;
+  padding: 6px;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .player-btn:hover {
-  color: var(--accent);
+  color: var(--accent-warm);
+  transform: scale(1.1);
+}
+.player-btn:active {
+  transform: scale(0.95);
 }
 .player-btn.play {
-  color: var(--accent);
-  font-size: 28px;
-}
-.track-info {
-  flex: 1;
-  min-width: 100px;
-}
-.track-title {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-.track-artist {
-  font-size: 12px;
-  color: var(--muted);
-}
-.waveform {
-  width: 160px;
-  height: 40px;
-  background: rgba(0,0,0,0.4);
-  border-radius: 8px;
-  overflow: hidden;
+  color: var(--accent-warm);
+  font-size: 26px;
 }
 
+.track-info {
+  flex: 1;
+  min-width: 90px;
+  overflow: hidden;
+}
+.track-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.track-artist {
+  font-size: 11px;
+  color: var(--chrome-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.waveform-canvas {
+  width: 140px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* =============================================================================
+   LIGHTNING FLASH TRANSITION
+   ============================================================================= */
+.flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 30%,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 255, 255, 0) 35%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9998;
+  transition: opacity 0.1s ease;
+}
+
+/* =============================================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================================= */
 @media (max-width: 768px) {
+  :root {
+    --header-height: 64px;
+    --particle-count: 16;
+  }
+  
+  nav a {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
   .countdown-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  
   .links-grid {
     grid-template-columns: 1fr;
   }
-  .player {
-    flex-wrap: wrap;
-  }
-  .waveform {
+  
+  .waveform-canvas {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 24px;
+  }
+  
+  .countdown-cell {
+    padding: 16px 12px;
+  }
+  
+  .back-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+}
+
+/* =============================================================================
+   REDUCED MOTION SUPPORT
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 </style>
 </head>
 <body>
-<!-- Loader -->
+
+<!-- Loading Spinner -->
 <div class="loader" id="loader">
   <div class="spinner"></div>
 </div>
 
+<!-- Lightning Flash Effect -->
+<div class="flash" id="flash"></div>
+
 <!-- Header -->
 <header>
-  <div class="logo-wrap" onclick="goTo('hero')">
+  <div class="logo" onclick="scrollToSection('hero')">
     <div class="logo-badge">SWAP</div>
     <div>BASE</div>
   </div>
   <nav>
-    <a href="#hero" class="active">HOME</a>
-    <a href="#countdown">COUNTDOWN</a>
-    <a href="#links">LINKS</a>
-    <a href="#games">GAMES</a>
+    <a href="#hero" class="nav-link active">HOME</a>
+    <a href="#countdown" class="nav-link">COUNTDOWN</a>
+    <a href="#links" class="nav-link">LINKS</a>
+    <a href="#games" class="nav-link">GAMES</a>
   </nav>
 </header>
 
-<!-- Back Button -->
-<button class="back-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- Back to Top Button -->
+<button class="back-btn" onclick="scrollToTop()" aria-label="Back to top">↑</button>
+
+<!-- Fibonacci Spiral Background Canvas -->
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
 
 <main>
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section id="hero" class="section">
-    <div class="bg-animation">
-      <div class="rotating-glow"></div>
-    </div>
-    <div class="crt-container">
+    <div class="hero-crt">
       <div class="crt-screen">
-        <div class="crt-content">
+        <div class="rotating-glow"></div>
+        <div class="hero-content">
           <h1 class="hero-title">SWAP-BASE</h1>
           <p class="hero-subtitle">
             Heaven's Basement × SWAP — underground hub for music, tech, fashion & community. 
             <strong>ENTER THE UNDERGROUND</strong>
           </p>
-          <button class="press-btn" onclick="goTo('countdown')">PRESS START</button>
+          <button class="press-btn" onclick="scrollToSection('countdown')">PRESS START</button>
           <div class="mini-countdown" id="miniCountdown"></div>
         </div>
       </div>
@@ -530,44 +763,41 @@ main {
     </div>
   </section>
 
-  <!-- COUNTDOWN -->
+  <!-- COUNTDOWN SECTION -->
   <section id="countdown" class="section">
-    <div class="bg-animation">
-      <div class="rotating-glow"></div>
-    </div>
-    <div class="countdown-container">
+    <div class="countdown-wrapper">
       <h2 class="countdown-title">SWAPTOBER 2025</h2>
       <p class="countdown-subtitle">Live drop & event</p>
       <div class="countdown-grid" id="fullCountdown"></div>
     </div>
   </section>
 
-  <!-- LINKS -->
+  <!-- LINKS HUB SECTION -->
   <section id="links" class="section">
-    <div class="links-container">
+    <div class="links-wrapper">
       <h2 class="section-title">CONNECT</h2>
       <div class="links-grid">
-        <a href="https://www.instagram.com/chrisswap" target="_blank" class="link-card">
+        <a href="https://www.instagram.com/chrisswap" target="_blank" rel="noopener" class="link-card">
           <h3>📸 Instagram</h3>
           <p>@chrisswap</p>
         </a>
-        <a href="https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG" target="_blank" class="link-card">
+        <a href="https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG" target="_blank" rel="noopener" class="link-card">
           <h3>🎵 Music</h3>
           <p>SWAPTOBER5 Playlist</p>
         </a>
-        <a href="https://www.sbrmag.com/events/swaptober" target="_blank" class="link-card">
+        <a href="https://www.sbrmag.com/events/swaptober" target="_blank" rel="noopener" class="link-card">
           <h3>🎫 Tickets</h3>
           <p>Get Tickets</p>
         </a>
-        <a href="https://www.mrmidwest.com/" target="_blank" class="link-card">
+        <a href="https://www.mrmidwest.com/" target="_blank" rel="noopener" class="link-card">
           <h3>👕 Merch</h3>
           <p>Shop Now</p>
         </a>
-        <a href="https://youtube.com/@chrisswap57" target="_blank" class="link-card">
+        <a href="https://youtube.com/@chrisswap57" target="_blank" rel="noopener" class="link-card">
           <h3>📺 YouTube</h3>
           <p>Channel</p>
         </a>
-        <a href="https://msha.ke/fieldschristopher" target="_blank" class="link-card">
+        <a href="https://msha.ke/fieldschristopher" target="_blank" rel="noopener" class="link-card">
           <h3>📧 Contact</h3>
           <p>DM Chris</p>
         </a>
@@ -575,15 +805,15 @@ main {
     </div>
   </section>
 
-  <!-- GAMES -->
+  <!-- GAMES SECTION -->
   <section id="games" class="section">
-    <div class="games-container">
+    <div class="games-wrapper">
       <h2 class="section-title">GAMES / INTERACTIVE</h2>
-      <a href="https://mr-basement.github.io/swaptober-contact-of-the-fifth/" target="_blank" class="game-card">
+      <a href="https://mr-basement.github.io/swaptober-contact-of-the-fifth/" target="_blank" rel="noopener" class="game-card">
         <h3>🎮 SWAPTOBER: Contact of the Fifth</h3>
         <p>Interactive web experience — Click to play</p>
       </a>
-      <div class="game-card" style="margin-top:20px; cursor:default;">
+      <div class="game-card" style="cursor: default;">
         <h3>More Coming Soon</h3>
         <p>Additional interactive experiences in development</p>
       </div>
@@ -591,122 +821,147 @@ main {
   </section>
 </main>
 
-<!-- Music Player -->
+<!-- PERSISTENT MUSIC PLAYER -->
 <div class="player">
   <div class="player-controls">
-    <button class="player-btn" onclick="prevTrack()">⏮</button>
-    <button class="player-btn play" id="playBtn" onclick="togglePlay()">▶</button>
-    <button class="player-btn" onclick="nextTrack()">⏭</button>
+    <button class="player-btn" onclick="prevTrack()" aria-label="Previous track">⏮</button>
+    <button class="player-btn play" id="playBtn" onclick="togglePlay()" aria-label="Play/Pause">▶</button>
+    <button class="player-btn" onclick="nextTrack()" aria-label="Next track">⏭</button>
   </div>
   <div class="track-info">
-    <div class="track-title" id="trackTitle">SWAPTOBER Mix Vol.1</div>
+    <div class="track-title" id="trackTitle">Chris2 — SWAPTOBER Mix</div>
     <div class="track-artist" id="trackArtist">ChrisSWAP</div>
   </div>
-  <canvas class="waveform" id="waveCanvas" width="320" height="80"></canvas>
+  <canvas class="waveform-canvas" id="waveCanvas" width="280" height="72"></canvas>
 </div>
 
 <script>
-// Countdown
-const TARGET = new Date('2025-10-31T20:00:00-05:00');
-function pad(n) { return String(Math.floor(n)).padStart(2,'0'); }
+/* =============================================================================
+   CUSTOMIZATION MAP - JavaScript Configuration
+   Edit these values to customize behavior
+   ============================================================================= */
+
+// Countdown target date (America/Chicago timezone)
+const COUNTDOWN_TARGET = new Date('2025-10-24T20:00:00-05:00');
+
+// Audio tracks (placeholder paths - replace with your actual MP3 files)
+const AUDIO_TRACKS = [
+  { title: 'Chris2 — SWAPTOBER Mix', artist: 'ChrisSWAP', file: 'assets/music/chris2.mp3' },
+  { title: 'Chris7 — Deep Cut', artist: 'ChrisSWAP', file: 'assets/music/chris7.mp3' }
+];
+
+// Performance settings
+const PARTICLE_COUNT = 24; // Reduce to 12-16 for low-end devices
+const SPIRAL_SEGMENTS = 80; // Fibonacci spiral detail
+
+/* =============================================================================
+   CORE FUNCTIONS
+   ============================================================================= */
+
+let currentTrackIndex = 0;
+let audioElement = null;
+let audioContext = null;
+let analyser = null;
+let dataArray = null;
+let isPlaying = false;
+let audioInitialized = false;
+
+// Countdown timer
 function updateCountdown() {
-  const diff = Math.max(0, (TARGET - new Date()) / 1000);
-  const d = Math.floor(diff / 86400);
-  const h = Math.floor((diff % 86400) / 3600);
-  const m = Math.floor((diff % 3600) / 60);
-  const s = Math.floor(diff % 60);
+  const now = new Date();
+  const diff = Math.max(0, (COUNTDOWN_TARGET - now) / 1000);
   
-  // Mini
+  const days = Math.floor(diff / 86400);
+  const hours = Math.floor((diff % 86400) / 3600);
+  const minutes = Math.floor((diff % 3600) / 60);
+  const seconds = Math.floor(diff % 60);
+  
+  const pad = (n) => String(Math.floor(n)).padStart(2, '0');
+  
+  // Update mini countdown
   const mini = document.getElementById('miniCountdown');
   if (mini) {
-    mini.innerHTML = `
-      <div class="cell"><div class="num">${pad(d)}</div><div class="label">Days</div></div>
-      <div class="cell"><div class="num">${pad(h)}</div><div class="label">Hrs</div></div>
-      <div class="cell"><div class="num">${pad(m)}</div><div class="label">Min</div></div>
-      <div class="cell"><div class="num">${pad(s)}</div><div class="label">Sec</div></div>
+    mini.innerHTML = `<div class="cell"><div class="num">${pad(days)}</div><div class="label">Days</div></div>
+      <div class="cell"><div class="num">${pad(hours)}</div><div class="label">Hrs</div></div>
+      <div class="cell"><div class="num">${pad(minutes)}</div><div class="label">Min</div></div>
+      <div class="cell"><div class="num">${pad(seconds)}</div><div class="label">Sec</div></div>
     `;
   }
   
-  // Full
+  // Update full countdown
   const full = document.getElementById('fullCountdown');
   if (full) {
     full.innerHTML = `
-      <div class="countdown-cell"><div class="countdown-number">${pad(d)}</div><div class="countdown-label">Days</div></div>
-      <div class="countdown-cell"><div class="countdown-number">${pad(h)}</div><div class="countdown-label">Hours</div></div>
-      <div class="countdown-cell"><div class="countdown-number">${pad(m)}</div><div class="countdown-label">Minutes</div></div>
-      <div class="countdown-cell"><div class="countdown-number">${pad(s)}</div><div class="countdown-label">Seconds</div></div>
+      <div class="countdown-cell">
+        <div class="countdown-number">${pad(days)}</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-cell">
+        <div class="countdown-number">${pad(hours)}</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-cell">
+        <div class="countdown-number">${pad(minutes)}</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-cell">
+        <div class="countdown-number">${pad(seconds)}</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
     `;
   }
 }
+
+// Initialize countdown
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-// Navigation
-function goTo(id) {
-  showLoader();
+// Scroll functions with lightning effect
+function scrollToSection(id) {
+  showFlash();
   setTimeout(() => {
-    document.getElementById(id).scrollIntoView({behavior:'smooth'});
-    hideLoader();
-  }, 400);
-}
-function showLoader() { document.getElementById('loader').classList.add('active'); }
-function hideLoader() { document.getElementById('loader').classList.remove('active'); }
-
-// Music
-let playing = false, trackIdx = 0;
-const tracks = [
-  {title:'SWAPTOBER Mix Vol.1', artist:'ChrisSWAP'},
-  {title:'Underground Sessions', artist:'Heaven\'s Basement'}
-];
-function togglePlay() {
-  playing = !playing;
-  document.getElementById('playBtn').textContent = playing ? '⏸' : '▶';
-}
-function prevTrack() {
-  trackIdx = (trackIdx - 1 + tracks.length) % tracks.length;
-  updateTrack();
-}
-function nextTrack() {
-  trackIdx = (trackIdx + 1) % tracks.length;
-  updateTrack();
-}
-function updateTrack() {
-  document.getElementById('trackTitle').textContent = tracks[trackIdx].title;
-  document.getElementById('trackArtist').textContent = tracks[trackIdx].artist;
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 100);
 }
 
-// Waveform
-const canvas = document.getElementById('waveCanvas');
-const ctx = canvas.getContext('2d');
-function drawWave() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const bars = 20;
-  const w = canvas.width / bars;
-  for (let i=0; i<bars; i++) {
-    const h = playing ? (Math.random() * 0.7 + 0.3) * canvas.height : 0.1 * canvas.height;
-    const grad = ctx.createLinearGradient(0,0,0,canvas.height);
-    grad.addColorStop(0,'#e8b960');
-    grad.addColorStop(1,'#ff7326');
-    ctx.fillStyle = grad;
-    ctx.fillRect(i*w, canvas.height-h, w-2, h);
-  }
-  requestAnimationFrame(drawWave);
+function scrollToTop() {
+  showFlash();
+  setTimeout(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 100);
 }
-drawWave();
 
-// Nav active state
-document.querySelectorAll('nav a').forEach(a => {
-  a.addEventListener('click', function(e) {
+function showFlash() {
+  const flash = document.getElementById('flash');
+  flash.style.opacity = '1';
+  setTimeout(() => { flash.style.opacity = '0'; }, 100);
+}
+
+function showLoader() {
+  document.getElementById('loader').classList.add('active');
+}
+
+function hideLoader() {
+  document.getElementById('loader').classList.remove('active');
+}
+
+// Navigation active state
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', function(e) {
     e.preventDefault();
-    document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
     this.classList.add('active');
-    goTo(this.getAttribute('href').substring(1));
+    const id = this.getAttribute('href').substring(1);
+    scrollToSection(id);
   });
 });
 
-// Link hover effect
+// Link card hover effect (mouse position tracking)
 document.querySelectorAll('.link-card').forEach(card => {
-  card.addEventListener('mousemove', e => {
+  card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
@@ -714,6 +969,298 @@ document.querySelectorAll('.link-card').forEach(card => {
     card.style.setProperty('--mouse-y', `${y}%`);
   });
 });
+
+/* =============================================================================
+   AUDIO PLAYER - iOS-compatible with Web Audio API
+   ============================================================================= */
+
+// Initialize audio on first user gesture (iOS requirement)
+function initAudio() {
+  if (audioInitialized) return;
+  
+  try {
+    audioElement = new Audio();
+    audioElement.crossOrigin = 'anonymous';
+    audioElement.preload = 'metadata';
+    
+    // Create Web Audio Context
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContext();
+    
+    const source = audioContext.createMediaElementSource(audioElement);
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 64;
+    
+    source.connect(analyser);
+    analyser.connect(audioContext.destination);
+    
+    const bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+    
+    // Load first track
+    loadTrack(currentTrackIndex);
+    
+    // Handle track end
+    audioElement.addEventListener('ended', () => {
+      nextTrack();
+    });
+    
+    audioInitialized = true;
+    console.log('✅ Audio initialized successfully');
+  } catch (err) {
+    console.warn('⚠️ Audio initialization failed:', err);
+    audioInitialized = false;
+  }
+}
+
+function loadTrack(index) {
+  if (!audioElement || !AUDIO_TRACKS[index]) return;
+  
+  const track = AUDIO_TRACKS[index];
+  audioElement.src = track.file;
+  document.getElementById('trackTitle').textContent = track.title;
+  document.getElementById('trackArtist').textContent = track.artist;
+  currentTrackIndex = index;
+}
+
+function togglePlay() {
+  if (!audioInitialized) {
+    initAudio();
+  }
+  
+  if (!audioElement) return;
+  
+  const playBtn = document.getElementById('playBtn');
+  
+  if (!isPlaying) {
+    // Resume AudioContext if suspended (iOS requirement)
+    if (audioContext && audioContext.state === 'suspended') {
+      audioContext.resume();
+    }
+    
+    audioElement.play()
+      .then(() => {
+        isPlaying = true;
+        playBtn.textContent = '⏸';
+      })
+      .catch(err => {
+        console.warn('⚠️ Playback failed:', err);
+        alert('Audio playback failed. Please check that the audio files exist in assets/music/');
+      });
+  } else {
+    audioElement.pause();
+    isPlaying = false;
+    playBtn.textContent = '▶';
+  }
+}
+
+function prevTrack() {
+  currentTrackIndex = (currentTrackIndex - 1 + AUDIO_TRACKS.length) % AUDIO_TRACKS.length;
+  loadTrack(currentTrackIndex);
+  if (isPlaying && audioElement) {
+    audioElement.play();
+  }
+}
+
+function nextTrack() {
+  currentTrackIndex = (currentTrackIndex + 1) % AUDIO_TRACKS.length;
+  loadTrack(currentTrackIndex);
+  if (isPlaying && audioElement) {
+    audioElement.play();
+  }
+}
+
+// Keyboard controls
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' && e.target === document.body) {
+    e.preventDefault();
+    togglePlay();
+  }
+});
+
+// Initialize audio on first user interaction
+['click', 'touchstart'].forEach(eventType => {
+  document.addEventListener(eventType, () => {
+    if (!audioInitialized) {
+      initAudio();
+    }
+  }, { once: true, passive: true });
+});
+
+/* =============================================================================
+   WAVEFORM VISUALIZER
+   ============================================================================= */
+
+const waveCanvas = document.getElementById('waveCanvas');
+const waveCtx = waveCanvas.getContext('2d');
+
+function drawWaveform() {
+  requestAnimationFrame(drawWaveform);
+  
+  waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+  
+  if (!analyser || !isPlaying) {
+    // Draw idle state
+    const barCount = 20;
+    const barWidth = waveCanvas.width / barCount;
+    const idleHeight = waveCanvas.height * 0.15;
+    
+    for (let i = 0; i < barCount; i++) {
+      const gradient = waveCtx.createLinearGradient(0, 0, 0, waveCanvas.height);
+      gradient.addColorStop(0, '#d4a574');
+      gradient.addColorStop(1, '#ff7326');
+      
+      waveCtx.fillStyle = gradient;
+      waveCtx.fillRect(
+        i * barWidth,
+        waveCanvas.height - idleHeight,
+        barWidth - 2,
+        idleHeight
+      );
+    }
+    return;
+  }
+  
+  // Draw live waveform
+  analyser.getByteFrequencyData(dataArray);
+  
+  const barCount = dataArray.length;
+  const barWidth = waveCanvas.width / barCount;
+  
+  for (let i = 0; i < barCount; i++) {
+    const value = dataArray[i] / 255;
+    const barHeight = value * waveCanvas.height;
+    
+    const gradient = waveCtx.createLinearGradient(0, 0, 0, waveCanvas.height);
+    gradient.addColorStop(0, '#d4a574');
+    gradient.addColorStop(1, '#ff7326');
+    
+    waveCtx.fillStyle = gradient;
+    waveCtx.fillRect(
+      i * barWidth,
+      waveCanvas.height - barHeight,
+      barWidth - 2,
+      barHeight
+    );
+  }
+}
+
+drawWaveform();
+
+/* =============================================================================
+   FIBONACCI SPIRAL BACKGROUND (Canvas Geometric Animation)
+   ============================================================================= */
+
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+
+let animationFrameId;
+let spiralAngle = 0;
+
+// Check if reduced motion is preferred or device is low-power
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const isLowPowerDevice = /Mobi|Android/i.test(navigator.userAgent) && window.innerWidth < 900;
+
+function resizeCanvas() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+
+function drawFibonacciSpiral() {
+  if (prefersReducedMotion) return; // Skip animation if reduced motion preferred
+  
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  
+  const centerX = bgCanvas.width / 2;
+  const centerY = bgCanvas.height / 2;
+  
+  // Draw Fibonacci spiral
+  bgCtx.strokeStyle = `rgba(212, 165, 116, ${isLowPowerDevice ? 0.08 : 0.12})`;
+  bgCtx.lineWidth = 2;
+  bgCtx.shadowBlur = 15;
+  bgCtx.shadowColor = 'rgba(212, 165, 116, 0.3)';
+  
+  bgCtx.beginPath();
+  
+  let angle = spiralAngle;
+  let radius = 1;
+  const goldenRatio = 1.618034;
+  
+  for (let i = 0; i < SPIRAL_SEGMENTS; i++) {
+    const x = centerX + Math.cos(angle) * radius;
+    const y = centerY + Math.sin(angle) * radius;
+    
+    if (i === 0) {
+      bgCtx.moveTo(x, y);
+    } else {
+      bgCtx.lineTo(x, y);
+    }
+    
+    angle += 0.15;
+    radius += 1.8;
+  }
+  
+  bgCtx.stroke();
+  
+  // Draw floating particles
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const particleAngle = (spiralAngle + i * 0.3) % (Math.PI * 2);
+    const particleRadius = 80 + (i * 15);
+    const px = centerX + Math.cos(particleAngle) * particleRadius;
+    const py = centerY + Math.sin(particleAngle) * particleRadius;
+    
+    const gradient = bgCtx.createRadialGradient(px, py, 0, px, py, 8);
+    gradient.addColorStop(0, `rgba(212, 165, 116, ${isLowPowerDevice ? 0.1 : 0.15})`);
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    
+    bgCtx.fillStyle = gradient;
+    bgCtx.beginPath();
+    bgCtx.arc(px, py, 8, 0, Math.PI * 2);
+    bgCtx.fill();
+  }
+  
+  spiralAngle += 0.004; // Slow rotation
+  
+  animationFrameId = requestAnimationFrame(drawFibonacciSpiral);
+}
+
+// Initialize background
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+if (!prefersReducedMotion && !isLowPowerDevice) {
+  drawFibonacciSpiral();
+}
+
+/* =============================================================================
+   OPTIONAL: Load config from external JSON
+   ============================================================================= */
+
+async function loadConfig() {
+  try {
+    const response = await fetch('assets/config.json');
+    if (response.ok) {
+      const config = await response.json();
+      console.log('✅ Config loaded:', config);
+      // Apply config overrides here if needed
+      // Example: update AUDIO_TRACKS, links, etc.
+    }
+  } catch (err) {
+    console.log('ℹ️ No config.json found, using defaults');
+  }
+}
+
+loadConfig();
+
+/* =============================================================================
+   INITIALIZATION
+   ============================================================================= */
+
+console.log('🔥 SWAP-BASE initialized');
+console.log('📱 Device:', isLowPowerDevice ? 'Mobile (optimized)' : 'Desktop');
+console.log('🎨 Reduced motion:', prefersReducedMotion ? 'Yes' : 'No');
+console.log('🎵 Audio tracks:', AUDIO_TRACKS.length);
+
 </script>
 </body>
 </html>
