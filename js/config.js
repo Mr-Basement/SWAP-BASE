@@ -83,27 +83,39 @@ export const SWAP_CONFIG = {
   music: {
     enabled: true,
     autoplay: false,  // Set to true if you want music to start automatically
-    tracks: [
-      {
-        title: "Live Set October 2024",
-        artist: "Mr-Basement",
-        file: "assets/music/track1.mp3",
-        coverArt: "assets/images/cover1.jpg"
-      },
-      {
-        title: "Heaven's Basement Mix",
-        artist: "SWAP Collective",
-        file: "assets/music/track2.mp3",
-        coverArt: "assets/images/cover2.jpg"
-      },
-      {
-        title: "Underground Sessions",
-        artist: "Mr-Basement",
-        file: "assets/music/track3.mp3",
-        coverArt: "assets/images/cover3.jpg"
-      }
-    ]
-  },
+    {
+  "tracks": [
+    {
+      "title": "Chris2 — SWAP-Mix",
+      "artist": "ChrisSWAP",
+      "file": "assets/music/chris2.mp3"
+    },
+    {
+      "title": "Chris7 — SWAP-Mix",
+      "artist": "ChrisSWAP",
+      "file": "assets/music/chris7.mp3"
+    }
+  ],
+  "links": [
+    {
+      "emoji": "📸",
+      "title": "Instagram",
+      "subtitle": "@chrisswap",
+      "url": "https://www.instagram.com/chrisswap"
+    },
+    {
+      "emoji": "🎵",
+      "title": "Music",
+      "subtitle": "SWAPTOBER5 Playlist",
+      "url": "https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG"
+    }
+  ],
+  "countdown": {
+    "date": "2025-10-24T20:00:00-05:00",
+    "title": "SWAPTOBER 2025",
+    "subtitle": "Live Countdown"
+  }
+}
 
   // ============================================================================
   // LIVE PERFORMANCE INFO
