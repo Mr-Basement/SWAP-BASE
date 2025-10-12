@@ -3,348 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="SWAP-BASE - Underground digital hub. Style With A Purpose x Heaven's Basement">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="description" content="SWAP-BASE - Underground digital hub">
+    <meta name="theme-color" content="#000000">
     
-    <title>SWAP-BASE // Underground Digital Hub</title>
-    
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <title>SWAP-BASE</title>
     
     <style>
-        /* ============================================================================
-           RESET & BASE STYLES
-           ============================================================================ */
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            font-family: 'Courier New', Courier, monospace;
-            background: #000000;
-            color: #00ff41;
-            -webkit-tap-highlight-color: transparent;
-        }
-
         body {
-            position: relative;
-            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #00ff41;
+            overflow-x: hidden;
         }
 
-        /* ============================================================================
-           EPIC LOADING SCREEN
-           ============================================================================ */
-        
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            transition: opacity 1s ease, transform 1s ease;
-        }
-
-        #loading-screen.hidden {
-            opacity: 0;
-            transform: scale(1.2);
-            pointer-events: none;
-        }
-
-        .loader-logo {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: bold;
-            letter-spacing: 0.5em;
-            margin-bottom: 3rem;
-            background: linear-gradient(90deg, #00ff41, #ff7326, #00ff41);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease-in-out infinite, glitchLoader 4s infinite;
-            text-shadow: 0 0 50px rgba(0, 255, 65, 0.5);
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        @keyframes glitchLoader {
-            0%, 90%, 100% { transform: translate(0); }
-            92% { transform: translate(-3px, 3px) skew(1deg); }
-            94% { transform: translate(3px, -3px) skew(-1deg); }
-            96% { transform: translate(-2px, -2px) skew(0.5deg); }
-            98% { transform: translate(2px, 2px) skew(-0.5deg); }
-        }
-
-        .loader-text {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            letter-spacing: 0.3em;
-            margin-bottom: 2rem;
-            opacity: 0.7;
-        }
-
-        .loader-bars {
-            display: flex;
-            gap: 8px;
-            height: 60px;
-            align-items: flex-end;
-        }
-
-        .loader-bar {
-            width: 6px;
-            background: linear-gradient(180deg, #00ff41, #ff7326);
-            animation: barPulse 1s ease-in-out infinite;
-            box-shadow: 0 0 15px #00ff41;
-        }
-
-        .loader-bar:nth-child(1) { animation-delay: 0s; }
-        .loader-bar:nth-child(2) { animation-delay: 0.1s; }
-        .loader-bar:nth-child(3) { animation-delay: 0.2s; }
-        .loader-bar:nth-child(4) { animation-delay: 0.3s; }
-        .loader-bar:nth-child(5) { animation-delay: 0.4s; }
-        .loader-bar:nth-child(6) { animation-delay: 0.5s; }
-        .loader-bar:nth-child(7) { animation-delay: 0.6s; }
-
-        @keyframes barPulse {
-            0%, 100% { height: 10px; }
-            50% { height: 60px; }
-        }
-
-        /* ============================================================================
-           FIBONACCI GEOMETRY BACKGROUND
-           ============================================================================ */
-        
-        #geometry-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.3;
-        }
-
-        /* ============================================================================
-           THREE.JS CANVAS
-           ============================================================================ */
-        
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* ============================================================================
-           HEADER
-           ============================================================================ */
-        
+        /* Header */
         header {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            padding: 1.5rem 2rem;
+            padding: 1rem 2rem;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, transparent 100%);
-            z-index: 1000;
-            backdrop-filter: blur(10px);
         }
 
         .logo {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: 1.5rem;
             font-weight: bold;
             letter-spacing: 0.3em;
-            color: #00ff41;
             text-shadow: 0 0 20px #00ff41;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .logo:hover {
-            text-shadow: 0 0 30px #00ff41, 0 0 50px #00ff41;
-        }
-
-        .nav-menu {
+        nav ul {
             display: flex;
             gap: 2rem;
             list-style: none;
         }
 
-        .nav-menu a {
+        nav a {
             color: #00ff41;
             text-decoration: none;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
             letter-spacing: 0.2em;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
+            transition: all 0.3s;
         }
 
-        .nav-menu a::before {
-            content: '>';
-            position: absolute;
-            left: -15px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .nav-menu a:hover {
+        nav a:hover {
             color: #ff7326;
             text-shadow: 0 0 10px #ff7326;
         }
 
-        .nav-menu a:hover::before {
-            opacity: 1;
-            left: -20px;
-        }
-
-        /* ============================================================================
-           MAIN CONTENT AREA
-           ============================================================================ */
-        
+        /* Main Content */
         main {
-            position: relative;
-            z-index: 10;
+            padding-top: 100px;
+        }
+
+        section {
             min-height: 100vh;
-            padding: 100px 2rem 2rem;
-        }
-
-        .content-section {
-            max-width: 1400px;
-            margin: 0 auto 8rem;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: all 0.8s ease;
-        }
-
-        .content-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 6vw, 4rem);
-            letter-spacing: 0.3em;
-            margin-bottom: 3rem;
-            text-align: center;
-            background: linear-gradient(90deg, #00ff41, #ff7326);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
-        }
-
-        /* ============================================================================
-           HERO SECTION
-           ============================================================================ */
-        
-        #hero-section {
-            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            margin-bottom: 10rem;
+            padding: 2rem;
         }
 
-        .hero-title {
-            font-size: clamp(3rem, 12vw, 8rem);
+        /* Hero */
+        #home {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
             letter-spacing: 0.5em;
             margin-bottom: 2rem;
-            animation: heroGlitch 5s infinite;
-            text-shadow: 0 0 50px #00ff41;
+            text-shadow: 0 0 30px #00ff41;
+            animation: glow 2s ease-in-out infinite;
         }
 
-        .hero-tagline {
-            font-size: clamp(1rem, 3vw, 1.8rem);
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 30px #00ff41; }
+            50% { text-shadow: 0 0 50px #00ff41, 0 0 80px #00ff41; }
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.5rem);
             letter-spacing: 0.3em;
             opacity: 0.8;
-            margin-bottom: 4rem;
         }
 
-        @keyframes heroGlitch {
-            0%, 95%, 100% { transform: translate(0); text-shadow: 0 0 50px #00ff41; }
-            96% { transform: translate(-5px, 5px); text-shadow: -5px 5px 20px #ff7326; }
-            97% { transform: translate(5px, -5px); text-shadow: 5px -5px 20px #00ff41; }
-            98% { transform: translate(-3px, -3px); text-shadow: -3px -3px 20px #ff7326; }
-            99% { transform: translate(3px, 3px); text-shadow: 3px 3px 20px #00ff41; }
-        }
-
-        /* ============================================================================
-           COUNTDOWN TIMER
-           ============================================================================ */
-        
-        #countdown-section {
+        /* Countdown */
+        #countdown {
             background: rgba(0, 255, 65, 0.05);
             border: 2px solid #00ff41;
             padding: 3rem;
             border-radius: 10px;
-            margin-bottom: 8rem;
-        }
-
-        .countdown-label {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-            text-align: center;
-            opacity: 0.8;
+            margin: 4rem 0;
         }
 
         .countdown-display {
             display: flex;
-            justify-content: center;
             gap: 2rem;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
         .countdown-unit {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 100px;
+            text-align: center;
         }
 
         .countdown-number {
-            font-size: clamp(3rem, 8vw, 5rem);
-            font-weight: bold;
+            font-size: 4rem;
             color: #ff7326;
-            text-shadow: 0 0 30px #ff7326;
+            text-shadow: 0 0 20px #ff7326;
         }
 
         .countdown-text {
-            font-size: clamp(0.8rem, 2vw, 1.2rem);
-            letter-spacing: 0.2em;
+            font-size: 1rem;
             opacity: 0.7;
             margin-top: 0.5rem;
         }
 
-        /* ============================================================================
-           MUSIC PLAYER
-           ============================================================================ */
-        
-        #music-player {
-            background: rgba(10, 10, 10, 0.9);
+        /* Music Player */
+        #music {
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        #player {
+            background: rgba(0, 255, 65, 0.05);
             border: 2px solid #00ff41;
             padding: 2rem;
             border-radius: 10px;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.2);
+            width: 100%;
+            max-width: 600px;
         }
 
         .track-info {
@@ -353,198 +151,148 @@
         }
 
         .track-title {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            color: #ff7326;
         }
 
-        .track-artist {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
-            opacity: 0.7;
-        }
-
-        .player-controls {
+        .controls {
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 2rem;
             margin-bottom: 2rem;
         }
 
-        .player-btn {
+        button {
             background: none;
             border: 2px solid #00ff41;
             color: #00ff41;
             font-size: 2rem;
             padding: 1rem 1.5rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 5px;
+            transition: all 0.3s;
+            font-family: inherit;
         }
 
-        .player-btn:hover {
+        button:hover {
             background: #00ff41;
             color: #000;
-            box-shadow: 0 0 30px #00ff41;
-            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ff41;
         }
 
         .waveform {
-            width: 100%;
-            height: 80px;
             display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
             gap: 4px;
+            height: 60px;
+            align-items: flex-end;
+            justify-content: center;
         }
 
-        .waveform-bar {
-            flex: 1;
+        .bar {
+            width: 8px;
             background: linear-gradient(180deg, #00ff41, #ff7326);
-            min-height: 10px;
-            transition: height 0.1s ease;
-            box-shadow: 0 0 10px #00ff41;
-            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
         }
 
-        /* ============================================================================
-           PORTAL GRID (LINKS)
-           ============================================================================ */
-        
-        #portals-grid {
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.1s; }
+        .bar:nth-child(3) { animation-delay: 0.2s; }
+        .bar:nth-child(4) { animation-delay: 0.3s; }
+        .bar:nth-child(5) { animation-delay: 0.4s; }
+        .bar:nth-child(6) { animation-delay: 0.5s; }
+
+        @keyframes wave {
+            0%, 100% { height: 20px; }
+            50% { height: 60px; }
+        }
+
+        /* Links Grid */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            margin-bottom: 8rem;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 3rem;
         }
 
-        .portal-card {
-            background: rgba(10, 10, 10, 0.8);
+        .card {
+            background: rgba(0, 255, 65, 0.05);
             border: 2px solid #00ff41;
-            padding: 3rem 2rem;
+            padding: 2rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s;
             border-radius: 10px;
         }
 
-        .portal-card::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: radial-gradient(circle, rgba(0,255,65,0.2), transparent);
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .portal-card:hover::before {
-            width: 300%;
-            height: 300%;
-        }
-
-        .portal-card:hover {
+        .card:hover {
             border-color: #ff7326;
-            box-shadow: 0 10px 40px rgba(0, 255, 65, 0.3);
-            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 255, 65, 0.3);
+            transform: translateY(-5px);
         }
 
-        .portal-emoji {
-            font-size: 4rem;
+        .card-emoji {
+            font-size: 3rem;
             margin-bottom: 1rem;
             display: block;
-            filter: drop-shadow(0 0 10px #00ff41);
         }
 
-        .portal-name {
-            font-size: 1.3rem;
+        .card-name {
+            font-size: 1.2rem;
             letter-spacing: 0.2em;
-            position: relative;
-            z-index: 1;
         }
 
-        /* ============================================================================
-           MOBILE RESPONSIVENESS
-           ============================================================================ */
-        
+        /* Section Titles */
+        h2 {
+            font-size: clamp(2rem, 6vw, 3rem);
+            letter-spacing: 0.3em;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
             header {
-                padding: 1rem;
                 flex-direction: column;
                 gap: 1rem;
+                padding: 1rem;
             }
 
-            .nav-menu {
+            nav ul {
                 gap: 1rem;
-                font-size: 0.9rem;
             }
 
-            #portals-grid {
+            .grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
             }
 
-            .countdown-display {
-                gap: 1rem;
-            }
-
-            .countdown-unit {
-                min-width: 70px;
-            }
-
-            main {
-                padding: 80px 1rem 1rem;
+            .countdown-number {
+                font-size: 2.5rem;
             }
         }
 
-        /* ============================================================================
-           SCROLL REVEAL ANIMATION
-           ============================================================================ */
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
         }
     </style>
 </head>
 <body>
-    <!-- Epic Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader-logo">SWAP-BASE</div>
-        <div class="loader-text">INITIALIZING UNDERGROUND HUB...</div>
-        <div class="loader-bars">
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-            <div class="loader-bar"></div>
-        </div>
-    </div>
-
-    <!-- Fibonacci Geometry Background -->
-    <canvas id="geometry-canvas"></canvas>
-
-    <!-- Three.js Canvas -->
-    <div id="canvas-container"></div>
+    <!-- Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
 
     <!-- Header -->
     <header>
-        <div class="logo" onclick="scrollToTop()">SWAP-BASE</div>
+        <div class="logo">SWAP-BASE</div>
         <nav>
-            <ul class="nav-menu">
+            <ul>
                 <li><a href="#home">HOME</a></li>
                 <li><a href="#music">MUSIC</a></li>
                 <li><a href="#links">LINKS</a></li>
@@ -555,408 +303,211 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="content-section visible">
-            <div id="hero-section">
-                <h1 class="hero-title">SWAP-BASE</h1>
-                <p class="hero-tagline">STYLE WITH A PURPOSE // UNDERGROUND COLLECTIVE</p>
-            </div>
-        </section>
-
-        <!-- Countdown Section -->
-        <section id="countdown-section" class="content-section">
-            <div class="countdown-label">COUNTDOWN TO SWAPTOBER 2025</div>
-            <div class="countdown-display">
-                <div class="countdown-unit">
-                    <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-text">DAYS</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-text">HOURS</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-text">MINUTES</div>
-                </div>
-                <div class="countdown-unit">
-                    <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-text">SECONDS</div>
+        <!-- Hero -->
+        <section id="home">
+            <h1>SWAP-BASE</h1>
+            <p class="tagline">STYLE WITH A PURPOSE // UNDERGROUND COLLECTIVE</p>
+            
+            <div id="countdown">
+                <p style="text-align: center; margin-bottom: 2rem; font-size: 1.2rem;">COUNTDOWN TO SWAPTOBER 2025</p>
+                <div class="countdown-display">
+                    <div class="countdown-unit">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-text">DAYS</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-text">HOURS</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-text">MINUTES</div>
+                    </div>
+                    <div class="countdown-unit">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-text">SECONDS</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Music Section -->
-        <section id="music" class="content-section">
-            <h2 class="section-title">MUSIC</h2>
-            <div id="music-player">
+        <!-- Music -->
+        <section id="music">
+            <h2>MUSIC</h2>
+            <div id="player">
                 <div class="track-info">
-                    <div class="track-title" id="track-title">Live Set October 2024</div>
-                    <div class="track-artist" id="track-artist">Mr-Basement</div>
+                    <div class="track-title">Live Set October 2024</div>
+                    <div>Mr-Basement</div>
                 </div>
-                <div class="player-controls">
-                    <button class="player-btn" id="prev-btn">⏮</button>
-                    <button class="player-btn" id="play-btn">▶</button>
-                    <button class="player-btn" id="next-btn">⏭</button>
+                <div class="controls">
+                    <button onclick="prevTrack()">⏮</button>
+                    <button id="play-btn" onclick="togglePlay()">▶</button>
+                    <button onclick="nextTrack()">⏭</button>
                 </div>
-                <div class="waveform" id="waveform"></div>
-            </div>
-        </section>
-
-        <!-- Links Section -->
-        <section id="links" class="content-section">
-            <h2 class="section-title">CONNECT</h2>
-            <div id="portals-grid">
-                <!-- Instagram -->
-                <div class="portal-card" onclick="openLink('https://www.instagram.com/chrisswap')">
-                    <span class="portal-emoji">📸</span>
-                    <div class="portal-name">INSTAGRAM</div>
-                </div>
-
-                <!-- Spotify (Update with your real link) -->
-                <div class="portal-card" onclick="openLink('https://open.spotify.com/artist/YOUR_ARTIST_ID')">
-                    <span class="portal-emoji">🎵</span>
-                    <div class="portal-name">SPOTIFY</div>
-                </div>
-
-                <!-- Tickets (from your IG bio) -->
-                <div class="portal-card" onclick="openLink('https://www.instagram.com/chrisswap')">
-                    <span class="portal-emoji">🎫</span>
-                    <div class="portal-name">GET TICKETS</div>
-                </div>
-
-                <!-- Merch Store -->
-                <div class="portal-card" onclick="openLink('https://www.mrmidwest.com/')">
-                    <span class="portal-emoji">👕</span>
-                    <div class="portal-name">MERCH STORE</div>
-                </div>
-
-                <!-- YouTube (Update if you have one) -->
-                <div class="portal-card" onclick="openLink('https://youtube.com/@chrisswap')">
-                    <span class="portal-emoji">📺</span>
-                    <div class="portal-name">YOUTUBE</div>
-                </div>
-
-                <!-- Booking (from your IG About Me) -->
-                <div class="portal-card" onclick="openLink('https://www.instagram.com/chrisswap')">
-                    <span class="portal-emoji">📧</span>
-                    <div class="portal-name">BOOKING</div>
+                <div class="waveform">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Video Games Section -->
-        <section id="games" class="content-section">
-            <h2 class="section-title">VIDEO GAMES</h2>
-            <div id="portals-grid">
-                <!-- Placeholder for future games -->
-                <div class="portal-card">
-                    <span class="portal-emoji">🎮</span>
-                    <div class="portal-name">COMING SOON</div>
+        <!-- Links -->
+        <section id="links">
+            <h2>CONNECT</h2>
+            <div class="grid">
+                <div class="card" onclick="window.open('https://www.instagram.com/chrisswap', '_blank')">
+                    <span class="card-emoji">📸</span>
+                    <div class="card-name">INSTAGRAM</div>
+                </div>
+                <div class="card" onclick="window.open('https://open.spotify.com/artist/YOUR_ID', '_blank')">
+                    <span class="card-emoji">🎵</span>
+                    <div class="card-name">SPOTIFY</div>
+                </div>
+                <div class="card" onclick="window.open('https://www.instagram.com/chrisswap', '_blank')">
+                    <span class="card-emoji">🎫</span>
+                    <div class="card-name">TICKETS</div>
+                </div>
+                <div class="card" onclick="window.open('https://www.mrmidwest.com/', '_blank')">
+                    <span class="card-emoji">👕</span>
+                    <div class="card-name">MERCH</div>
+                </div>
+                <div class="card" onclick="window.open('https://youtube.com/@chrisswap', '_blank')">
+                    <span class="card-emoji">📺</span>
+                    <div class="card-name">YOUTUBE</div>
+                </div>
+                <div class="card" onclick="window.open('mailto:booking@swap.com', '_blank')">
+                    <span class="card-emoji">📧</span>
+                    <div class="card-name">BOOKING</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games -->
+        <section id="games">
+            <h2>VIDEO GAMES</h2>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-emoji">🎮</span>
+                    <div class="card-name">COMING SOON</div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Three.js from CDN -->
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"
-        }
-    }
-    </script>
-
-    <!-- Main Script -->
-    <script type="module">
-        import * as THREE from 'three';
-        import { SWAP_CONFIG } from './js/config.js';
-
-        // ====================================================================
-        // INITIALIZATION
-        // ====================================================================
-
-        let scene, camera, renderer;
-        let audioElement, currentTrack = 0;
-
-        window.addEventListener('DOMContentLoaded', init);
-
-        function init() {
-            console.log('🔥 SWAP-BASE Initializing...');
+    <script>
+        // Countdown
+        const targetDate = new Date('2025-10-31T20:00:00').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
             
-            setupThreeJS();
-            setupFibonacciGeometry();
-            setupMusicPlayer();
-            setupCountdown();
-            setupScrollAnimations();
+            if (distance < 0) return;
             
-            // Hide loading after 3 seconds
-            setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden');
-            }, 3000);
-
-            animate();
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
         }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
-        // ====================================================================
-        // THREE.JS SETUP
-        // ====================================================================
-
-        function setupThreeJS() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x000000);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 15;
-
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            // Add glowing particles
-            const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 500;
-            const positions = new Float32Array(particlesCount * 3);
-
-            for (let i = 0; i < particlesCount * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 100;
-            }
-
-            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-            const particlesMaterial = new THREE.PointsMaterial({
-                color: 0x00ff41,
-                size: 0.1,
-                transparent: true,
-                opacity: 0.6
-            });
-
-            const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-            scene.add(particles);
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        }
-
-        // ====================================================================
-        // FIBONACCI SPIRAL GEOMETRY
-        // ====================================================================
-
-        function setupFibonacciGeometry() {
-            const canvas = document.getElementById('geometry-canvas');
-            const ctx = canvas.getContext('2d');
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            let angle = 0;
-            let radius = 1;
-
-            function drawSpiral() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.strokeStyle = `rgba(0, 255, 65, ${0.3 + Math.sin(angle * 0.01) * 0.2})`;
-                ctx.lineWidth = 2;
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = '#00ff41';
-
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
-
-                ctx.beginPath();
-                for (let i = 0; i < 200; i++) {
-                    const x = centerX + Math.cos(angle) * radius;
-                    const y = centerY + Math.sin(angle) * radius;
-
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-
-                    angle += 0.1;
-                    radius += 0.5;
-                }
-                ctx.stroke();
-
-                angle += 0.02;
-                if (radius > 500) {
-                    radius = 1;
-                    angle = 0;
-                }
-            }
-
-            setInterval(drawSpiral, 50);
-        }
-
-        // ====================================================================
-        // MUSIC PLAYER
-        // ====================================================================
-
-        function setupMusicPlayer() {
-            if (!SWAP_CONFIG.music.enabled || SWAP_CONFIG.music.tracks.length === 0) return;
-
-            audioElement = new Audio();
-            const waveform = document.getElementById('waveform');
-
-            // Generate waveform bars
-            for (let i = 0; i < 30; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'waveform-bar';
-                waveform.appendChild(bar);
-            }
-
-            loadTrack(0);
-
-            document.getElementById('play-btn').addEventListener('click', togglePlay);
-            document.getElementById('prev-btn').addEventListener('click', prevTrack);
-            document.getElementById('next-btn').addEventListener('click', nextTrack);
-
-            animateWaveform();
-        }
-
-        function loadTrack(index) {
-            const track = SWAP_CONFIG.music.tracks[index];
-            if (!track) return;
-
-            audioElement.src = track.file;
-            document.getElementById('track-title').textContent = track.title;
-            document.getElementById('track-artist').textContent = track.artist;
-            currentTrack = index;
-        }
+        // Music Player
+        const audio = new Audio();
+        const tracks = [
+            { title: 'Track 1', file: 'assets/music/track1.mp3' },
+            { title: 'Track 2', file: 'assets/music/track2.mp3' }
+        ];
+        let currentTrack = 0;
 
         function togglePlay() {
             const btn = document.getElementById('play-btn');
-            if (audioElement.paused) {
-                audioElement.play();
+            if (audio.paused) {
+                audio.play();
                 btn.textContent = '⏸';
             } else {
-                audioElement.pause();
+                audio.pause();
                 btn.textContent = '▶';
             }
         }
 
         function prevTrack() {
-            currentTrack = (currentTrack - 1 + SWAP_CONFIG.music.tracks.length) % SWAP_CONFIG.music.tracks.length;
-            loadTrack(currentTrack);
-            audioElement.play();
+            currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+            audio.src = tracks[currentTrack].file;
+            audio.play();
             document.getElementById('play-btn').textContent = '⏸';
         }
 
         function nextTrack() {
-            currentTrack = (currentTrack + 1) % SWAP_CONFIG.music.tracks.length;
-            loadTrack(currentTrack);
-            audioElement.play();
+            currentTrack = (currentTrack + 1) % tracks.length;
+            audio.src = tracks[currentTrack].file;
+            audio.play();
             document.getElementById('play-btn').textContent = '⏸';
         }
 
-        function animateWaveform() {
-            const bars = document.querySelectorAll('.waveform-bar');
-            setInterval(() => {
-                bars.forEach(bar => {
-                    const height = 10 + Math.random() * 70;
-                    bar.style.height = `${height}px`;
-                });​​​​​​​​​​​​​​​​}, 100);
+        // Background Animation
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2
+            });
         }
 
-        // ====================================================================
-        // COUNTDOWN TIMER
-        // ====================================================================
-
-        function setupCountdown() {
-            const targetDate = new Date(SWAP_CONFIG.countdown.targetDate).getTime();
-
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance < 0) {
-                    document.getElementById('days').textContent = '00';
-                    document.getElementById('hours').textContent = '00';
-                    document.getElementById('minutes').textContent = '00';
-                    document.getElementById('seconds').textContent = '00';
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-            }
-
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+        function drawParticles() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            });
+            
+            requestAnimationFrame(drawParticles);
         }
 
-        // ====================================================================
-        // SCROLL ANIMATIONS
-        // ====================================================================
+        drawParticles();
 
-        function setupScrollAnimations() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
 
-            document.querySelectorAll('.content-section').forEach(section => {
-                observer.observe(section);
-            });
-
-            // Smooth scroll for navigation
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
-        }
-
-        // ====================================================================
-        // HELPER FUNCTIONS
-        // ====================================================================
-
-        window.openLink = function(url) {
-            window.open(url, '_blank');
-        };
-
-        window.scrollToTop = function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        // ====================================================================
-        // ANIMATION LOOP
-        // ====================================================================
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate particles slowly
-            scene.children.forEach(child => {
-                if (child.type === 'Points') {
-                    child.rotation.y += 0.0005;
-                    child.rotation.x += 0.0003;
-                }
-            });
-
-            renderer.render(scene, camera);
-        }
-
-        console.log('✅ SWAP-BASE Fully Loaded');
+        });
     </script>
 </body>
 </html>
