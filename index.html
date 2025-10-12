@@ -1,451 +1,719 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SWAP-BASE — Heaven's Basement × SWAP</title>
-<meta name="description" content="SWAP-BASE — underground hub for music, tech, fashion & community."/>
-<!-- ===========================
-     Customization map (edit these paths / names)
-     - Audio: assets/music/chris2.mp3, assets/music/chris7.mp3
-     - Hero image: assets/images/hero.png (or hero.jpg)
-     - Header logo image: assets/logos/header-logo.png (optional)
-     - Fonts: drop files into assets/fonts/, uncomment @font-face block below
-     =========================== -->
-
-<!-- Optional external font (comment out to avoid external requests) -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"> -->
-
+<meta name="description" content="SWAP-BASE — underground hub for music, tech, fashion & community.">
 <style>
-/* =========================
-   SWAP-BASE Single-file Styles
-   - Mobile-first
-   - Edit CSS variables below to change vibe quickly
-   ========================= */
-:root{
-  --bg:#050508;
-  --bg2:#07060a;
-  --panel:#0b0c0f;
-  --muted:#9ea4a9;
-  --accent:#c9a15b;   /* warm metallic */
-  --accent-2:#7ec8ff; /* cool edge for chrome highlights */
-  --chrome:#bfc8cd;
-  --glass: rgba(255,255,255,0.028);
-  --scan: rgba(0,0,0,0.06);
-  --ff-mono: "SwapLocalMono", monospace;
-  --ff-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --maxw:1100px;
-  --pad:14px;
-  --header-h:64px;
-  --hero-aspect:16/9;
-  --crt-scan-opacity:0.9;
-  --particle-opacity:0.08;
+:root {
+  --bg: #0a0a0f;
+  --bg2: #12121a;
+  --accent: #e8b960;
+  --accent2: #ff7326;
+  --chrome: #e0e5ea;
+  --muted: #b0b5ba;
+  --glass: rgba(255,255,255,0.05);
 }
 
-/* Optional local font usage:
-   Place files in /assets/fonts/ and uncomment the @font-face block.
-   Example files: assets/fonts/SwapLocalMono.woff2
-*/
-/*
-@font-face {
-  font-family: 'SwapLocalMono';
-  src: url('assets/fonts/SwapLocalMono.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-*/
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-html,body{height:100%}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:var(--ff-ui);
-  background:linear-gradient(180deg,var(--bg) 0%, var(--bg2) 65%);
-  color:#e8eaec;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+body {
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+  color: var(--chrome);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* App shell */
-#app{display:flex; flex-direction:column; flex:1 1 auto; height:100%}
-header{height:var(--header-h); display:flex; align-items:center; gap:12px; padding:8px var(--pad); z-index:60; background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0))}
-/* Header layout */
-.logo{display:flex; gap:10px; align-items:center; cursor:pointer}
-.badge{font-family:var(--ff-mono); background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:8px 12px; border-radius:8px; color:var(--chrome); border:1px solid rgba(255,255,255,0.03)}
-.brand-sub{color:var(--muted); font-size:13px}
-.nav{margin-left:auto; display:flex; gap:8px; align-items:center}
-.nav a{color:var(--muted); text-decoration:none; font-size:13px; padding:8px; border-radius:8px}
-.nav a.primary{color:var(--accent); font-weight:700}
-
-/* MAIN scroll area */
-main{flex:1; overflow:auto; -webkit-overflow-scrolling:touch; position:relative; padding-bottom:96px}
-
-/* Section baseline */
-.section{min-height:calc(100vh - var(--header-h) - 96px); padding:18px var(--pad); display:flex; align-items:center; justify-content:center; position:relative}
-
-/* CRT hero area */
-.crt-wrap{width:100%; max-width:var(--maxw); aspect-ratio: var(--hero-aspect); margin:0 auto; position:relative; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03)); box-shadow: 0 24px 80px rgba(0,0,0,0.7)}
-/* optionally show hero image as background via CSS variable or image element */
-.crt-screen{position:absolute; inset:8px; border-radius:8px; background:#020203; display:flex; align-items:center; justify-content:center; padding:18px; overflow:hidden}
-.scanline{position:absolute; inset:0; background-image:linear-gradient(transparent 92%, var(--scan) 96%); background-size:100% 4px; mix-blend-mode:overlay; opacity:var(--crt-scan-opacity); pointer-events:none}
-.crt-frame{position:absolute; inset:0; pointer-events:none}
-
-/* hero content */
-.hero-content{display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; max-width:880px}
-.title{font-family:var(--ff-mono); font-size:28px; letter-spacing:2px; color:var(--chrome)}
-.subtitle{color:var(--muted); font-weight:600; font-size:13px; max-width:760px}
-.press{margin-top:6px; padding:10px 14px; border-radius:8px; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); color:var(--accent); font-weight:800; font-family:var(--ff-mono); cursor:pointer}
-
-/* lightweight glitch */
-.glitch{position:relative; display:inline-block}
-.glitch::before,.glitch::after{content:attr(data-text); position:absolute; left:0; top:0; width:100%; opacity:0.92; pointer-events:none}
-.glitch::before{color:#d1a; transform:translate(-1.4px,-0.8px); mix-blend-mode:screen; filter:blur(.6px)}
-.glitch::after{color:#6af; transform:translate(1.4px,0.8px); mix-blend-mode:screen; filter:blur(.8px); opacity:0.72}
-
-/* countdown */
-.countdown{display:flex; gap:10px; margin-top:6px; align-items:center; justify-content:center}
-.cell{background:var(--glass); padding:10px 12px; border-radius:8px; min-width:64px; text-align:center; border:1px solid rgba(255,255,255,0.03)}
-.label{font-size:10px; color:var(--muted)}
-
-/* cards grid */
-.grid{display:grid; grid-template-columns:repeat(2,1fr); gap:12px; max-width:var(--maxw); margin:0 auto}
-.card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); border-radius:10px; padding:14px; border:1px solid rgba(255,255,255,0.02); min-height:80px}
-.card h3{margin:0; font-size:16px}
-
-/* games */
-.games{display:flex; flex-direction:column; gap:12px; align-items:center; padding:8px}
-
-/* persistent player */
-#player{position:fixed; left:12px; right:12px; bottom:12px; z-index:220; display:flex; align-items:center; gap:12px; padding:10px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(4px)}
-.controls{display:flex; gap:8px; align-items:center}
-.btn{background:transparent;border:0;color:var(--muted);font-size:18px;padding:6px;border-radius:8px}
-.btn.play{color:var(--accent); font-weight:800}
-.track{flex:1;min-width:80px}
-.track .meta{font-size:13px; font-weight:600}
-#wave{width:160px;height:40px;border-radius:6px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); overflow:hidden}
-
-/* flash overlay (lightning transition) */
-.flash{position:fixed; inset:0; pointer-events:none; z-index:999; mix-blend-mode:screen; opacity:0; transition:opacity .12s ease; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0) 30%)}
-
-/* canvas background */
-#bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:var(--particle-opacity)}
-
-/* responsive tweaks */
-@media(min-width:760px){
-  .title{font-size:36px}
-  .grid{grid-template-columns:repeat(3,1fr)}
+/* Loading Spinner */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
-@media(max-width:420px){
-  .title{font-size:20px}
-  .subtitle{font-size:12px}
-  .nav a{font-size:12px; padding:6px}
+.loader.active { display: flex; }
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(232,185,96,0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(10,10,15,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.logo-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+.logo-badge {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: #000;
+}
+nav {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+nav a {
+  padding: 8px 16px;
+  color: var(--muted);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+nav a:hover, nav a.active {
+  background: var(--glass);
+  color: var(--accent);
+}
+
+/* Back Button */
+.back-btn {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 50%;
+  color: #000;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(232,185,96,0.4);
+  z-index: 999;
+  transition: all 0.3s;
+  animation: glow 2s ease-in-out infinite;
+}
+.back-btn:hover {
+  transform: scale(1.1);
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 8px 32px rgba(232,185,96,0.4); }
+  50% { box-shadow: 0 8px 48px rgba(232,185,96,0.7); }
+}
+
+/* Main */
+main {
+  padding-top: 80px;
+  padding-bottom: 100px;
+}
+
+/* Section */
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  position: relative;
+}
+
+/* Animated Background */
+.bg-animation {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  opacity: 0.15;
+}
+.rotating-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  margin: -300px 0 0 -300px;
+  background: radial-gradient(circle, rgba(232,185,96,0.3), transparent 70%);
+  animation: rotate 20s linear infinite;
+  filter: blur(40px);
+}
+@keyframes rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Hero CRT */
+.crt-container {
+  max-width: 1100px;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.1));
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+  position: relative;
+  overflow: hidden;
+}
+.crt-screen {
+  position: absolute;
+  inset: 12px;
+  background: #000;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.crt-content {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  max-width: 800px;
+  padding: 24px;
+}
+.hero-title {
+  font-size: clamp(32px, 8vw, 64px);
+  letter-spacing: 4px;
+  margin-bottom: 20px;
+  color: var(--chrome);
+  text-shadow: 0 0 40px rgba(232,185,96,0.6);
+  animation: textGlow 3s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%, 100% { text-shadow: 0 0 40px rgba(232,185,96,0.6); }
+  50% { text-shadow: 0 0 60px rgba(232,185,96,0.9), 0 0 80px rgba(255,115,38,0.5); }
+}
+.hero-subtitle {
+  font-size: clamp(13px, 2.5vw, 16px);
+  color: var(--muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+.hero-subtitle strong {
+  color: var(--accent);
+}
+.press-btn {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 24px rgba(232,185,96,0.3);
+}
+.press-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(232,185,96,0.5);
+}
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.1) 2px,
+    rgba(0,0,0,0.1) 4px
+  );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Mini Countdown Preview */
+.mini-countdown {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.mini-countdown .cell {
+  background: rgba(0,0,0,0.6);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.1);
+  min-width: 60px;
+  text-align: center;
+}
+.mini-countdown .num {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--accent);
+}
+.mini-countdown .label {
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* Full Countdown */
+.countdown-container {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+  z-index: 10;
+  position: relative;
+}
+.countdown-title {
+  font-size: clamp(28px, 6vw, 48px);
+  margin-bottom: 16px;
+  letter-spacing: 3px;
+  color: var(--chrome);
+}
+.countdown-subtitle {
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-size: 16px;
+}
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.countdown-cell {
+  background: var(--glass);
+  padding: 24px 16px;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+}
+.countdown-number {
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: bold;
+  color: var(--accent2);
+  text-shadow: 0 0 30px rgba(255,115,38,0.6);
+}
+.countdown-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Links Grid */
+.links-container {
+  max-width: 1100px;
+  width: 100%;
+  z-index: 10;
+  position: relative;
+}
+.section-title {
+  font-size: clamp(24px, 5vw, 36px);
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 2px;
+  color: var(--chrome);
+}
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.link-card {
+  background: var(--glass);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+.link-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(232,185,96,0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.link-card:hover::before {
+  opacity: 1;
+}
+.link-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(232,185,96,0.2);
+}
+.link-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.link-card p {
+  color: var(--accent);
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Games */
+.games-container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
+  position: relative;
+}
+.game-card {
+  background: var(--glass);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.game-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+}
+.game-card h3 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+.game-card p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Music Player */
+.player {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: rgba(10,10,15,0.95);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8);
+}
+.player-controls {
+  display: flex;
+  gap: 8px;
+}
+.player-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+  padding: 8px;
+}
+.player-btn:hover {
+  color: var(--accent);
+}
+.player-btn.play {
+  color: var(--accent);
+  font-size: 28px;
+}
+.track-info {
+  flex: 1;
+  min-width: 100px;
+}
+.track-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.track-artist {
+  font-size: 12px;
+  color: var(--muted);
+}
+.waveform {
+  width: 160px;
+  height: 40px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .countdown-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .links-grid {
+    grid-template-columns: 1fr;
+  }
+  .player {
+    flex-wrap: wrap;
+  }
+  .waveform {
+    width: 100%;
+  }
 }
 </style>
 </head>
 <body>
-<div id="app">
-  <!-- Header -->
-  <header>
-    <div class="logo" onclick="goToSection('hero')" role="button" aria-label="Go home">
-      <div class="badge">SWAP</div>
-      <div class="brand-sub">BASE</div>
-    </div>
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="spinner"></div>
+</div>
 
-    <nav class="nav" aria-label="Main navigation">
-      <!-- Option: use image header logo instead of text by uncommenting the next line and supplying assets/logos/header-logo.png -->
-      <!-- <a href="#hero"><img src="assets/logos/header-logo.png" alt="SWAP Logo" style="height:36px"></a> -->
-      <a href="#hero">Home</a>
-      <a href="#countdown">Countdown</a>
-      <a href="#links">Links</a>
-      <a href="#games">Games</a>
-      <a class="primary" href="#player">Music</a>
-    </nav>
-  </header>
-
-  <!-- LOW-COST PARTICLE CANVAS (auto disables on mobile/reduced-motion) -->
-  <canvas id="bgCanvas" aria-hidden="true"></canvas>
-
-  <main id="main" role="main" aria-live="polite">
-    <!-- HERO -->
-    <section id="hero" class="section" aria-label="Landing">
-      <div class="crt-wrap" role="img" aria-label="CRT display">
-        <!-- Optional hero image: add hero.png to assets/images/ and uncomment below if you want full-bleed image -->
-        <div class="crt-screen" id="heroScreen">
-          <!-- If you prefer hero image background replace inner contents with:
-               <img src="assets/images/hero.png" alt="Hero" style="width:100%;height:100%;object-fit:cover"> -->
-          <div class="hero-content" id="heroContent" style="z-index:20">
-            <div class="title glitch" data-text="SWAP-BASE">SWAP-BASE</div>
-            <div class="subtitle">Heaven's Basement × SWAP — underground hub for music, tech, fashion & community. <strong style="color:var(--accent)">PRESS START</strong></div>
-            <button class="press" id="startBtn" aria-label="Enter">PRESS START</button>
-            <div class="countdown" id="countdownPreview" style="opacity:0.95;margin-top:8px"></div>
-          </div>
-        </div>
-        <div class="scanline" aria-hidden="true"></div>
-        <div class="crt-frame" aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <!-- COUNTDOWN -->
-    <section id="countdown" class="section" aria-label="Countdown to SWAPTOBER">
-      <div style="text-align:center; max-width:900px; width:100%">
-        <h2 style="font-family:var(--ff-mono); color:var(--chrome)">SWAPTOBER 2025</h2>
-        <p style="color:var(--muted)">Live drop & event</p>
-        <div id="countdownFull" class="countdown" style="margin-top:20px"></div>
-      </div>
-    </section>
-
-    <!-- LINKS -->
-    <section id="links" class="section" aria-label="Links Hub">
-      <div style="max-width:var(--maxw); width:100%">
-        <h3 style="font-family:var(--ff-mono); color:var(--chrome); margin-bottom:10px">Links Hub</h3>
-        <div class="grid" id="linksGrid">
-          <div class="card"><h3>Instagram</h3><a href="https://www.instagram.com/chrisswap" target="_blank" rel="noopener">/chrisswap</a></div>
-          <div class="card"><h3>Music</h3><a href="https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG" target="_blank" rel="noopener">SWAPTOBER5 Playlist</a></div>
-          <div class="card"><h3>Tickets</h3><a href="https://www.sbrmag.com/events/swaptober" target="_blank" rel="noopener">Tickets</a></div>
-          <div class="card"><h3>Merch</h3><a href="https://www.mrmidwest.com/" target="_blank" rel="noopener">Shop</a></div>
-          <div class="card"><h3>YouTube</h3><a href="https://youtube.com/@chrisswap57?si=63x7jYqI-4alkskS" target="_blank" rel="noopener">Channel</a></div>
-          <div class="card"><h3>Contact</h3><a href="https://www.instagram.com/chrisswap?igsh=aGU0bTQxd3dkMjJi&utm_source=qr" target="_blank" rel="noopener">DM Chris</a></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- GAMES -->
-    <section id="games" class="section" aria-label="Games / Interactive">
-      <div class="games">
-        <h3 style="font-family:var(--ff-mono); color:var(--chrome)">Games / Interactive</h3>
-        <div class="card game-slot" style="max-width:760px"><strong>Coming Soon</strong><p style="color:var(--muted); margin:8px 0 0 0">Placeholders for playable links, web games, or demos — ready to accept embeds.</p></div>
-      </div>
-    </section>
-  </main>
-
-  <!-- PERSISTENT MUSIC PLAYER -->
-  <div id="player" role="region" aria-label="Music player">
-    <div class="controls" role="group" aria-label="Playback controls">
-      <button class="btn" id="prevBtn" title="Previous" aria-label="Previous">⏮</button>
-      <button class="btn play" id="playBtn" title="Play/Pause" aria-label="Play">▶</button>
-      <button class="btn" id="nextBtn" title="Next" aria-label="Next">⏭</button>
-    </div>
-    <div class="track" aria-live="polite">
-      <div class="meta" id="trackTitle">Chris2 — SWAPTOBER Mix</div>
-      <div style="font-size:12px; color:var(--muted)" id="trackArtist">ChrisSWAP</div>
-    </div>
-    <div id="wave" aria-hidden="true"></div>
+<!-- Header -->
+<header>
+  <div class="logo-wrap" onclick="goTo('hero')">
+    <div class="logo-badge">SWAP</div>
+    <div>BASE</div>
   </div>
+  <nav>
+    <a href="#hero" class="active">HOME</a>
+    <a href="#countdown">COUNTDOWN</a>
+    <a href="#links">LINKS</a>
+    <a href="#games">GAMES</a>
+  </nav>
+</header>
 
-  <div class="flash" id="flash" aria-hidden="true"></div>
+<!-- Back Button -->
+<button class="back-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<main>
+  <!-- HERO -->
+  <section id="hero" class="section">
+    <div class="bg-animation">
+      <div class="rotating-glow"></div>
+    </div>
+    <div class="crt-container">
+      <div class="crt-screen">
+        <div class="crt-content">
+          <h1 class="hero-title">SWAP-BASE</h1>
+          <p class="hero-subtitle">
+            Heaven's Basement × SWAP — underground hub for music, tech, fashion & community. 
+            <strong>ENTER THE UNDERGROUND</strong>
+          </p>
+          <button class="press-btn" onclick="goTo('countdown')">PRESS START</button>
+          <div class="mini-countdown" id="miniCountdown"></div>
+        </div>
+      </div>
+      <div class="scanlines"></div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section id="countdown" class="section">
+    <div class="bg-animation">
+      <div class="rotating-glow"></div>
+    </div>
+    <div class="countdown-container">
+      <h2 class="countdown-title">SWAPTOBER 2025</h2>
+      <p class="countdown-subtitle">Live drop & event</p>
+      <div class="countdown-grid" id="fullCountdown"></div>
+    </div>
+  </section>
+
+  <!-- LINKS -->
+  <section id="links" class="section">
+    <div class="links-container">
+      <h2 class="section-title">CONNECT</h2>
+      <div class="links-grid">
+        <a href="https://www.instagram.com/chrisswap" target="_blank" class="link-card">
+          <h3>📸 Instagram</h3>
+          <p>@chrisswap</p>
+        </a>
+        <a href="https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG" target="_blank" class="link-card">
+          <h3>🎵 Music</h3>
+          <p>SWAPTOBER5 Playlist</p>
+        </a>
+        <a href="https://www.sbrmag.com/events/swaptober" target="_blank" class="link-card">
+          <h3>🎫 Tickets</h3>
+          <p>Get Tickets</p>
+        </a>
+        <a href="https://www.mrmidwest.com/" target="_blank" class="link-card">
+          <h3>👕 Merch</h3>
+          <p>Shop Now</p>
+        </a>
+        <a href="https://youtube.com/@chrisswap57" target="_blank" class="link-card">
+          <h3>📺 YouTube</h3>
+          <p>Channel</p>
+        </a>
+        <a href="https://msha.ke/fieldschristopher" target="_blank" class="link-card">
+          <h3>📧 Contact</h3>
+          <p>DM Chris</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="section">
+    <div class="games-container">
+      <h2 class="section-title">GAMES / INTERACTIVE</h2>
+      <a href="https://mr-basement.github.io/swaptober-contact-of-the-fifth/" target="_blank" class="game-card">
+        <h3>🎮 SWAPTOBER: Contact of the Fifth</h3>
+        <p>Interactive web experience — Click to play</p>
+      </a>
+      <div class="game-card" style="margin-top:20px; cursor:default;">
+        <h3>More Coming Soon</h3>
+        <p>Additional interactive experiences in development</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Music Player -->
+<div class="player">
+  <div class="player-controls">
+    <button class="player-btn" onclick="prevTrack()">⏮</button>
+    <button class="player-btn play" id="playBtn" onclick="togglePlay()">▶</button>
+    <button class="player-btn" onclick="nextTrack()">⏭</button>
+  </div>
+  <div class="track-info">
+    <div class="track-title" id="trackTitle">SWAPTOBER Mix Vol.1</div>
+    <div class="track-artist" id="trackArtist">ChrisSWAP</div>
+  </div>
+  <canvas class="waveform" id="waveCanvas" width="320" height="80"></canvas>
 </div>
 
 <script>
-/* ============================
-   CONFIG — edit these values
-   - TARGET_DATE: Oct 24, 2025 8:00 PM America/Chicago
-   - AUDIO_LIST: filenames (no spaces recommended)
-   - HERO_IMAGE: if you use hero image, uncomment image usage in HTML
-   ============================ */
-const TARGET_DATE = new Date('2025-10-24T20:00:00-05:00'); // Oct 24 2025 8:00 PM CDT
-const AUDIO_LIST = [
-  { title: 'Chris2 — SWAPTOBER Mix', artist: 'ChrisSWAP', src: 'assets/music/chris2.mp3' },
-  { title: 'Chris7 — Deep Cut', artist: 'ChrisSWAP', src: 'assets/music/chris7.mp3' }
+// Countdown
+const TARGET = new Date('2025-10-31T20:00:00-05:00');
+function pad(n) { return String(Math.floor(n)).padStart(2,'0'); }
+function updateCountdown() {
+  const diff = Math.max(0, (TARGET - new Date()) / 1000);
+  const d = Math.floor(diff / 86400);
+  const h = Math.floor((diff % 86400) / 3600);
+  const m = Math.floor((diff % 3600) / 60);
+  const s = Math.floor(diff % 60);
+  
+  // Mini
+  const mini = document.getElementById('miniCountdown');
+  if (mini) {
+    mini.innerHTML = `
+      <div class="cell"><div class="num">${pad(d)}</div><div class="label">Days</div></div>
+      <div class="cell"><div class="num">${pad(h)}</div><div class="label">Hrs</div></div>
+      <div class="cell"><div class="num">${pad(m)}</div><div class="label">Min</div></div>
+      <div class="cell"><div class="num">${pad(s)}</div><div class="label">Sec</div></div>
+    `;
+  }
+  
+  // Full
+  const full = document.getElementById('fullCountdown');
+  if (full) {
+    full.innerHTML = `
+      <div class="countdown-cell"><div class="countdown-number">${pad(d)}</div><div class="countdown-label">Days</div></div>
+      <div class="countdown-cell"><div class="countdown-number">${pad(h)}</div><div class="countdown-label">Hours</div></div>
+      <div class="countdown-cell"><div class="countdown-number">${pad(m)}</div><div class="countdown-label">Minutes</div></div>
+      <div class="countdown-cell"><div class="countdown-number">${pad(s)}</div><div class="countdown-label">Seconds</div></div>
+    `;
+  }
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Navigation
+function goTo(id) {
+  showLoader();
+  setTimeout(() => {
+    document.getElementById(id).scrollIntoView({behavior:'smooth'});
+    hideLoader();
+  }, 400);
+}
+function showLoader() { document.getElementById('loader').classList.add('active'); }
+function hideLoader() { document.getElementById('loader').classList.remove('active'); }
+
+// Music
+let playing = false, trackIdx = 0;
+const tracks = [
+  {title:'SWAPTOBER Mix Vol.1', artist:'ChrisSWAP'},
+  {title:'Underground Sessions', artist:'Heaven\'s Basement'}
 ];
-/* ============================ */
-
-/* Helpers */
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => Array.from(document.querySelectorAll(s));
-function flashLightning(){ const f = $('#flash'); f.style.opacity=1; setTimeout(()=>f.style.opacity=0,120); }
-
-/* Smooth navigation with lightning flash */
-function goToSection(id){
-  const el = document.getElementById(id);
-  if(!el) return;
-  flashLightning();
-  el.scrollIntoView({behavior:'smooth', block:'start'});
+function togglePlay() {
+  playing = !playing;
+  document.getElementById('playBtn').textContent = playing ? '⏸' : '▶';
 }
-$('#startBtn').addEventListener('click', ()=> goToSection('countdown'));
-
-/* ===== Countdown ===== */
-function pad(n){ return String(Math.max(0,Math.floor(n))).padStart(2,'0') }
-function updateCountdown(selector){
-  const el = document.querySelector(selector);
-  if(!el) return;
-  const now = new Date();
-  let diff = (TARGET_DATE - now)/1000;
-  if(diff < 0) diff = 0;
-  const days = Math.floor(diff/86400); diff -= days*86400;
-  const hours = Math.floor(diff/3600); diff -= hours*3600;
-  const minutes = Math.floor(diff/60); const seconds = Math.floor(diff%60);
-  const cells = [
-    {v:days, label:'DAYS'},
-    {v:hours, label:'HRS'},
-    {v:minutes, label:'MINS'},
-    {v:seconds, label:'SECS'}
-  ];
-  el.innerHTML = cells.map(c=>`<div class="cell"><div style="font-weight:800">${pad(c.v)}</div><div class="label">${c.label}</div></div>`).join('');
+function prevTrack() {
+  trackIdx = (trackIdx - 1 + tracks.length) % tracks.length;
+  updateTrack();
 }
-setInterval(()=>{ updateCountdown('#countdownPreview'); updateCountdown('#countdownFull'); }, 800);
-updateCountdown('#countdownPreview'); updateCountdown('#countdownFull');
+function nextTrack() {
+  trackIdx = (trackIdx + 1) % tracks.length;
+  updateTrack();
+}
+function updateTrack() {
+  document.getElementById('trackTitle').textContent = tracks[trackIdx].title;
+  document.getElementById('trackArtist').textContent = tracks[trackIdx].artist;
+}
 
-/* ===== Low-cost background particles =====
-   - Very low particle count to keep mobile performance safe
-   - Disabled when prefers-reduced-motion OR on small devices
-*/
-const canvas = document.getElementById('bgCanvas');
-if (canvas && canvas.getContext) {
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  const MAX_PARTICLES = 28;
-  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-  resize(); window.addEventListener('resize', resize);
-
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) && window.innerWidth < 900;
-  if (!prefersReduced && !isMobile) {
-    for(let i=0;i<MAX_PARTICLES;i++){
-      particles.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        r: 6 + Math.random()*14,
-        vx: (Math.random()-0.5)*0.35,
-        vy: (Math.random()-0.5)*0.35,
-        hue: 200 + Math.random()*120
-      });
-    }
-    function draw(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      for(const p of particles){
-        p.x += p.vx; p.y += p.vy;
-        if(p.x < -p.r) p.x = canvas.width + p.r;
-        if(p.x > canvas.width + p.r) p.x = -p.r;
-        if(p.y < -p.r) p.y = canvas.height + p.r;
-        if(p.y > canvas.height + p.r) p.y = -p.r;
-        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
-        g.addColorStop(0, `hsla(${p.hue},60%,65%,0.08)`);
-        g.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
-      }
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-  } else {
-    canvas.style.display = 'none';
+// Waveform
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+function drawWave() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const bars = 20;
+  const w = canvas.width / bars;
+  for (let i=0; i<bars; i++) {
+    const h = playing ? (Math.random() * 0.7 + 0.3) * canvas.height : 0.1 * canvas.height;
+    const grad = ctx.createLinearGradient(0,0,0,canvas.height);
+    grad.addColorStop(0,'#e8b960');
+    grad.addColorStop(1,'#ff7326');
+    ctx.fillStyle = grad;
+    ctx.fillRect(i*w, canvas.height-h, w-2, h);
   }
+  requestAnimationFrame(drawWave);
 }
+drawWave();
 
-/* ===== Audio player (WebAudio + visualizer) ===== */
-let audioEl, audioCtx, sourceNode, analyser, dataArray, bufferLength;
-let current = 0, playing = false;
-
-function initAudio(){
-  if(audioEl) return;
-  audioEl = new Audio();
-  audioEl.crossOrigin = "anonymous";
-  audioEl.src = AUDIO_LIST[current].src;
-  audioEl.preload = 'metadata';
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    sourceNode = audioCtx.createMediaElementSource(audioEl);
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 128;
-    bufferLength = analyser.frequencyBinCount;
-    dataArray = new Uint8Array(bufferLength);
-    sourceNode.connect(analyser); analyser.connect(audioCtx.destination);
-  } catch(e){ console.warn('WebAudio init failed', e); }
-  audioEl.addEventListener('ended', ()=> next());
-  updateMeta();
-  createWave();
-}
-
-function playPause(){
-  if(!audioEl) initAudio();
-  if(!playing){
-    if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    audioEl.play().then(()=> {
-      playing = true; $('#playBtn').textContent='⏸';
-    }).catch(e=>console.warn(e));
-  } else {
-    audioEl.pause(); playing = false; $('#playBtn').textContent='▶';
-  }
-}
-function prev(){ current = (current-1 + AUDIO_LIST.length)%AUDIO_LIST.length; switchTrack(); }
-function next(){ current = (current+1)%AUDIO_LIST.length; switchTrack(); }
-function switchTrack(){
-  if(!audioEl){ initAudio(); return; }
-  audioEl.src = AUDIO_LIST[current].src; audioEl.load();
-  if(playing) audioEl.play();
-  updateMeta();
-}
-function updateMeta(){ $('#trackTitle').textContent = AUDIO_LIST[current].title || 'Untitled'; $('#trackArtist').textContent = AUDIO_LIST[current].artist || ''; }
-
-/* waveform */
-function createWave(){
-  const container = $('#wave');
-  container.innerHTML = '';
-  const c = document.createElement('canvas'); c.width = 320; c.height = 60; c.style.width = '160px'; c.style.height = '30px';
-  container.appendChild(c);
-  const wctx = c.getContext('2d');
-  (function draw(){
-    requestAnimationFrame(draw);
-    wctx.clearRect(0,0,c.width,c.height);
-    if(!analyser){
-      wctx.fillStyle = 'rgba(0,0,0,0.05)'; wctx.fillRect(0,0,c.width,c.height);
-      wctx.fillStyle = 'rgba(201,161,91,0.06)'; wctx.fillRect(0,c.height/2-3,c.width,6);
-      return;
-    }
-    analyser.getByteFrequencyData(dataArray);
-    const barWidth = (c.width / bufferLength) * 1.2;
-    let x = 0;
-    for(let i=0;i<bufferLength;i++){
-      const v = dataArray[i]/255; const h = v * c.height;
-      const grad = wctx.createLinearGradient(0,0,0,c.height); grad.addColorStop(0,'rgba(201,161,91,0.95)'); grad.addColorStop(1,'rgba(125,80,40,0.6)');
-      wctx.fillStyle = grad;
-      wctx.fillRect(x, c.height - h, barWidth, h);
-      x += barWidth + 1;
-    }
-  })();
-}
-
-/* UI bindings */
-$('#playBtn').addEventListener('click', ()=> playPause());
-$('#prevBtn').addEventListener('click', ()=> prev());
-$('#nextBtn').addEventListener('click', ()=> next());
-
-/* init audio on first gesture for mobile */
-function initOnGesture(){
-  window.removeEventListener('touchstart', initOnGesture);
-  window.removeEventListener('click', initOnGesture);
-  if(!audioEl) initAudio();
-}
-window.addEventListener('touchstart', initOnGesture, {passive:true});
-window.addEventListener('click', initOnGesture);
-
-/* smooth nav anchors */
-$$('.nav a').forEach(a=>{
-  a.addEventListener('click', (e)=>{
+// Nav active state
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', function(e) {
     e.preventDefault();
-    const id = a.getAttribute('href').replace('#','');
-    goToSection(id);
+    document.querySelectorAll('nav a').forEach(link => link.classList.remove('active'));
+    this.classList.add('active');
+    goTo(this.getAttribute('href').substring(1));
   });
 });
 
-/* keyboard accessibility */
-window.addEventListener('keydown', (e)=>{
-  if(e.code === 'Space'){ e.preventDefault(); playPause(); }
+// Link hover effect
+document.querySelectorAll('.link-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    card.style.setProperty('--mouse-x', `${x}%`);
+    card.style.setProperty('--mouse-y', `${y}%`);
+  });
 });
-
-/* disable gesturestart default on iOS if needed */
-document.addEventListener('gesturestart', function(e){ e.preventDefault(); });
-
-/* init */
-(function init(){
-  updateCountdown('#countdownPreview'); updateCountdown('#countdownFull');
-  createWave();
-})();
 </script>
 </body>
 </html>
