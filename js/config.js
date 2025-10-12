@@ -11,9 +11,9 @@ export const SWAP_CONFIG = {
   
   branding: {
     heroText: "SWAP-BASE",
-    tagline: "STYLE WITH A PURPOSE // UNDERGROUND COLLECTIVE",
-    welcomeMessage: "Welcome to the underground. You're not supposed to be here... but we're glad you found us.",
-    aboutText: "SWAP x Heaven's Basement - Where fashion meets rebellion, and music ignites the soul."
+    tagline: "STYLE WITH A PURPOSE // SWAP-UNDERGROUND",
+    welcomeMessage: "Welcome to the underground. You're not supposed to be here... but glad you found us.",
+    aboutText: "SWAP x Heaven's Basement - What's Your Purpose?."
   },
 
   // ============================================================================
@@ -38,37 +38,37 @@ export const SWAP_CONFIG = {
   portals: [
     {
       name: "Instagram",
-      url: "https://instagram.com/yourhandle",
+      url: "https://instagram.com/chrisswap",
       emoji: "📸",
       color: 0xff7326
     },
     {
-      name: "Spotify",
-      url: "https://open.spotify.com/artist/...",
+      name: "Apple Music Playlist",
+      url: "https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG",
       emoji: "🎵",
       color: 0x1DB954
     },
     {
       name: "Tickets",
-      url: "https://www.eventbrite.com/...",
+      url: "https://www.sbrmag.com/events/swaptober",
       emoji: "🎫",
       color: 0xff7326
     },
     {
       name: "Merch Store",
-      url: "https://shop.swap...",
+      url: "https://www.mrmidwest.com/",
       emoji: "👕",
       color: 0xffffff
     },
     {
       name: "YouTube",
-      url: "https://youtube.com/@...",
+      url: "https://youtube.com/@chrisswap57?si=63x7jYqI-4alkskS",
       emoji: "📺",
       color: 0xFF0000
     },
     {
-      name: "Booking",
-      url: "mailto:booking@swap.com",
+      name: "Digital Contant",
+      url: "msha.ke/fieldschristopher",
       emoji: "📧",
       color: 0x00ff41
     }
@@ -161,12 +161,10 @@ export const SWAP_CONFIG = {
   
   countdown: {
     enabled: true,
-    targetDate: "2025-10-31T20:00:00",  // ISO format: YYYY-MM-DDTHH:MM:SS
-    eventName: "SWAPTOBER 2025",
+    targetDate: "2025-10-24T20:00:00",  // Update this to your actual event date/time
+    eventName: "SWAPTOBER:5",
     label: "COUNTDOWN TO"
   }
-
-};
 
 // ============================================================================
 // EXPORT (Don't change this)
