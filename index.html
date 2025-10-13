@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>SWAP-BASE — Heaven's Basement</title>
-<meta name="description" content="Underground Hub">
+<meta name="description" content="Underground Hub - SWAPTOBER:5 Official Site">
 <meta name="theme-color" content="#000000">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik+Mono+One&display=swap" rel="stylesheet">
 
@@ -19,6 +19,8 @@
   --pure-white: #ffffff;
   --blood-red: #DC143C;
   --dark-red: #8B0000;
+  --neon-pink: #FF1493;
+  --electric-blue: #00FFFF;
   --font-display: 'Bebas Neue', Impact, sans-serif;
   --font-stencil: 'Rubik Mono One', monospace;
   --font-mono: 'Courier New', monospace;
@@ -27,6 +29,7 @@
   --max-width: 1200px;
   --glow-gray: 0 0 20px rgba(255, 255, 255, 0.5);
   --glow-red: 0 0 20px var(--blood-red);
+  --glow-pink: 0 0 30px var(--neon-pink);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -79,16 +82,47 @@ body::after {
   66% { transform: translate(1%, -1%); }
 }
 
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes chromatic {
+  0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px var(--blood-red); }
+  25% { text-shadow: -2px 0 0 cyan, 2px 0 0 red, 0 0 40px var(--blood-red); }
+  50% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px var(--blood-red); }
+  75% { text-shadow: 2px 0 0 cyan, -2px 0 0 red, 0 0 40px var(--blood-red); }
+}
+
+/* LOADER WITH LOGO INTEGRATION */
 .loader {
   position: fixed;
   inset: 0;
-  background: var(--void-black);
+  background: linear-gradient(135deg, var(--void-black) 0%, var(--midnight) 50%, var(--void-black) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 99999;
   transition: opacity 0.5s;
+  overflow: hidden;
+}
+
+.loader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/images/logos/SWAP_Metal_Orange.png') center/40% no-repeat;
+  opacity: 0.05;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.03; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.08; transform: scale(1.05) rotate(2deg); }
 }
 
 .loader.hidden {
@@ -99,6 +133,8 @@ body::after {
 .loader-3d {
   perspective: 1000px;
   margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
 }
 
 .loader-text-3d {
@@ -124,6 +160,8 @@ body::after {
   letter-spacing: 4px;
   text-transform: uppercase;
   margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
 }
 
 .loader-bar {
@@ -133,6 +171,7 @@ body::after {
   border-radius: 2px;
   overflow: hidden;
   position: relative;
+  z-index: 1;
 }
 
 .loader-bar::after {
@@ -149,6 +188,7 @@ body::after {
   to { transform: translateX(0); }
 }
 
+/* HEADER WITH LOGO */
 header {
   position: fixed;
   top: 0;
@@ -176,11 +216,28 @@ header {
   letter-spacing: 2px;
   transition: var(--transition);
   user-select: none;
+  position: relative;
+}
+
+.logo::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  width: 30px;
+  height: 30px;
+  background: url('assets/images/logos/SWAP_Icon_Pink.png') center/contain no-repeat;
+  opacity: 0.7;
+  transition: var(--transition);
 }
 
 .logo:hover {
   transform: scale(1.05);
   text-shadow: var(--glow-gray);
+}
+
+.logo:hover::before {
+  opacity: 1;
+  transform: rotate(360deg);
 }
 
 .logo-badge {
@@ -221,6 +278,7 @@ nav a:hover, nav a.active {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
+/* FAB WITH LOGO */
 .fab {
   position: fixed;
   bottom: calc(var(--player-height) + 20px);
@@ -238,6 +296,20 @@ nav a:hover, nav a.active {
   z-index: 999;
   transition: var(--transition);
   animation: fab-float 3s ease-in-out infinite;
+  overflow: hidden;
+}
+
+.fab::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: url('assets/images/logos/SWAP_Metal_Steel.png') center/70% no-repeat;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.fab:hover::before {
+  opacity: 0.3;
 }
 
 @keyframes fab-float {
@@ -255,6 +327,7 @@ nav a:hover, nav a.active {
   transform: scale(0.9);
 }
 
+/* MAIN CONTENT */
 main {
   padding-top: var(--header-height);
   padding-bottom: calc(var(--player-height) + 30px);
@@ -271,6 +344,26 @@ main {
   position: relative;
 }
 
+.section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: url('assets/images/logos/SWAP_Particle_OrangeRed.png') center/contain no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+  animation: sectionPulse 4s ease-in-out infinite;
+}
+
+@keyframes sectionPulse {
+  0%, 100% { opacity: 0.05; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.12; transform: translateX(-50%) scale(1.2); }
+}
+
+/* HERO SECTION WITH BACKGROUND */
 .hero-container {
   max-width: var(--max-width);
   width: 100%;
@@ -295,7 +388,9 @@ main {
   position: relative;
   width: 100%;
   height: 100%;
-  background: var(--void-black);
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('assets/images/Hero.jpg.PNG');
+  background-size: cover;
+  background-position: center;
   border-radius: clamp(8px, 2vw, 12px);
   overflow: hidden;
   display: flex;
@@ -305,9 +400,26 @@ main {
   padding: 20px;
 }
 
+.crt-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/images/logos/SWAP_Metal_Purple.png') center/30% no-repeat;
+  opacity: 0.03;
+  pointer-events: none;
+  animation: heroLogoPulse 5s ease-in-out infinite;
+}
+
+@keyframes heroLogoPulse {
+  0%, 100% { opacity: 0.02; transform: scale(1); }
+  50% { opacity: 0.06; transform: scale(1.1); }
+}
+
 .hero-logo-wrapper {
   perspective: 1000px;
   margin-bottom: 30px;
+  position: relative;
+  z-index: 10;
 }
 
 .hero-logo-3d {
@@ -321,10 +433,10 @@ main {
 }
 
 @keyframes heroRotate {
-  0%, 100% { transform: rotateY(0deg) rotateX(0deg) scale(1); }
-  25% { transform: rotateY(90deg) rotateX(5deg) scale(1.05); }
-  50% { transform: rotateY(180deg) rotateX(0deg) scale(1.1); }
-  75% { transform: rotateY(270deg) rotateX(-5deg) scale(1.05); }
+  0%, 100% { transform: rotateY(0deg) rotateX(0deg) scale(1); filter: brightness(1); }
+  25% { transform: rotateY(90deg) rotateX(5deg) scale(1.05); filter: brightness(1.2); }
+  50% { transform: rotateY(180deg) rotateX(0deg) scale(1.1); filter: brightness(1.4); }
+  75% { transform: rotateY(270deg) rotateX(-5deg) scale(1.05); filter: brightness(1.2); }
 }
 
 .hero-content {
@@ -341,12 +453,7 @@ main {
   margin-bottom: 16px;
   color: var(--pure-white);
   text-shadow: var(--glow-gray), var(--glow-red);
-  animation: titlePulse 4s ease-in-out infinite;
-}
-
-@keyframes titlePulse {
-  0%, 100% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px var(--blood-red); }
-  50% { text-shadow: 0 0 40px rgba(255, 255, 255, 0.8), 0 0 80px var(--blood-red); }
+  animation: chromatic 4s ease-in-out infinite;
 }
 
 .hero-subtitle {
@@ -354,12 +461,14 @@ main {
   color: var(--silver);
   margin-bottom: 25px;
   line-height: 1.6;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hero-subtitle strong {
   color: var(--glossy-gray);
   font-weight: 900;
   text-transform: uppercase;
+  text-shadow: var(--glow-pink);
 }
 
 .press-btn {
@@ -377,6 +486,21 @@ main {
   transition: var(--transition);
   text-transform: uppercase;
   touch-action: manipulation;
+  position: relative;
+  overflow: hidden;
+}
+
+.press-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/images/logos/SWAP_Particle_BlueGreen.png') center/80% no-repeat;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.press-btn:hover::before {
+  opacity: 0.15;
 }
 
 .press-btn:active {
@@ -405,7 +529,7 @@ main {
   font-weight: 900;
   color: var(--glossy-gray);
   font-family: var(--font-display);
-  text-shadow: var(--glow-gray);
+  text-shadow: 0 2px 6px rgba(255, 255, 255, 0.3);
 }
 
 .mini-countdown .label {
@@ -424,6 +548,7 @@ main {
   opacity: 0.4;
 }
 
+/* COUNTDOWN SECTION - LESS GLOW */
 .countdown-wrapper {
   max-width: 900px;
   width: 100%;
@@ -438,7 +563,7 @@ main {
   letter-spacing: clamp(4px, 2vw, 8px);
   margin-bottom: 16px;
   color: var(--pure-white);
-  text-shadow: var(--glow-gray);
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.4), 0 4px 30px var(--blood-red);
   position: relative;
   display: inline-block;
   animation: glowTitle 2s ease-out forwards;
@@ -448,7 +573,7 @@ main {
 @keyframes glowTitle {
   to {
     opacity: 1;
-    text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px var(--blood-red);
+    text-shadow: 0 2px 30px rgba(255, 255, 255, 0.5), 0 4px 40px var(--blood-red);
   }
 }
 
@@ -479,12 +604,12 @@ main {
 }
 
 .countdown-cell {
-  background: rgba(26, 26, 26, 0.8);
+  background: rgba(26, 26, 26, 0.85);
   backdrop-filter: blur(10px);
   padding: clamp(20px, 5vw, 35px) clamp(15px, 4vw, 25px);
   border-radius: 8px;
   border: 2px solid var(--steel);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.03);
   transition: var(--transition);
 }
 
@@ -497,7 +622,7 @@ main {
   font-weight: 900;
   font-family: var(--font-display);
   color: var(--blood-red);
-  text-shadow: 0 0 20px var(--blood-red), 0 0 40px var(--blood-red);
+  text-shadow: 0 2px 8px rgba(220, 20, 60, 0.5);
   line-height: 1;
 }
 
@@ -510,6 +635,7 @@ main {
   font-family: var(--font-mono);
 }
 
+/* LINKS SECTION */
 .links-wrapper {
   max-width: var(--max-width);
   width: 100%;
@@ -559,6 +685,23 @@ main {
   transition: opacity var(--transition);
 }
 
+.link-card::after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: url('assets/images/logos/SWAP_Icon_Red.png') center/contain no-repeat;
+  opacity: 0.05;
+  transition: var(--transition);
+}
+
+.link-card:hover::after {
+  opacity: 0.2;
+  transform: rotate(180deg);
+}
+
 .link-card:active::before {
   opacity: 1;
 }
@@ -593,6 +736,7 @@ main {
   font-family: var(--font-mono);
 }
 
+/* GAMES SECTION */
 .games-wrapper {
   max-width: 900px;
   width: 100%;
@@ -625,6 +769,19 @@ main {
   background: repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(255, 255, 255, 0.03) 15px, rgba(255, 255, 255, 0.03) 30px);
   opacity: 0;
   transition: opacity var(--transition);
+}
+
+.game-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: url('assets/images/logos/SWAP_Glitch_BlueOrange.png') center/contain no-repeat;
+  opacity: 0.02;
+  pointer-events: none;
 }
 
 .game-card:active::before {
@@ -672,6 +829,7 @@ main {
   box-shadow: none;
 }
 
+/* AUDIO PLAYER */
 .player {
   position: fixed;
   bottom: 15px;
@@ -772,6 +930,7 @@ main {
   }
 }
 
+/* FOOTER */
 footer {
   background: var(--void-black);
   border-top: 2px solid var(--steel);
@@ -779,6 +938,18 @@ footer {
   text-align: center;
   position: relative;
   margin-bottom: calc(var(--player-height) + 30px);
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  background: url('assets/images/logos/SWAP_Metal_Orange.png') center/contain no-repeat;
+  opacity: 0.08;
 }
 
 .copyright {
@@ -983,7 +1154,7 @@ const CONFIG = {
     tracks: [
       { title: 'Chris2 — SWAP Mix', artist: 'ChrisSWAP', file: 'assets/music/chris2.mp3' },
       { title: 'Chris7 — SWAP Mix', artist: 'ChrisSWAP', file: 'assets/music/chris 7.mp3' },
-      { title: 'Yoncé 2x — Prod. JoeyOrigami', artist: 'ChrisSWAP', file: 'assets/music//ChrisSwap - Yoncé 2x - Prod. by JoeyOrigami (beat by Justinxshon).mp3' },
+      { title: 'Yoncé 2x — Prod. JoeyOrigami', artist: 'ChrisSWAP', file: 'assets/music/ChrisSwap - Yoncé 2x - Prod. by JoeyOrigami (beat by Justinxshon).mp3' },
       { title: 'WY2 — Prod. Infinite.E', artist: 'ChrisSWAP', file: 'assets/music/WY2- ChrisSWAP prod. By Infinite.E.mp3' },
       { title: 'Beat 4 SWAP (Ouchees)', artist: 'ChrisSWAP', file: 'assets/music/beat 4 swap (ouchees) prod by chase dollas.mp3' },
       { title: 'Ribbon Sky', artist: 'Justinxshon x ChrisSWAP', file: 'assets/music/ribbonsky - Justinxshon x ChrisSWAP.mp3' }
@@ -1380,9 +1551,10 @@ const App = {
     STATE.ui.trackArtist = DOM.get('#trackArtist');
   },
   init: () => {
-    console.log('🔥 SWAP-BASE V4.0');
-    console.log('📐 Sacred Geometry');
-    console.log('📱 Mobile-First Design');
+    console.log('🔥 SWAP-BASE V5.0 FINAL');
+    console.log('📐 Sacred Geometry Enabled');
+    console.log('🎨 Logo Assets Integrated');
+    console.log('📱 Mobile-First + Hardcore Design');
     App.cacheElements();
     Loader.init();
     GeometricBg.init();
@@ -1396,7 +1568,7 @@ const App = {
         if (!STATE.audio.isInitialized) AudioPlayer.init();
       }, { once: true, passive: true });
     });
-    console.log('✅ READY');
+    console.log('✅ SWAP-BASE READY');
   }
 };
 
