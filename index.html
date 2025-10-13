@@ -2,59 +2,45 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>SWAP-BASE — Heaven's Basement × SWAP</title>
-<meta name="description" content="Underground">
-<meta name="theme-color" content="#0a0a0f">
-
-<!-- OPTIONAL: Uncomment for custom font (removable for offline use) -->
-<!-- <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"> -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWAP-BASE — Heaven's Basement</title>
+<meta name="description" content="Underground hub for music, tech, fashion & community">
+<meta name="theme-color" content="#000000">
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Rubik+Mono+One&family=Bebas+Neue&display=swap" rel="stylesheet">
 
 <style>
 /* =============================================================================
-   CUSTOMIZATION MAP — Edit these CSS variables to change the entire vibe
+   SWAP-BASE V3.0 - GRUNGE HORROR EDITION
+   Skate × Horror × Underground Rave Aesthetic
+   Color Palette: Black, Red, White/Gray ONLY
    ============================================================================= */
+
 :root {
-  /* Colors */
-  --bg-dark: #0a0a0f;
-  --bg-medium: #14141c;
-  --accent-warm: #d4a574;      /* Warm metallic gold */
-  --accent-hot: #ff7326;        /* Orange highlight */
-  --chrome-bright: #e8ecf0;     /* Bright chrome text */
-  --chrome-dim: #9ba3aa;        /* Dimmed chrome */
-  --glass-bg: rgba(20, 20, 28, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Core Colors - COHESIVE PALETTE */
+  --blood-red: #DC143C;
+  --dark-red: #8B0000;
+  --void-black: #000000;
+  --midnight: #0a0a0a;
+  --concrete-gray: #1a1a1a;
+  --glossy-white: #E8E8E8;
+  --steel-gray: #666666;
   
   /* Typography */
-  --font-mono: 'Courier New', 'Share Tech Mono', monospace;
-  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-horror: 'Creepster', cursive;
+  --font-display: 'Bebas Neue', Impact, sans-serif;
+  --font-stencil: 'Rubik Mono One', monospace;
+  --font-mono: 'Courier New', monospace;
   
-  /* Spacing & Sizing */
-  --header-height: 72px;
-  --player-height: 64px;
-  --max-width: 1100px;
-  --radius-lg: 16px;
-  --radius-md: 12px;
-  --radius-sm: 8px;
+  /* Layout */
+  --header-height: 70px;
+  --player-height: 70px;
+  --max-width: 1200px;
   
-  /* Animation */
-  --transition-fast: 0.2s ease;
-  --transition-medium: 0.4s ease;
-  
-  /* Performance */
-  --particle-count: 24;
-  --particle-opacity: 0.12;
+  /* Effects */
+  --glow-red: 0 0 20px var(--blood-red), 0 0 40px var(--dark-red);
+  --shadow-deep: 0 10px 50px rgba(0, 0, 0, 0.9);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* THEME B: Warm Underground Glow (uncomment to activate)
-:root {
-  --bg-dark: #0f0a08;
-  --bg-medium: #1c1410;
-  --accent-warm: #e8b960;
-  --accent-hot: #ff8c42;
-  --chrome-bright: #f0e8dc;
-}
-*/
 
 * {
   margin: 0;
@@ -67,43 +53,119 @@ html {
 }
 
 body {
-  font-family: var(--font-ui);
-  background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
-  color: var(--chrome-bright);
+  font-family: var(--font-mono);
+  background: var(--void-black);
+  color: var(--glossy-white);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
 /* =============================================================================
-   LOADING SPINNER
+   BLOOD TEXTURE OVERLAY
+   ============================================================================= */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(220, 20, 60, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(139, 0, 0, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Grunge Grain */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.03"/></svg>');
+  pointer-events: none;
+  z-index: 1;
+  animation: grain 0.2s steps(4) infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1%, -1%); }
+  50% { transform: translate(1%, 1%); }
+  75% { transform: translate(-1%, 1%); }
+}
+
+/* =============================================================================
+   LOADING SCREEN - Blood Wipe
    ============================================================================= */
 .loader {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.96);
-  display: none;
+  background: var(--void-black);
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(8px);
+  z-index: 99999;
+  transition: opacity 0.5s;
 }
-.loader.active { display: flex; }
-.spinner {
-  width: 52px;
-  height: 52px;
-  border: 3px solid rgba(212, 165, 116, 0.2);
-  border-top-color: var(--accent-warm);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+
+.loader.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
+
+.loader-logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 40px;
+  filter: drop-shadow(var(--glow-red));
+  animation: pulse-logo 2s ease-in-out infinite;
+}
+
+@keyframes pulse-logo {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px var(--blood-red)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 40px var(--blood-red)); }
+}
+
+.loader-text {
+  font-family: var(--font-stencil);
+  font-size: 14px;
+  color: var(--blood-red);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  animation: flicker-text 0.5s infinite;
+}
+
+@keyframes flicker-text {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.loader-bar {
+  width: 300px;
+  height: 6px;
+  background: var(--concrete-gray);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--dark-red), var(--blood-red));
+  transform: translateX(-100%);
+  animation: loading 2s ease-in-out forwards;
+  box-shadow: var(--glow-red);
+}
+
+@keyframes loading {
+  to { transform: translateX(0); }
 }
 
 /* =============================================================================
-   HEADER - Fixed navigation bar
+   HEADER - Glossy Dark Bar
    ============================================================================= */
 header {
   position: fixed;
@@ -111,99 +173,151 @@ header {
   left: 0;
   right: 0;
   height: var(--header-height);
-  padding: 0 20px;
+  padding: 0 30px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
+  gap: 20px;
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.95), rgba(0, 0, 0, 0.98));
+  backdrop-filter: blur(20px);
+  border-bottom: 2px solid var(--dark-red);
+  box-shadow: var(--shadow-deep);
   z-index: 1000;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 16px;
-  letter-spacing: 2px;
-  font-weight: bold;
-  transition: var(--transition-fast);
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: 3px;
+  transition: var(--transition);
+  user-select: none;
 }
+
 .logo:hover {
-  transform: scale(1.02);
+  transform: scale(1.05);
+  text-shadow: var(--glow-red);
 }
+
 .logo-badge {
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  color: #000;
+  background: linear-gradient(135deg, var(--dark-red), var(--blood-red));
+  padding: 10px 20px;
+  border-radius: 4px;
+  color: var(--glossy-white);
   font-weight: 900;
+  box-shadow: var(--glow-red);
+  position: relative;
+}
+
+.logo-badge::after {
+  content: 'RESTRICTED';
+  position: absolute;
+  top: -14px;
+  right: -10px;
+  font-size: 9px;
+  background: var(--glossy-white);
+  color: var(--void-black);
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 900;
+  transform: rotate(8deg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 nav {
   margin-left: auto;
   display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
+
 nav a {
-  padding: 8px 14px;
-  color: var(--chrome-dim);
+  padding: 10px 18px;
+  color: var(--steel-gray);
   text-decoration: none;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   font-size: 13px;
-  letter-spacing: 1px;
-  font-weight: 600;
-  transition: var(--transition-fast);
-  cursor: pointer;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-family: var(--font-stencil);
+  text-transform: uppercase;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  position: relative;
 }
+
+nav a::before {
+  content: '▶';
+  position: absolute;
+  left: 6px;
+  opacity: 0;
+  transition: var(--transition);
+  color: var(--blood-red);
+}
+
 nav a:hover, nav a.active {
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--accent-warm);
+  background: rgba(220, 20, 60, 0.1);
+  border-color: var(--blood-red);
+  color: var(--glossy-white);
+  text-shadow: 0 0 10px var(--blood-red);
+  box-shadow: 0 0 20px rgba(220, 20, 60, 0.3);
+}
+
+nav a:hover::before, nav a.active::before {
+  opacity: 1;
 }
 
 /* =============================================================================
-   BACK TO TOP BUTTON
+   FAB BUTTON - Blood Drop
    ============================================================================= */
-.back-btn {
+.fab {
   position: fixed;
-  bottom: calc(var(--player-height) + 20px);
-  right: 20px;
-  width: 52px;
-  height: 52px;
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
-  border: none;
+  bottom: calc(var(--player-height) + 30px);
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+  border: 2px solid var(--glossy-white);
   border-radius: 50%;
-  color: #000;
-  font-size: 24px;
-  font-weight: bold;
+  color: var(--glossy-white);
+  font-size: 28px;
+  font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(212, 165, 116, 0.4);
+  box-shadow: var(--glow-red), var(--shadow-deep);
   z-index: 999;
-  transition: var(--transition-medium);
-  animation: pulse-glow 2.5s ease-in-out infinite;
+  transition: var(--transition);
+  animation: drip-pulse 3s ease-in-out infinite;
 }
-.back-btn:hover {
-  transform: scale(1.08) translateY(-2px);
+
+@keyframes drip-pulse {
+  0%, 100% { 
+    box-shadow: var(--glow-red), var(--shadow-deep);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 40px var(--blood-red), 0 0 80px var(--dark-red), var(--shadow-deep);
+    transform: scale(1.1);
+  }
 }
-.back-btn:active {
-  transform: scale(0.96);
+
+.fab:hover {
+  transform: scale(1.15) rotate(15deg);
+  box-shadow: 0 0 60px var(--blood-red), 0 0 100px var(--dark-red);
 }
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 8px 32px rgba(212, 165, 116, 0.4); }
-  50% { box-shadow: 0 8px 48px rgba(212, 165, 116, 0.7), 0 0 60px rgba(255, 115, 38, 0.3); }
+
+.fab:active {
+  transform: scale(0.95);
 }
 
 /* =============================================================================
-   MAIN CONTENT WRAPPER
+   MAIN LAYOUT
    ============================================================================= */
 main {
   padding-top: var(--header-height);
-  padding-bottom: calc(var(--player-height) + 20px);
+  padding-bottom: calc(var(--player-height) + 40px);
   position: relative;
+  z-index: 2;
 }
 
 .section {
@@ -211,200 +325,188 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  padding: 80px 30px;
   position: relative;
-  overflow: hidden;
 }
 
 /* =============================================================================
-   FIBONACCI SPIRAL BACKGROUND (Canvas-based geometric animation)
+   HERO SECTION - CRT Monitor
    ============================================================================= */
-#bgCanvas {
-  /* =============================================================================
-   FLOATING HERO LOGO - Living background element
-   ============================================================================= */
-#heroLogo {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(500px, 60vw, 900px);
-  height: auto;
-  opacity: 0.25;
-  z-index: 0;
-  pointer-events: none;
-  filter: blur(1px) brightness(1.3) contrast(1.2);
-  mix-blend-mode: screen;
-  animation: 
-    hero-float 12s ease-in-out infinite,
-    hero-glow-strong 3s ease-in-out infinite;
+#hero {
+  background: radial-gradient(circle at 50% 50%, rgba(139, 0, 0, 0.15) 0%, transparent 70%);
 }
 
-@keyframes hero-glow-strong {
-  0%, 100% {
-    filter: blur(1px) brightness(1.3) contrast(1.2) drop-shadow(0 0 60px rgba(212, 165, 116, 0.6));
-    opacity: 0.25;
-  }
-  50% {
-    filter: blur(2px) brightness(1.5) contrast(1.3) drop-shadow(0 0 120px rgba(212, 165, 116, 1));
-    opacity: 0.35;
-  }
-}
-  
-  /* Glowing pulse animation */
-  animation: 
-    hero-float 12s ease-in-out infinite,
-    hero-glow 4s ease-in-out infinite,
-    hero-rotate 40s linear infinite;
-}
-
-/* Floating motion */
-@keyframes hero-float {
-  0%, 100% {
-    transform: translate(-50%, -50%) translateY(0px) scale(1);
-  }
-  25% {
-    transform: translate(-50%, -50%) translateY(-20px) scale(1.02);
-  }
-  50% {
-    transform: translate(-50%, -50%) translateY(-10px) scale(1.05);
-  }
-  75% {
-    transform: translate(-50%, -50%) translateY(-15px) scale(1.03);
-  }
-}
-
-/* Pulsing glow */
-@keyframes hero-glow {
-  0%, 100% {
-    filter: blur(2px) brightness(1.2) contrast(1.1) drop-shadow(0 0 40px rgba(212, 165, 116, 0.4));
-    opacity: 0.15;
-  }
-  50% {
-    filter: blur(3px) brightness(1.4) contrast(1.2) drop-shadow(0 0 80px rgba(212, 165, 116, 0.7));
-    opacity: 0.22;
-  }
-}
-
-/* Slow rotation */
-@keyframes hero-rotate {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-/* Mobile optimization */
-@media (max-width: 768px) {
-  #heroLogo {
-    width: 80vw;
-    opacity: 0.1;
-    filter: blur(3px) brightness(1.1);
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  #heroLogo {
-    animation: none;
-    transform: translate(-50%, -50%);
-  }
-}
-
-/* =============================================================================
-   HERO SECTION - CRT Frame with rotating glow
-   ============================================================================= */
-.hero-crt {
+.hero-container {
   max-width: var(--max-width);
   width: 100%;
-  aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.3));
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--glass-border);
-  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.9);
   position: relative;
-  overflow: hidden;
+  z-index: 10;
+}
+
+.crt-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(145deg, #2a2a2a, #0f0f0f);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 
+    0 0 0 4px #3a3a3a,
+    0 0 0 8px #1a1a1a,
+    0 40px 120px rgba(0, 0, 0, 0.9),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1);
 }
 
 .crt-screen {
-  position: absolute;
-  inset: 14px;
-  background: #000;
-  border-radius: calc(var(--radius-lg) - 4px);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--void-black);
+  border-radius: 12px;
+  overflow: hidden;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-
-/* Scanlines on top of image */
-.scanlines {
-  z-index: 2;
 }
 
-/* Content on top */
+/* Logo Mashup */
+.hero-logo {
+  width: 50%;
+  max-width: 400px;
+  height: auto;
+  filter: drop-shadow(var(--glow-red));
+  animation: logo-glitch 6s ease-in-out infinite;
+  margin-bottom: 30px;
+}
+
+@keyframes logo-glitch {
+  0%, 90%, 100% { 
+    transform: translate(0);
+    filter: drop-shadow(0 0 30px var(--blood-red));
+  }
+  91% { 
+    transform: translate(-4px, 4px);
+    filter: drop-shadow(0 0 40px var(--blood-red)) hue-rotate(20deg);
+  }
+  93% { 
+    transform: translate(4px, -4px);
+    filter: drop-shadow(0 0 40px var(--dark-red)) hue-rotate(-20deg);
+  }
+  95% { 
+    transform: translate(-2px, 2px);
+  }
+}
+
 .hero-content {
+  text-align: center;
+  max-width: 90%;
+  padding: 0 20px;
   position: relative;
   z-index: 10;
-  text-align: center;
-  max-width: 85%;
-  padding: 24px;
 }
 
-/* Enhance text shadow for contrast */
 .hero-title {
-  font-family: var(--font-mono);
-  font-size: clamp(28px, 7vw, 58px);
-  letter-spacing: 4px;
-  margin-bottom: 18px;
-  color: var(--chrome-bright);
+  font-family: var(--font-display);
+  font-size: clamp(36px, 9vw, 80px);
+  letter-spacing: 8px;
+  margin-bottom: 20px;
+  color: var(--glossy-white);
   text-shadow: 
-    0 0 40px rgba(212, 165, 116, 0.9),
-    0 0 80px rgba(255, 115, 38, 0.6),
-    0 4px 12px rgba(0, 0, 0, 0.9);
-  animation: title-glow 3.5s ease-in-out infinite;
+    0 0 20px var(--blood-red),
+    0 0 40px var(--dark-red),
+    0 4px 15px rgba(0, 0, 0, 0.9);
+  animation: title-glow 4s ease-in-out infinite;
 }
-}@media (max-width: 768px) {
-  .crt-screen {
-    background-position: center center;
-    background-size: cover;
+
+@keyframes title-glow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 20px var(--blood-red),
+      0 0 40px var(--dark-red),
+      0 4px 15px rgba(0, 0, 0, 0.9);
   }
-  
-  .crt-screen::after {
-    background: rgba(0, 0, 0, 0.75); /* Darker on mobile for readability */
+  50% { 
+    text-shadow: 
+      0 0 40px var(--blood-red),
+      0 0 80px var(--dark-red),
+      0 4px 20px rgba(0, 0, 0, 0.9);
   }
 }
 
-/* Mini countdown preview on hero */
+.hero-subtitle {
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: var(--steel-gray);
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.hero-subtitle strong {
+  color: var(--blood-red);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.press-btn {
+  background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+  border: 2px solid var(--glossy-white);
+  padding: 18px 50px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 4px;
+  color: var(--glossy-white);
+  font-weight: 900;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: var(--glow-red), var(--shadow-deep);
+  transition: var(--transition);
+  text-transform: uppercase;
+}
+
+.press-btn:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 0 60px var(--blood-red), 0 0 100px var(--dark-red);
+}
+
+.press-btn:active {
+  transform: scale(0.95);
+}
+
+/* Mini Countdown */
 .mini-countdown {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: center;
-  margin-top: 24px;
+  margin-top: 30px;
   flex-wrap: wrap;
 }
+
 .mini-countdown .cell {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  min-width: 54px;
+  background: rgba(26, 26, 26, 0.9);
+  border: 2px solid var(--dark-red);
+  padding: 10px 16px;
+  border-radius: 6px;
+  min-width: 70px;
   text-align: center;
 }
+
 .mini-countdown .num {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 900;
-  color: var(--accent-warm);
-}
-.mini-countdown .label {
-  font-size: 9px;
-  color: var(--chrome-dim);
-  text-transform: uppercase;
-  margin-top: 2px;
+  color: var(--blood-red);
+  font-family: var(--font-display);
+  text-shadow: 0 0 10px var(--blood-red);
 }
 
-/* CRT scanlines */
+.mini-countdown .label {
+  font-size: 10px;
+  color: var(--steel-gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* Scanlines */
 .scanlines {
   position: absolute;
   inset: 0;
@@ -412,21 +514,27 @@ main {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.12) 2px,
-    rgba(0, 0, 0, 0.12) 4px
+    rgba(0, 0, 0, 0.15) 2px,
+    rgba(0, 0, 0, 0.15) 4px
   );
   pointer-events: none;
-  opacity: 0.55;
-  animation: scanline-flicker 8s linear infinite;
+  z-index: 20;
+  opacity: 0.6;
+  animation: scanline-move 8s linear infinite;
 }
-@keyframes scanline-flicker {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.45; }
+
+@keyframes scanline-move {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
 }
 
 /* =============================================================================
-   FULL COUNTDOWN SECTION
+   COUNTDOWN SECTION
    ============================================================================= */
+#countdown {
+  background: radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.1) 0%, transparent 70%);
+}
+
 .countdown-wrapper {
   max-width: 900px;
   width: 100%;
@@ -435,59 +543,95 @@ main {
   z-index: 10;
 }
 
-.countdown-title {
-  font-family: var(--font-mono);
-  font-size: clamp(26px, 5.5vw, 44px);
-  letter-spacing: 3px;
-  margin-bottom: 12px;
-  color: var(--chrome-bright);
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 9vw, 72px);
+  letter-spacing: 8px;
+  margin-bottom: 20px;
+  color: var(--glossy-white);
+  text-shadow: var(--glow-red);
+  position: relative;
+  display: inline-block;
+  animation: glow-on-scroll 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes glow-on-scroll {
+  to {
+    opacity: 1;
+    text-shadow: 
+      0 0 30px var(--blood-red),
+      0 0 60px var(--dark-red);
+  }
+}
+
+.section-title.visible {
+  animation: glow-on-scroll 1s ease-out forwards;
 }
 
 .countdown-subtitle {
-  font-size: 15px;
-  color: var(--chrome-dim);
-  margin-bottom: 36px;
+  font-size: 16px;
+  color: var(--steel-gray);
+  margin-bottom: 50px;
+  font-family: var(--font-mono);
+  letter-spacing: 3px;
 }
 
 .countdown-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 14px;
-  max-width: 600px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 24px;
+  max-width: 750px;
   margin: 0 auto;
 }
 
 .countdown-cell {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  padding: 20px 16px;
-  border-radius: var(--radius-md);
-  border: 2px solid var(--glass-border);
-  transition: var(--transition-medium);
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 35px 25px;
+  border-radius: 12px;
+  border: 3px solid var(--dark-red);
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.8),
+    inset 0 0 30px rgba(220, 20, 60, 0.1);
+  transition: var(--transition);
 }
+
 .countdown-cell:hover {
-  border-color: var(--accent-warm);
-  transform: translateY(-2px);
+  transform: translateY(-10px) scale(1.05);
+  border-color: var(--blood-red);
+  box-shadow: 
+    0 20px 60px rgba(220, 20, 60, 0.4),
+    inset 0 0 50px rgba(220, 20, 60, 0.2);
 }
 
 .countdown-number {
-  font-size: clamp(34px, 7vw, 52px);
+  font-size: clamp(56px, 12vw, 84px);
   font-weight: 900;
-  color: var(--accent-hot);
-  text-shadow: 0 0 28px rgba(255, 115, 38, 0.6);
+  font-family: var(--font-display);
+  color: var(--blood-red);
+  text-shadow: 
+    0 0 20px var(--blood-red),
+    0 0 40px var(--dark-red);
+  line-height: 1;
 }
 
 .countdown-label {
-  font-size: 11px;
-  color: var(--chrome-dim);
+  font-size: 13px;
+  color: var(--steel-gray);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 6px;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
 }
 
 /* =============================================================================
-   LINKS HUB SECTION
+   LINKS SECTION
    ============================================================================= */
+#links {
+  background: radial-gradient(circle at 50% 50%, rgba(139, 0, 0, 0.12) 0%, transparent 70%);
+}
+
 .links-wrapper {
   max-width: var(--max-width);
   width: 100%;
@@ -495,74 +639,84 @@ main {
   z-index: 10;
 }
 
-.section-title {
-  font-family: var(--font-mono);
-  font-size: clamp(24px, 5vw, 36px);
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 32px;
-  color: var(--chrome-bright);
-}
-
 .links-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .link-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border: 2px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  padding: 22px;
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(15px);
+  border: 2px solid var(--concrete-gray);
+  border-radius: 12px;
+  padding: 32px;
   text-decoration: none;
   color: inherit;
   position: relative;
   overflow: hidden;
-  transition: var(--transition-medium);
+  transition: var(--transition);
   cursor: pointer;
 }
+
 .link-card::before {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(
     circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(212, 165, 116, 0.16),
+    rgba(220, 20, 60, 0.2),
     transparent 60%
   );
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--transition);
 }
+
 .link-card:hover::before {
   opacity: 1;
 }
+
 .link-card:hover {
-  border-color: var(--accent-warm);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(212, 165, 116, 0.25);
+  border-color: var(--blood-red);
+  transform: translateY(-8px);
+  box-shadow: 
+    0 20px 50px rgba(220, 20, 60, 0.3),
+    0 0 80px rgba(139, 0, 0, 0.2);
 }
 
 .link-card h3 {
-  font-size: 19px;
-  margin-bottom: 10px;
+  font-size: 24px;
+  margin-bottom: 12px;
   position: relative;
   z-index: 1;
-  color: var(--chrome-bright);
+  color: var(--glossy-white);
+  font-family: var(--font-display);
+  letter-spacing: 2px;
+  transition: var(--transition);
 }
+
+.link-card:hover h3 {
+  color: var(--blood-red);
+  text-shadow: 0 0 15px var(--blood-red);
+}
+
 .link-card p {
-  font-size: 14px;
-  color: var(--accent-warm);
+  font-size: 15px;
+  color: var(--steel-gray);
   position: relative;
   z-index: 1;
+  font-family: var(--font-mono);
 }
 
 /* =============================================================================
    GAMES SECTION
    ============================================================================= */
+#games {
+  background: radial-gradient(circle at 50% 50%, rgba(220, 20, 60, 0.08) 0%, transparent 70%);
+}
+
 .games-wrapper {
-  max-width: 800px;
+  max-width: 950px;
   width: 100%;
   text-align: center;
   position: relative;
@@ -570,136 +724,150 @@ main {
 }
 
 .game-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border: 2px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  padding: 28px;
-  margin-bottom: 18px;
+  background: rgba(26, 26, 26, 0.8);
+  backdrop-filter: blur(15px);
+  border: 3px solid var(--dark-red);
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 28px;
   text-decoration: none;
   color: inherit;
   display: block;
-  transition: var(--transition-medium);
+  transition: var(--transition);
   cursor: pointer;
-}
-.game-card:hover {
-  border-color: var(--accent-warm);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(212, 165, 116, 0.25);
-}
-.game-card h3 {
-  font-size: 20px;
-  margin-bottom: 14px;
-  color: var(--chrome-bright);
-}
-.game-card p {
-  font-size: 14px;
-  color: var(--chrome-dim);
-  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
 }
 
-/* =============================================================================
-   PERSISTENT MUSIC PLAYER - Compact glassy bar at bottom
-   ============================================================================= */
-/* =============================================================================
-   PERSISTENT MUSIC PLAYER - iOS 18 Glassmorphic Style
-   ============================================================================= */
-.player {
-  position: fixed;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
-  height: var(--player-height);
-  
-  /* iOS-style glass effect */
-  background: rgba(20, 20, 28, 0.72);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  
-  /* Subtle border with gradient */
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 20px;
-  
-  /* Inner glow + outer shadow */
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-    0 20px 60px rgba(0, 0, 0, 0.6),
-    0 0 80px rgba(212, 165, 116, 0.15);
-  
-  padding: 0 16px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  z-index: 1000;
-  
-  /* Smooth transitions */
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Hover state - subtle lift */
-.player:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
-    0 24px 72px rgba(0, 0, 0, 0.7),
-    0 0 100px rgba(212, 165, 116, 0.25);
-  border-color: rgba(255, 255, 255, 0.22);
-}
-
-/* Add a subtle inner shine effect */
-.player::before {
+.game-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    transparent 100%
-  );
-  border-radius: 20px 20px 0 0;
-  pointer-events: none;
+  inset: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 15px,
+      rgba(220, 20, 60, 0.05) 15px,
+      rgba(220, 20, 60, 0.05) 30px
+    );
+  opacity: 0;
+  transition: opacity var(--transition);
 }
 
-.player-controls {
-  display: flex;
-  gap: 6px;
-  align-items: center;
+.game-card:hover::before {
+  opacity: 1;
+}
+
+.game-card:hover {
+  border-color: var(--blood-red);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 
+    0 25px 70px rgba(220, 20, 60, 0.4),
+    0 0 100px rgba(139, 0, 0, 0.3);
+}
+
+.game-card h3 {
+  font-size: 28px;
+  margin-bottom: 18px;
+  color: var(--glossy-white);
+  font-family: var(--font-display);
+  letter-spacing: 4px;
+  position: relative;
+  z-index: 1;
+  transition: var(--transition);
+}
+
+.game-card:hover h3 {
+  color: var(--blood-red);
+  text-shadow: 0 0 20px var(--blood-red);
+}
+
+.game-card p {
+  font-size: 16px;
+  color: var(--steel-gray);
+  line-height: 1.8;
   position: relative;
   z-index: 1;
 }
 
+.game-card.disabled {
+  cursor: default;
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.game-card.disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.game-card.disabled h3:hover {
+  color: var(--glossy-white);
+  text-shadow: none;
+}
+
+/* =============================================================================
+   MUSIC PLAYER - Glossy Blood Bar
+   ============================================================================= */
+.player {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  height: var(--player-height);
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.95), rgba(10, 10, 10, 0.98));
+  backdrop-filter: blur(30px) saturate(150%);
+  border: 2px solid var(--dark-red);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.9),
+    0 0 80px rgba(139, 0, 0, 0.2);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.player:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 24px 72px rgba(0, 0, 0, 0.95),
+    0 0 100px rgba(220, 20, 60, 0.4);
+  border-color: var(--blood-red);
+}
+
+.player-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .player-btn {
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 2px solid var(--concrete-gray);
   border-radius: 10px;
-  color: var(--chrome-bright);
+  color: var(--glossy-white);
   font-size: 20px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: var(--transition);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .player-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.08);
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    0 4px 12px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(212, 165, 116, 0.3);
+  background: rgba(220, 20, 60, 0.2);
+  border-color: var(--blood-red);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
 }
 
 .player-btn:active {
@@ -707,147 +875,152 @@ main {
 }
 
 .player-btn.play {
-  background: linear-gradient(135deg, var(--accent-warm), var(--accent-hot));
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #000;
+  background: linear-gradient(135deg, var(--blood-red), var(--dark-red));
+  border-color: var(--glossy-white);
+  color: var(--glossy-white);
   font-size: 24px;
-  width: 46px;
-  height: 46px;
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 4px 16px rgba(212, 165, 116, 0.4),
-    0 0 30px rgba(212, 165, 116, 0.2);
+  width: 50px;
+  height: 50px;
+  box-shadow: var(--glow-red);
 }
 
 .player-btn.play:hover {
-  box-shadow: 
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    0 6px 20px rgba(212, 165, 116, 0.6),
-    0 0 40px rgba(212, 165, 116, 0.4);
+  box-shadow: 0 0 40px var(--blood-red), 0 0 80px var(--dark-red);
 }
 
 .track-info {
   flex: 1;
-  min-width: 90px;
+  min-width: 100px;
   overflow: hidden;
-  position: relative;
-  z-index: 1;
 }
 
 .track-title {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--chrome-bright);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color: var(--glossy-white);
+  font-family: var(--font-stencil);
+  letter-spacing: 1px;
 }
 
 .track-artist {
-  font-size: 11px;
-  color: var(--chrome-dim);
+  font-size: 12px;
+  color: var(--steel-gray);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Waveform container with glass effect */
 .waveform-canvas {
-  width: 140px;
-  height: 36px;
+  width: 150px;
+  height: 40px;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 
-    inset 0 2px 4px rgba(0, 0, 0, 0.3),
-    0 1px 0 rgba(255, 255, 255, 0.05);
-  position: relative;
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--concrete-gray);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
-  .player {
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    padding: 0 12px;
-    border-radius: 18px;
-  }
-  
-  .player-btn {
-    width: 38px;
-    height: 38px;
-    font-size: 18px;
-  }
-  
-  .player-btn.play {
-    width: 44px;
-    height: 44px;
-    font-size: 22px;
-  }
-  
-  .waveform-canvas {
-    width: 100%;
-    max-width: 120px;
-  }
-}
-
-@media (max-width: 480px) {
-  .player {
-    gap: 10px;
-  }
-  
-  .player-controls {
-    gap: 4px;
-  }
-  
-  .track-title {
-    font-size: 12px;
-  }
-  
-  .track-artist {
-    font-size: 10px;
-  }
-}
 /* =============================================================================
-   LIGHTNING FLASH TRANSITION
+   FOOTER
    ============================================================================= */
-.flash {
+footer {
+  background: var(--void-black);
+  border-top: 2px solid var(--dark-red);
+  padding: 50px 30px;
+  text-align: center;
+  position: relative;
+  margin-bottom: calc(var(--player-height) + 40px);
+}
+
+.footer-logo {
+  width: 140px;
+  height: auto;
+  margin-bottom: 30px;
+  filter: drop-shadow(var(--glow-red));
+  opacity: 0.9;
+}
+
+.copyright {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--steel-gray);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+.legal-notice {
+  font-size: 12px;
+  color: var(--steel-gray);
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto 25px;
+}
+
+.protection-badge {
+  display: inline-block;
+  background: var(--glossy-white);
+  color: var(--void-black);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* =============================================================================
+   PAGE TRANSITION OVERLAY
+   ============================================================================= */
+.page-transition {
   position: fixed;
   inset: 0;
-  background: radial-gradient(
-    circle at 50% 30%,
-    rgba(255, 255, 255, 0.96),
-    rgba(255, 255, 255, 0) 35%
-  );
-  mix-blend-mode: screen;
+  background: var(--void-black);
   opacity: 0;
   pointer-events: none;
-  z-index: 9998;
-  transition: opacity 0.1s ease;
+  z-index: 9997;
+  transition: opacity 0.3s;
+}
+
+.page-transition.active {
+  opacity: 1;
 }
 
 /* =============================================================================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE DESIGN
    ============================================================================= */
 @media (max-width: 768px) {
   :root {
-    --header-height: 64px;
-    --particle-count: 16;
+    --header-height: 65px;
+  }
+  
+  header {
+    padding: 0 20px;
+  }
+  
+  nav {
+    gap: 4px;
   }
   
   nav a {
-    font-size: 12px;
-    padding: 6px 10px;
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+  
+  nav a::before {
+    display: none;
   }
   
   .countdown-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .countdown-cell {
+    padding: 25px 20px;
   }
   
   .links-grid {
@@ -856,27 +1029,69 @@ main {
   
   .waveform-canvas {
     width: 100%;
+    max-width: 120px;
+  }
+  
+  .player {
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    padding: 0 16px;
+  }
+  
+  .player-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .player-btn.play {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+  }
+  
+  .fab {
+    width: 54px;
+    height: 54px;
+    font-size: 24px;
   }
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: 60px 20px;
+  }
+  
   .hero-title {
-    font-size: 24px;
+    font-size: 32px;
+    letter-spacing: 4px;
+  }
+  
+  .press-btn {
+    padding: 14px 35px;
+    font-size: 18px;
   }
   
   .countdown-cell {
-    padding: 16px 12px;
+    padding: 20px 15px;
   }
   
-  .back-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
+  .game-card {
+    padding: 30px 20px;
+  }
+  
+  .track-title {
+    font-size: 13px;
+  }
+  
+  .track-artist {
+    font-size: 11px;
   }
 }
 
 /* =============================================================================
-   REDUCED MOTION SUPPORT
+   ACCESSIBILITY
    ============================================================================= */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -887,17 +1102,37 @@ main {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Protection */
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+.game-card img,
+.link-card img {
+  pointer-events: all;
+}
 </style>
 </head>
 <body>
 
-<!-- Loading Spinner -->
+<!-- Loading Screen -->
 <div class="loader" id="loader">
-  <div class="spinner"></div>
+  <img class="loader-logo" src="assets/images/logos/swap-red.png" alt="SWAP" onerror="this.style.display='none'">
+  <div class="loader-text">INITIALIZING...</div>
+  <div class="loader-bar"></div>
 </div>
 
-<!-- Lightning Flash Effect -->
-<div class="flash" id="flash"></div>
+<!-- Page Transition -->
+<div class="page-transition" id="pageTransition"></div>
 
 <!-- Header -->
 <header>
@@ -908,77 +1143,75 @@ main {
   <nav>
     <a href="#hero" class="nav-link active">HOME</a>
     <a href="#countdown" class="nav-link">COUNTDOWN</a>
-    <a href="#links" class="nav-link">LINKS</a>
-    <a href="#games" class="nav-link">GAMES</a>
+    <a href="#links" class="nav-link">CONNECT</a>
+    <a href="#games" class="nav-link">INTERACTIVE</a>
   </nav>
 </header>
 
-<!-- Back to Top Button -->
-<button class="back-btn" onclick="scrollToTop()" aria-label="Back to top">↑</button>
+<!-- FAB -->
+<button class="fab" onclick="scrollToTop()" aria-label="Back to top">↑</button>
 
-<!-- Fibonacci Spiral Background Canvas -->
-<canvas id="bgCanvas" <!-- Fibonacci Spiral Background Canvas -->
-<canvas id="bgCanvas" aria-hidden="true"></canvas>
-
-<!-- Floating Hero Logo Background -->
-<img id="heroLogo" src="assets/images/Hero.jpg.PNG" alt="" aria-hidden="true"></canvas>
-
-<main> 
+<main>
   <!-- HERO SECTION -->
   <section id="hero" class="section">
-    <div class="hero-crt">
-      <div class="crt-screen">
-        <div class="rotating-glow"></div>
-        <div class="hero-content">
-          <h1 class="hero-title">SWAP-BASE</h1>
-          <p class="hero-subtitle">
-            Heaven's Basement × SWAP — underground hub for music, tech, fashion & community. 
-            <strong>ENTER THE UNDERGROUND</strong>
-          </p>
-          <button class="press-btn" onclick="scrollToSection('countdown')">PRESS START</button>
-          <div class="mini-countdown" id="miniCountdown"></div>
+    <div class="hero-container">
+      <div class="crt-frame">
+        <div class="crt-screen">
+          <img src="assets/images/logos/swap-pink.png" alt="SWAPTOBER" class="hero-logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 400 200\'%3E%3Ctext x=\'50%25\' y=\'50%25\' font-family=\'Bebas Neue\' font-size=\'72\' fill=\'%23DC143C\' text-anchor=\'middle\' dominant-baseline=\'middle\'%3ESWAP%3C/text%3E%3C/svg%3E'">
+          
+          <div class="hero-content">
+            <h1 class="hero-title">SWAP-BASE</h1>
+            <p class="hero-subtitle">
+              Heaven's Basement × SWAP<br>
+              underground hub for music, tech, fashion & community<br>
+              <strong>⚡ ENTER THE UNDERGROUND ⚡</strong>
+            </p>
+            <button class="press-btn" onclick="scrollToSection('countdown')">PRESS START</button>
+            <div class="mini-countdown" id="miniCountdown"></div>
+          </div>
+          
+          <div class="scanlines"></div>
         </div>
       </div>
-      <div class="scanlines"></div>
     </div>
   </section>
 
   <!-- COUNTDOWN SECTION -->
   <section id="countdown" class="section">
     <div class="countdown-wrapper">
-      <h2 class="countdown-title">SWAPTOBER:5</h2>
-      <p class="countdown-subtitle">LIVE COUNTDOWN</p>
+      <h2 class="section-title">SWAPTOBER:5</h2>
+      <p class="countdown-subtitle">◢◤ LIVE COUNTDOWN ◢◤</p>
       <div class="countdown-grid" id="fullCountdown"></div>
     </div>
   </section>
 
-  <!-- LINKS HUB SECTION -->
+  <!-- LINKS SECTION -->
   <section id="links" class="section">
     <div class="links-wrapper">
       <h2 class="section-title">CONNECT</h2>
       <div class="links-grid">
         <a href="https://www.instagram.com/chrisswap" target="_blank" rel="noopener" class="link-card">
-          <h3>📸 Instagram</h3>
+          <h3>📸 INSTAGRAM</h3>
           <p>@chrisswap</p>
         </a>
         <a href="https://music.apple.com/us/playlist/swaptober5/pl.u-6mo44ayIlBZ3NG" target="_blank" rel="noopener" class="link-card">
-          <h3>🎵 Music</h3>
+          <h3>🎵 MUSIC</h3>
           <p>SWAPTOBER5 Playlist</p>
         </a>
         <a href="https://www.sbrmag.com/events/swaptober" target="_blank" rel="noopener" class="link-card">
-          <h3>🎫 Tickets</h3>
-          <p>Get Tickets</p>
+          <h3>🎫 TICKETS</h3>
+          <p>Get Tickets Now</p>
         </a>
         <a href="https://www.mrmidwest.com/" target="_blank" rel="noopener" class="link-card">
-          <h3>👕 Merch+</h3>
-          <p>Shop Now</p>
+          <h3>👕 MERCH+</h3>
+          <p>Shop Collection</p>
         </a>
         <a href="https://youtube.com/@chrisswap57" target="_blank" rel="noopener" class="link-card">
-          <h3>📺 YouTube</h3>
-          <p>Channel</p>
+          <h3>📺 YOUTUBE</h3>
+          <p>Subscribe Now</p>
         </a>
         <a href="https://msha.ke/fieldschristopher" target="_blank" rel="noopener" class="link-card">
-          <h3>📧 Contact</h3>
+          <h3>📧 CONTACT</h3>
           <p>Digital Card</p>
         </a>
       </div>
@@ -988,20 +1221,20 @@ main {
   <!-- GAMES SECTION -->
   <section id="games" class="section">
     <div class="games-wrapper">
-      <h2 class="section-title">GAMES / INTERACTIVE</h2>
+      <h2 class="section-title">INTERACTIVE</h2>
       <a href="https://mr-basement.github.io/swaptober-contact-of-the-fifth/" target="_blank" rel="noopener" class="game-card">
-        <h3>🎮 SWAPTOBER: Contact of the Fifth</h3>
-        <p>Interactive web experience — Click to play</p>
+        <h3>🎮 SWAPTOBER: CONTACT OF THE FIFTH</h3>
+        <p>Interactive web experience — Immersive alien contact simulation</p>
       </a>
-      <div class="game-card" style="cursor: default;">
-        <h3>More Coming Soon</h3>
+      <div class="game-card disabled">
+        <h3>🚧 MORE COMING SOON</h3>
         <p>Additional interactive experiences in development by ChrisSWAP</p>
       </div>
     </div>
   </section>
 </main>
 
-<!-- PERSISTENT MUSIC PLAYER -->
+<!-- MUSIC PLAYER -->
 <div class="player">
   <div class="player-controls">
     <button class="player-btn" onclick="prevTrack()" aria-label="Previous track">⏮</button>
@@ -1009,73 +1242,55 @@ main {
     <button class="player-btn" onclick="nextTrack()" aria-label="Next track">⏭</button>
   </div>
   <div class="track-info">
-    <div class="track-title" id="trackTitle">Chris2 — SWAPTOBER Mix</div>
-    <div class="track-artist" id="trackArtist">ChrisSWAP</div>
+    <div class="track-title" id="trackTitle">Chris2 — SWAP Mix</div>
+    <div class="track-artist" id="trackArtist">ChrisSWAP Production</div>
   </div>
-  <canvas class="waveform-canvas" id="waveCanvas" width="280" height="72"></canvas>
+  <canvas class="waveform-canvas" id="waveCanvas" width="300" height="80"></canvas>
 </div>
 
-<script>
-/* =============================================================================
-   SWAP-BASE JAVASCRIPT - Complete Rewrite
-   Optimized for performance, iOS compatibility, and glassmorphic UI
-   ============================================================================= */
+<!-- FOOTER -->
+<footer>
+  <img class="footer-logo" src="assets/images/logos/swap-minimal.png" alt="SWAP" onerror="this.style.display='none'">
+  <p class="copyright">© 2025 ChrisSWAP / SWAP-BASE. All Rights Reserved.</p>
+  <p class="legal-notice">
+    All logos, images, music, and content are protected by copyright law.<br>
+    Unauthorized reproduction, distribution, or use is strictly prohibited without express written consent.<br>
+    Licensed content for personal viewing only.
+  </p>
+  <span class="protection-badge">🔒 PROTECTED CONTENT</span>
+</footer>
 
+<script>
 'use strict';
 
 /* =============================================================================
-   CONFIGURATION - Edit these values to customize
+   SWAP-BASE V3.0 - GRUNGE HORROR EDITION
    ============================================================================= */
 
 const CONFIG = {
-  // Countdown configuration
   countdown: {
-    targetDate: new Date('2025-10-24T20:00:00-05:00'), // America/Chicago
-    updateInterval: 1000 // Update every second
+    targetDate: new Date('2025-10-24T20:00:00-05:00'),
+    updateInterval: 1000
   },
-  
-  // Audio tracks configuration
   audio: {
     tracks: [
-      { 
-        title: 'Chris2 — SWAP Mix', 
-        artist: 'ChrisSWAP', 
-        file: 'assets/music/chris2.mp3' 
-      },
-      { 
-        title: 'Chris7 — SWAP Mix', 
-        artist: 'ChrisSWAP', 
-        file: 'assets/music/chris 7.mp3' 
-      }
+      { title: 'Chris2 — SWAP Mix', artist: 'ChrisSWAP Production', file: 'assets/music/chris2.mp3' },
+      { title: 'Chris7 — SWAP Mix', artist: 'ChrisSWAP Production', file: 'assets/music/chris 7.mp3' }
     ],
     crossOrigin: 'anonymous',
     preload: 'metadata'
   },
-  
-  // Visual effects configuration
-  effects: {
-    particleCount: 24,        // Fibonacci spiral particles
-    spiralSegments: 80,       // Spiral curve detail
-    particleOpacity: 0.15,    // Particle visibility
-    spiralSpeed: 0.004,       // Rotation speed
-    flashDuration: 100,       // Lightning flash duration (ms)
-    reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    isLowPower: /Mobi|Android/i.test(navigator.userAgent) && window.innerWidth < 900
-  },
-  
-  // Waveform visualizer configuration
   waveform: {
-    barCount: 20,
-    idleHeight: 0.2,          // 20% of canvas height when idle
-    minBarHeight: 0.12,       // Minimum bar height when playing
-    glowIntensity: 6,         // Base glow amount
-    pulseSpeed: 0.001         // Idle pulse animation speed
+    barCount: 18,
+    idleHeight: 0.22,
+    minBarHeight: 0.15,
+    glowIntensity: 8,
+    pulseSpeed: 0.0015
+  },
+  loader: {
+    duration: 2500
   }
 };
-
-/* =============================================================================
-   STATE MANAGEMENT - Application state
-   ============================================================================= */
 
 const STATE = {
   audio: {
@@ -1087,108 +1302,72 @@ const STATE = {
     isPlaying: false,
     isInitialized: false
   },
-  
   canvas: {
-    background: null,
-    backgroundCtx: null,
     waveform: null,
-    waveformCtx: null,
-    spiralAngle: 0,
-    animationFrameId: null
+    waveformCtx: null
   },
-  
   ui: {
     loader: null,
-    flash: null,
+    pageTransition: null,
     playBtn: null,
     trackTitle: null,
-    trackArtist: null,
-    player: null
+    trackArtist: null
   }
 };
-
-/* =============================================================================
-   DOM UTILITIES
-   ============================================================================= */
 
 const DOM = {
-  get: (selector) => document.querySelector(selector),
-  getAll: (selector) => document.querySelectorAll(selector),
-  
-  ready: (callback) => {
-    if (document.readyState !== 'loading') {
-      callback();
-    } else {
-      document.addEventListener('DOMContentLoaded', callback);
-    }
+  get: (s) => document.querySelector(s),
+  getAll: (s) => document.querySelectorAll(s),
+  ready: (cb) => {
+    if (document.readyState !== 'loading') cb();
+    else document.addEventListener('DOMContentLoaded', cb);
   }
 };
 
-/* =============================================================================
-   UI EFFECTS
-   ============================================================================= */
-
+// EFFECTS
 const Effects = {
-  // Show lightning flash transition
-  flash: () => {
-    if (!STATE.ui.flash) return;
-    STATE.ui.flash.style.opacity = '1';
+  pageTransition: (callback) => {
+    if (!STATE.ui.pageTransition) return callback();
+    STATE.ui.pageTransition.classList.add('active');
     setTimeout(() => {
-      STATE.ui.flash.style.opacity = '0';
-    }, CONFIG.effects.flashDuration);
+      callback();
+      STATE.ui.pageTransition.classList.remove('active');
+    }, 300);
   },
   
-  // Show loading spinner
-  showLoader: () => {
-    if (STATE.ui.loader) {
-      STATE.ui.loader.classList.add('active');
-    }
-  },
-  
-  // Hide loading spinner
-  hideLoader: () => {
-    if (STATE.ui.loader) {
-      STATE.ui.loader.classList.remove('active');
-    }
-  },
-  
-  // Smooth scroll to section
   scrollTo: (elementId) => {
-    Effects.flash();
-    setTimeout(() => {
+    Effects.pageTransition(() => {
       const element = DOM.get(`#${elementId}`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+      if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   },
   
-  // Scroll to top
   scrollToTop: () => {
-    Effects.flash();
-    setTimeout(() => {
+    Effects.pageTransition(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
+    });
   }
 };
 
-// Make scroll functions globally available
-window.scrollToSection = Effects.scrollTo;
-window.scrollToTop = Effects.scrollToTop;
+// LOADER
+const Loader = {
+  init: () => {
+    setTimeout(() => {
+      if (STATE.ui.loader) {
+        STATE.ui.loader.classList.add('hidden');
+        setTimeout(() => STATE.ui.loader.style.display = 'none', 500);
+      }
+    }, CONFIG.loader.duration);
+  }
+};
 
-/* =============================================================================
-   COUNTDOWN TIMER
-   ============================================================================= */
-
+// COUNTDOWN
 const Countdown = {
-  // Format number with leading zero
   pad: (num) => String(Math.floor(num)).padStart(2, '0'),
   
-  // Calculate time difference
   calculate: () => {
     const now = new Date();
     const diff = Math.max(0, (CONFIG.countdown.targetDate - now) / 1000);
-    
     return {
       days: Math.floor(diff / 86400),
       hours: Math.floor((diff % 86400) / 3600),
@@ -1197,7 +1376,6 @@ const Countdown = {
     };
   },
   
-  // Render countdown HTML
   renderCell: (value, label) => `
     <div class="countdown-cell">
       <div class="countdown-number">${Countdown.pad(value)}</div>
@@ -1212,121 +1390,83 @@ const Countdown = {
     </div>
   `,
   
-  // Update countdown displays
   update: () => {
     const time = Countdown.calculate();
+    const mini = DOM.get('#miniCountdown');
+    const full = DOM.get('#fullCountdown');
     
-    // Update mini countdown on hero
-    const miniCountdown = DOM.get('#miniCountdown');
-    if (miniCountdown) {
-      miniCountdown.innerHTML = 
-        Countdown.renderMiniCell(time.days, 'Days') +
-        Countdown.renderMiniCell(time.hours, 'Hrs') +
-        Countdown.renderMiniCell(time.minutes, 'Min') +
-        Countdown.renderMiniCell(time.seconds, 'Sec');
+    if (mini) {
+      mini.innerHTML = 
+        Countdown.renderMiniCell(time.days, 'DAYS') +
+        Countdown.renderMiniCell(time.hours, 'HRS') +
+        Countdown.renderMiniCell(time.minutes, 'MIN') +
+        Countdown.renderMiniCell(time.seconds, 'SEC');
     }
     
-    // Update full countdown
-    const fullCountdown = DOM.get('#fullCountdown');
-    if (fullCountdown) {
-      fullCountdown.innerHTML = 
-        Countdown.renderCell(time.days, 'Days') +
-        Countdown.renderCell(time.hours, 'Hours') +
-        Countdown.renderCell(time.minutes, 'Minutes') +
-        Countdown.renderCell(time.seconds, 'Seconds');
+    if (full) {
+      full.innerHTML = 
+        Countdown.renderCell(time.days, 'DAYS') +
+        Countdown.renderCell(time.hours, 'HOURS') +
+        Countdown.renderCell(time.minutes, 'MINUTES') +
+        Countdown.renderCell(time.seconds, 'SECONDS');
     }
   },
   
-  // Initialize countdown
   init: () => {
     Countdown.update();
     setInterval(Countdown.update, CONFIG.countdown.updateInterval);
-    console.log('✅ Countdown initialized');
   }
 };
 
-/* =============================================================================
-   AUDIO PLAYER
-   ============================================================================= */
-
+// AUDIO
 const AudioPlayer = {
-  // Initialize Web Audio API (iOS-compatible)
   init: () => {
     if (STATE.audio.isInitialized) return;
     
     try {
-      // Create audio element
       STATE.audio.element = new Audio();
       STATE.audio.element.crossOrigin = CONFIG.audio.crossOrigin;
       STATE.audio.element.preload = CONFIG.audio.preload;
       
-      // Create Web Audio Context
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       STATE.audio.context = new AudioContext();
       
-      // Create analyser node
       const source = STATE.audio.context.createMediaElementSource(STATE.audio.element);
       STATE.audio.analyser = STATE.audio.context.createAnalyser();
       STATE.audio.analyser.fftSize = 64;
       
-      // Connect nodes
       source.connect(STATE.audio.analyser);
       STATE.audio.analyser.connect(STATE.audio.context.destination);
       
-      // Create data array for frequency data
-      const bufferLength = STATE.audio.analyser.frequencyBinCount;
-      STATE.audio.dataArray = new Uint8Array(bufferLength);
+      STATE.audio.dataArray = new Uint8Array(STATE.audio.analyser.frequencyBinCount);
       
-      // Load first track
       AudioPlayer.loadTrack(0);
-      
-      // Handle track end
       STATE.audio.element.addEventListener('ended', AudioPlayer.next);
       
       STATE.audio.isInitialized = true;
-      console.log('✅ Audio system initialized');
-      console.log(`🎵 Loaded ${CONFIG.audio.tracks.length} tracks`);
+      console.log('✅ Audio initialized');
     } catch (err) {
-      console.error('❌ Audio initialization failed:', err);
-      STATE.audio.isInitialized = false;
+      console.error('❌ Audio failed:', err);
     }
   },
   
-  // Load a specific track
   loadTrack: (index) => {
     if (!STATE.audio.element) return;
-    
     const track = CONFIG.audio.tracks[index];
-    if (!track) {
-      console.warn(`⚠️ Track ${index} not found`);
-      return;
-    }
+    if (!track) return;
     
     STATE.audio.element.src = track.file;
     STATE.audio.currentTrackIndex = index;
     
-    // Update UI
-    if (STATE.ui.trackTitle) {
-      STATE.ui.trackTitle.textContent = track.title;
-    }
-    if (STATE.ui.trackArtist) {
-      STATE.ui.trackArtist.textContent = track.artist;
-    }
-    
-    console.log(`🎵 Loaded: ${track.title}`);
+    if (STATE.ui.trackTitle) STATE.ui.trackTitle.textContent = track.title;
+    if (STATE.ui.trackArtist) STATE.ui.trackArtist.textContent = track.artist;
   },
   
-  // Toggle play/pause
   togglePlay: () => {
-    // Initialize audio on first interaction
-    if (!STATE.audio.isInitialized) {
-      AudioPlayer.init();
-    }
-    
+    if (!STATE.audio.isInitialized) AudioPlayer.init();
     if (!STATE.audio.element || !STATE.ui.playBtn) return;
     
     if (!STATE.audio.isPlaying) {
-      // Resume AudioContext if suspended (iOS requirement)
       if (STATE.audio.context && STATE.audio.context.state === 'suspended') {
         STATE.audio.context.resume();
       }
@@ -1335,81 +1475,50 @@ const AudioPlayer = {
         .then(() => {
           STATE.audio.isPlaying = true;
           STATE.ui.playBtn.textContent = '⏸';
-          if (STATE.ui.player) {
-            STATE.ui.player.classList.add('playing');
-          }
-          console.log('▶️ Playing');
         })
         .catch(err => {
-          console.error('❌ Playback failed:', err);
-          alert('Audio playback failed. Please check that audio files exist in assets/music/');
+          console.error('Playback failed:', err);
+          alert('Audio playback failed. Check files in assets/music/');
         });
     } else {
       STATE.audio.element.pause();
       STATE.audio.isPlaying = false;
       STATE.ui.playBtn.textContent = '▶';
-      if (STATE.ui.player) {
-        STATE.ui.player.classList.remove('playing');
-      }
-      console.log('⏸ Paused');
     }
   },
   
-  // Previous track
   prev: () => {
-    const trackCount = CONFIG.audio.tracks.length;
-    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex - 1 + trackCount) % trackCount;
+    const count = CONFIG.audio.tracks.length;
+    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex - 1 + count) % count;
     AudioPlayer.loadTrack(STATE.audio.currentTrackIndex);
-    
-    if (STATE.audio.isPlaying && STATE.audio.element) {
-      STATE.audio.element.play();
-    }
+    if (STATE.audio.isPlaying && STATE.audio.element) STATE.audio.element.play();
   },
   
-  // Next track
   next: () => {
-    const trackCount = CONFIG.audio.tracks.length;
-    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex + 1) % trackCount;
+    const count = CONFIG.audio.tracks.length;
+    STATE.audio.currentTrackIndex = (STATE.audio.currentTrackIndex + 1) % count;
     AudioPlayer.loadTrack(STATE.audio.currentTrackIndex);
-    
-    if (STATE.audio.isPlaying && STATE.audio.element) {
-      STATE.audio.element.play();
-    }
+    if (STATE.audio.isPlaying && STATE.audio.element) STATE.audio.element.play();
   }
 };
 
-// Make audio functions globally available
-window.togglePlay = AudioPlayer.togglePlay;
-window.prevTrack = AudioPlayer.prev;
-window.nextTrack = AudioPlayer.next;
-
-/* =============================================================================
-   WAVEFORM VISUALIZER
-   ============================================================================= */
-
+// WAVEFORM
 const Waveform = {
-  // Initialize waveform canvas
   init: () => {
     STATE.canvas.waveform = DOM.get('#waveCanvas');
     if (!STATE.canvas.waveform) return;
-    
     STATE.canvas.waveformCtx = STATE.canvas.waveform.getContext('2d');
     Waveform.animate();
-    console.log('✅ Waveform visualizer initialized');
   },
   
-  // Draw waveform animation
   animate: () => {
     requestAnimationFrame(Waveform.animate);
-    
     const ctx = STATE.canvas.waveformCtx;
     const canvas = STATE.canvas.waveform;
-    
     if (!ctx || !canvas) return;
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // Check if audio is playing
     if (!STATE.audio.analyser || !STATE.audio.isPlaying) {
       Waveform.drawIdle(ctx, canvas);
     } else {
@@ -1417,7 +1526,6 @@ const Waveform = {
     }
   },
   
-  // Draw idle state with breathing animation
   drawIdle: (ctx, canvas) => {
     const barCount = CONFIG.waveform.barCount;
     const barWidth = canvas.width / barCount;
@@ -1425,41 +1533,24 @@ const Waveform = {
     const time = Date.now() * CONFIG.waveform.pulseSpeed;
     
     for (let i = 0; i < barCount; i++) {
-      // Subtle wave motion
-      const pulseOffset = Math.sin(time + i * 0.3) * 0.15;
-      const height = baseHeight * (1 + pulseOffset);
+      const offset = Math.sin(time + i * 0.4) * 0.2;
+      const height = baseHeight * (1 + offset);
       
-      // Create gradient
-      const gradient = ctx.createLinearGradient(
-        0, 
-        canvas.height - height, 
-        0, 
-        canvas.height
-      );
-      gradient.addColorStop(0, 'rgba(212, 165, 116, 0.25)');
-      gradient.addColorStop(0.5, 'rgba(255, 115, 38, 0.35)');
-      gradient.addColorStop(1, 'rgba(255, 140, 66, 0.45)');
+      const grad = ctx.createLinearGradient(0, canvas.height - height, 0, canvas.height);
+      grad.addColorStop(0, 'rgba(139, 0, 0, 0.4)');
+      grad.addColorStop(0.5, 'rgba(220, 20, 60, 0.6)');
+      grad.addColorStop(1, 'rgba(220, 20, 60, 0.8)');
       
-      // Add subtle glow
-      ctx.shadowBlur = 4;
-      ctx.shadowColor = 'rgba(212, 165, 116, 0.3)';
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(
-        i * barWidth + 1,
-        canvas.height - height,
-        barWidth - 2,
-        height
-      );
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(220, 20, 60, 0.5)';
+      ctx.fillStyle = grad;
+      ctx.fillRect(i * barWidth + 1, canvas.height - height, barWidth - 2, height);
     }
-    
     ctx.shadowBlur = 0;
   },
   
-  // Draw active state with audio analysis
   drawActive: (ctx, canvas) => {
     STATE.audio.analyser.getByteFrequencyData(STATE.audio.dataArray);
-    
     const barCount = STATE.audio.dataArray.length;
     const barWidth = canvas.width / barCount;
     const minHeight = canvas.height * CONFIG.waveform.minBarHeight;
@@ -1468,155 +1559,34 @@ const Waveform = {
       const value = STATE.audio.dataArray[i] / 255;
       const barHeight = Math.max(value * canvas.height, minHeight);
       
-      // Create vibrant gradient
-      const gradient = ctx.createLinearGradient(
-        0, 
-        canvas.height - barHeight, 
-        0, 
-        canvas.height
-      );
-      gradient.addColorStop(0, '#d4a574');    // Gold
-      gradient.addColorStop(0.4, '#ff7326');  // Orange
-      gradient.addColorStop(1, '#ff8c42');    // Bright orange
+      const grad = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
+      grad.addColorStop(0, '#8B0000');
+      grad.addColorStop(0.5, '#DC143C');
+      grad.addColorStop(1, '#FF4444');
       
-      // Dynamic glow based on volume
-      const glowIntensity = CONFIG.waveform.glowIntensity + (value * 6);
-      ctx.shadowBlur = glowIntensity;
-      ctx.shadowColor = `rgba(212, 165, 116, ${0.4 + value * 0.4})`;
-      
-      ctx.fillStyle = gradient;
-      ctx.fillRect(
-        i * barWidth + 1,
-        canvas.height - barHeight,
-        barWidth - 2,
-        barHeight
-      );
+      const glow = CONFIG.waveform.glowIntensity + (value * 10);
+      ctx.shadowBlur = glow;
+      ctx.shadowColor = `rgba(220, 20, 60, ${0.6 + value * 0.4})`;
+      ctx.fillStyle = grad;
+      ctx.fillRect(i * barWidth + 1, canvas.height - barHeight, barWidth - 2, barHeight);
     }
-    
     ctx.shadowBlur = 0;
   }
 };
 
-/* =============================================================================
-   FIBONACCI SPIRAL BACKGROUND
-   ============================================================================= */
-
-const Background = {
-  // Initialize background canvas
-  init: () => {
-    STATE.canvas.background = DOM.get('#bgCanvas');
-    if (!STATE.canvas.background) return;
-    
-    STATE.canvas.backgroundCtx = STATE.canvas.background.getContext('2d');
-    Background.resize();
-    
-    window.addEventListener('resize', Background.resize);
-    
-    // Only animate if motion is allowed
-    if (!CONFIG.effects.reducedMotion && !CONFIG.effects.isLowPower) {
-      Background.animate();
-      console.log('✅ Fibonacci spiral background initialized');
-    } else {
-      console.log('ℹ️ Background animation disabled (reduced motion or low power)');
-    }
-  },
-  
-  // Resize canvas to window size
-  resize: () => {
-    if (!STATE.canvas.background) return;
-    STATE.canvas.background.width = window.innerWidth;
-    STATE.canvas.background.height = window.innerHeight;
-  },
-  
-  // Animate Fibonacci spiral
-  animate: () => {
-    if (CONFIG.effects.reducedMotion) return;
-    
-    const ctx = STATE.canvas.backgroundCtx;
-    const canvas = STATE.canvas.background;
-    
-    if (!ctx || !canvas) return;
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    
-    // Draw Fibonacci spiral
-    const opacity = CONFIG.effects.isLowPower ? 0.08 : 0.12;
-    ctx.strokeStyle = `rgba(212, 165, 116, ${opacity})`;
-    ctx.lineWidth = 2;
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = 'rgba(212, 165, 116, 0.3)';
-    
-    ctx.beginPath();
-    
-    let angle = STATE.canvas.spiralAngle;
-    let radius = 1;
-    
-    for (let i = 0; i < CONFIG.effects.spiralSegments; i++) {
-      const x = centerX + Math.cos(angle) * radius;
-      const y = centerY + Math.sin(angle) * radius;
-      
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-      
-      angle += 0.15;
-      radius += 1.8;
-    }
-    
-    ctx.stroke();
-    
-    // Draw floating particles
-    for (let i = 0; i < CONFIG.effects.particleCount; i++) {
-      const particleAngle = (STATE.canvas.spiralAngle + i * 0.3) % (Math.PI * 2);
-      const particleRadius = 80 + (i * 15);
-      const px = centerX + Math.cos(particleAngle) * particleRadius;
-      const py = centerY + Math.sin(particleAngle) * particleRadius;
-      
-      const gradient = ctx.createRadialGradient(px, py, 0, px, py, 8);
-      gradient.addColorStop(0, `rgba(212, 165, 116, ${CONFIG.effects.particleOpacity})`);
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(px, py, 8, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    
-    // Update spiral angle
-    STATE.canvas.spiralAngle += CONFIG.effects.spiralSpeed;
-    
-    STATE.canvas.animationFrameId = requestAnimationFrame(Background.animate);
-  }
-};
-
-/* =============================================================================
-   NAVIGATION
-   ============================================================================= */
-
+// NAVIGATION
 const Navigation = {
-  // Initialize navigation event listeners
   init: () => {
-    // Nav link click handlers
     DOM.getAll('.nav-link').forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        
-        // Update active state
         DOM.getAll('.nav-link').forEach(l => l.classList.remove('active'));
         link.classList.add('active');
-        
-        // Scroll to section
         const sectionId = link.getAttribute('href').substring(1);
         Effects.scrollTo(sectionId);
       });
     });
     
-    // Link card hover effect (mouse position tracking)
     DOM.getAll('.link-card').forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -1627,122 +1597,104 @@ const Navigation = {
       });
     });
     
-    console.log('✅ Navigation initialized');
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    DOM.getAll('.section-title').forEach(title => observer.observe(title));
   }
 };
 
-/* =============================================================================
-   KEYBOARD CONTROLS
-   ============================================================================= */
-
+// KEYBOARD
 const Keyboard = {
-  // Initialize keyboard shortcuts
   init: () => {
     document.addEventListener('keydown', (e) => {
-      // Space bar - toggle play/pause
       if (e.code === 'Space' && e.target === document.body) {
         e.preventDefault();
         AudioPlayer.togglePlay();
       }
-      
-      // Arrow keys - track navigation
       if (e.code === 'ArrowLeft' && e.target === document.body) {
         e.preventDefault();
         AudioPlayer.prev();
       }
-      
       if (e.code === 'ArrowRight' && e.target === document.body) {
         e.preventDefault();
         AudioPlayer.next();
       }
     });
-    
-    console.log('✅ Keyboard controls initialized (Space: play/pause, ← →: tracks)');
   }
 };
 
-/* =============================================================================
-   CONFIG LOADER (Optional external JSON)
-   ============================================================================= */
-
-const ConfigLoader = {
-  // Load external config.json if available
-  load: async () => {
-    try {
-      const response = await fetch('assets/config.json');
-      if (response.ok) {
-        const config = await response.json();
-        console.log('✅ External config loaded:', config);
-        // Apply config overrides here if needed
-        // Example: Object.assign(CONFIG.audio.tracks, config.tracks);
+// PROTECTION
+const Protection = {
+  init: () => {
+    document.addEventListener('contextmenu', (e) => {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
       }
-    } catch (err) {
-      console.log('ℹ️ No config.json found, using defaults');
-    }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        return false;
+      }
+    });
+    
+    console.log('%c⚠️ STOP!', 'color: #DC143C; font-size: 60px; font-weight: bold;');
+    console.log('%c🔒 Protected by copyright.', 'color: #E8E8E8; font-size: 20px;');
+    console.log('%c© 2025 ChrisSWAP', 'color: #8B0000; font-size: 16px;');
   }
 };
 
-/* =============================================================================
-   APPLICATION INITIALIZATION
-   ============================================================================= */
-
+// APP
 const App = {
-  // Cache DOM elements
   cacheElements: () => {
     STATE.ui.loader = DOM.get('#loader');
-    STATE.ui.flash = DOM.get('#flash');
+    STATE.ui.pageTransition = DOM.get('#pageTransition');
     STATE.ui.playBtn = DOM.get('#playBtn');
     STATE.ui.trackTitle = DOM.get('#trackTitle');
     STATE.ui.trackArtist = DOM.get('#trackArtist');
-    STATE.ui.player = DOM.get('.player');
   },
   
-  // Initialize audio on first user gesture (iOS requirement)
-  setupAudioGesture: () => {
-    ['click', 'touchstart'].forEach(eventType => {
-      document.addEventListener(eventType, () => {
-        if (!STATE.audio.isInitialized) {
-          AudioPlayer.init();
-        }
-      }, { once: true, passive: true });
-    });
-  },
-  
-  // Initialize all modules
   init: () => {
-    console.log('🔥 SWAP-BASE Initializing...');
-    console.log('📱 Device:', CONFIG.effects.isLowPower ? 'Mobile (optimized)' : 'Desktop');
-    console.log('🎨 Reduced motion:', CONFIG.effects.reducedMotion ? 'Yes' : 'No');
+    console.log('🔥 SWAP-BASE V3.0 - GRUNGE HORROR EDITION');
+    console.log('🎨 Black × Red × White/Gray Palette');
+    console.log('💀 Skate × Horror × Underground');
     
-    // Cache DOM elements
     App.cacheElements();
-    
-    // Initialize modules
+    Loader.init();
     Countdown.init();
     Waveform.init();
-    Background.init();
     Navigation.init();
     Keyboard.init();
+    Protection.init();
     
-    // Setup audio gesture
-    App.setupAudioGesture();
+    ['click', 'touchstart'].forEach(type => {
+      document.addEventListener(type, () => {
+        if (!STATE.audio.isInitialized) AudioPlayer.init();
+      }, { once: true, passive: true });
+    });
     
-    // Load external config
-    ConfigLoader.load();
-    
-    console.log('✅ SWAP-BASE Ready');
-    console.log('🎵 Tracks loaded:', CONFIG.audio.tracks.length);
-    console.log('⌨️ Keyboard shortcuts: Space (play/pause), ← → (tracks)');
+    console.log('✅ SWAP-BASE READY');
+    console.log('⚡ Heaven\'s Basement Activated');
   }
 };
 
-/* =============================================================================
-   START APPLICATION
-   ============================================================================= */
+window.scrollToSection = Effects.scrollTo;
+window.scrollToTop = Effects.scrollToTop;
+window.togglePlay = AudioPlayer.togglePlay;
+window.prevTrack = AudioPlayer.prev;
+window.nextTrack = AudioPlayer.next;
 
-// Initialize when DOM is ready
 DOM.ready(App.init);
-
 </script>
 </body>
 </html>
+    
